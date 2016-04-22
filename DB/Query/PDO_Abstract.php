@@ -9,10 +9,10 @@ class PDO_Abstract{
 	public function __construct($config){
 		$this->config = $config;
 		
-		$this->initSqlArray();
+		$this->clearSqlArray();
 	}
 	
-	public function initSqlArray(){
+	public function clearSqlArray(){
 		$this->sqlArray["where"] = [];
 		$this->sqlArray["bindings"] = [ ];
 	}
@@ -103,7 +103,7 @@ class PDO_Abstract{
 		$sql .= " from " . $this->config['prefix'].$table;
 		$sql .= $this->buildWhere();
 		$data = $this->executeQuery( $sql , $this->sqlArray["bindings"] );
-		$this->initSqlArray();
+		$this->clearSqlArray();
 		return $data;
 		
 	}
