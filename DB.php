@@ -21,6 +21,11 @@ class DB{
 		static::$configs[$name] = $config;
 	}
 	
+	/**
+	 * 
+	 * @param string $name
+	 * @return  \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public static function connection( $name = 'default' ){
 		if( isset( static::$connections[$name] )){
 			return static::$connections[$name];

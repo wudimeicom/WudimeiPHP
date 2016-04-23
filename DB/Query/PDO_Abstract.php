@@ -1,6 +1,9 @@
 <?php
 
 namespace Wudimei\DB\Query;
+
+use Wudimei\DB\Query\Pagination\Paginator;
+
 class PDO_Abstract{
 	public $config;
 	public $sqlArray;
@@ -15,6 +18,8 @@ class PDO_Abstract{
 	public function clearSqlArray(){
 		$this->sqlArray["where"] = [];
 		$this->sqlArray["bindings"] = [ ];
+		$this->sqlArray["limit"] = [];
+		$this->sqlArray["orderBy"] = [];
 	}
 	public function select($select="*"){
 		$this->sqlArray["select"] = $select;
@@ -25,9 +30,18 @@ class PDO_Abstract{
 		$this->sqlArray["table"] = $tableName;
 		return $this;
 	}
+	public function limit($limit,$offset){
+		$this->sqlArray["limit"] = [$limit,$offset];
+		return $this;
+	}
+	
+	public function orderBy($field,$direction="asc"){
+		$this->sqlArray["orderBy"][$field] = $direction;
+		return $this;
+	}
 	
 	public function where($field,$param2,$param3 = null , $boolean = 'and'){
-		if( $param3 == null ){
+		if( $param3 === null ){
 			$param3 = $param2;
 			$param2 = "=";
 		}
@@ -64,8 +78,8 @@ class PDO_Abstract{
 		 //print_r($where);
 		$sql = " where 1 ";
 		for( $i=0; $i< count( $where); $i++ ){
-			$item = $where[$i];
-			$type = $item[0];
+			$item = @$where[$i];
+			$type = @$item[0];
 			if( $type == "where" ){
 				$field = $item[1];
 				$p1 = $item[2];
@@ -102,12 +116,66 @@ class PDO_Abstract{
 		$table = $this->getSqlArrayItem("table","");
 		$sql .= " from " . $this->config['prefix'].$table;
 		$sql .= $this->buildWhere();
+		
+		$orderBy = $this->getSqlArrayItem("orderBy",[]);
+		if( !empty( $orderBy) ){
+			$orderArr = [];
+			foreach ( $orderBy as $field => $direction ){
+				$orderArr[] = $field . " " . $direction;
+			}
+			$sql .= " order by ". implode(",", $orderArr);
+		}
+		
+		
+		
+		
+		$limit = $this->getSqlArrayItem("limit",[]);
+		if( !empty( $limit)){
+			$l = $limit[0];
+			$offset = $limit[1];
+			$sql .= " limit " . $l . " offset " . $offset;
+		}
+		
 		$data = $this->executeQuery( $sql , $this->sqlArray["bindings"] );
 		$this->clearSqlArray();
 		return $data;
 		
 	}
-	
+	/**
+	 * 
+	 * @param number $perPage
+	 * @param null|int $page
+	 */
+	public function paginate($perPage = 15, $page = null)
+	{
+		$othis = clone $this;
+		$total = $othis->count();
+		// echo $total;
+		$pageCount = ceil( $total / $perPage );
+		if( $page == null ){
+			$page = intval( @$_GET["page"] );
+		}
+		if( $page == 0 ){
+			$page = 1;
+		}
+		if( $page> $pageCount ){
+			$page = $pageCount;
+		}
+		$offset = ($page-1)*$perPage;
+		//echo "[" .$page . " , ".  $pageCount . " , ". $offset. "]";
+		
+		$data = $this->limit( $perPage, $offset )->get();
+		//print_r( $data );
+		
+		$paginator = new Paginator();
+		$paginator->first =1;
+		$paginator->last = $pageCount;
+		$paginator->page = $page;
+		$paginator->size = $perPage;
+		$paginator->total = $total;
+		$paginator->data = $data;
+		return $paginator;
+	}
 	public function count($field = "*"){
 		return $this->_function("count",$field );
 	}
