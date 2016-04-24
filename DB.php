@@ -46,7 +46,7 @@ class DB{
 				elseif( class_exists( $driver )){
 					$conn = new $driver( $cfg );
 				}
-			}
+			} 
 			return static::$connections[$name] = $conn;
 			
 		}

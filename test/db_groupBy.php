@@ -10,10 +10,12 @@ DB::addConnection($config);
 $select = DB::connection( );
 
 
-$pg = $select->table("blog")->where('id','>',1)->where('id','<',10)->paginate(2);
+$data = $select->table("blog")->where('id','>',0)
+->groupBy("title")->having("id", 1)->having("id", 1)
+ ->get();
 
+//$data = $select->table("blog")->get();
 echo "<pre>";
-print_r( $pg->data );
+print_r( $data );
 echo "</pre>";
 
-echo $pg->render("db_paginate.php?page={page}");

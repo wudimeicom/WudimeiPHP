@@ -20,6 +20,8 @@ class PDO_Abstract{
 		$this->sqlArray["bindings"] = [ ];
 		$this->sqlArray["limit"] = [];
 		$this->sqlArray["orderBy"] = [];
+		$this->sqlArray["groupBy"] = "";
+		$this->sqlArray["having"] = [];
 	}
 	public function select($select="*"){
 		$this->sqlArray["select"] = $select;
@@ -40,7 +42,11 @@ class PDO_Abstract{
 		return $this;
 	}
 	
-	public function where($field,$param2,$param3 = null , $boolean = 'and'){
+	public function groupBy( $field ){
+		$this->sqlArray["groupBy"] = $field ;
+		return $this;
+	}
+	public function where($field,$param2,$param3 = null , $boolean = 'and'  ){
 		if( $param3 === null ){
 			$param3 = $param2;
 			$param2 = "=";
@@ -63,6 +69,31 @@ class PDO_Abstract{
 		$this->whereRaw($sql,  $bindings  , $boolean = 'or');
 		return $this;
 	}
+	
+	public function having($field,$param2,$param3 = null , $boolean = 'and'){
+		if( $param3 === null ){
+			$param3 = $param2;
+			$param2 = "=";
+		}
+		$this->sqlArray["having"][] = ['having',$field,$param2,$param3,$boolean];
+		return $this;
+	}
+	public function orHaving($field,$param2,$param3 = null  ){
+		return $this->having($field,$param2,$param3  , 'or');
+	}
+	
+	public function havingRaw($sql, array $bindings = array(), $boolean = 'and')
+	{
+		$this->sqlArray["having"][] = ['havingRaw',$sql,$bindings,$boolean];
+		return $this;
+	}
+	
+	public function orHavingRaw($sql, array $bindings = array() )
+	{
+		$this->havingRaw($sql,  $bindings  , $boolean = 'or');
+		return $this;
+	}
+	
 	
 	public function getSqlArrayItem( $name , $default = null){
 		$item = @$this->sqlArray[$name];
@@ -109,13 +140,57 @@ class PDO_Abstract{
 		return $sql;
 	}
 	
-	public function get(){
+
+	public function buildHaving(){
+		$where = $this->getSqlArrayItem('having','' );
+		//print_r($where);
+		$sql = "  having 1 ";
+		for( $i=0; $i< count( $where); $i++ ){
+			$item = @$where[$i];
+			$type = @$item[0];
+			if( $type == "having" ){
+				$field = $item[1];
+				$p1 = $item[2];
+				$p2 = $item[3];
+				$boolean = $item[4];
+				$sql .= " " . $boolean . " " . $field . " " . $p1 . " ? ";// . $p2;
+				$this->sqlArray["bindings"][] = $p2;
+			}
+			elseif( $type == "havingRaw" ){
+				$sqlParam = $item[1];
+				$bindings = $item[2];
+				$boolean = $item[3];
+				$sql .= " " . $boolean . " " . $sqlParam ;
+				if( !empty( $bindings)){
+					foreach ( $bindings as $k => $v ){
+						if( is_numeric( $k ) ){
+							$this->sqlArray["bindings"][] = $v;
+						}
+						else{
+							$this->sqlArray["bindings"][$k] = $v;
+						}
+	
+					}
+				}
+			}
+		}
+		return $sql;
+	}
+	
+	public function toSql(){
 		$select =$this->getSqlArrayItem("select","*");
 		
 		$sql = "select " . $select;
 		$table = $this->getSqlArrayItem("table","");
 		$sql .= " from " . $this->config['prefix'].$table;
 		$sql .= $this->buildWhere();
+		
+
+		$groupBy =  $this->getSqlArrayItem("groupBy", "");
+		if( $groupBy != "" ){
+			$sql .= " group by " . $groupBy;
+			$sql .= $this->buildHaving();
+		}
 		
 		$orderBy = $this->getSqlArrayItem("orderBy",[]);
 		if( !empty( $orderBy) ){
@@ -127,8 +202,6 @@ class PDO_Abstract{
 		}
 		
 		
-		
-		
 		$limit = $this->getSqlArrayItem("limit",[]);
 		if( !empty( $limit)){
 			$l = $limit[0];
@@ -136,6 +209,10 @@ class PDO_Abstract{
 			$sql .= " limit " . $l . " offset " . $offset;
 		}
 		
+		return $sql;
+	}
+	public function get(){
+		$sql = $this->toSql();
 		$data = $this->executeQuery( $sql , $this->sqlArray["bindings"] );
 		$this->clearSqlArray();
 		return $data;
