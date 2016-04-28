@@ -1,0 +1,84 @@
+<?php 
+class wudimei_view_default_index_test 
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function title(){ 
+ extract( $this->__vars ); 
+ echo 'abc'; 
+} 
+public function body(){ 
+ extract( $this->__vars ); 
+ echo '
+ efg
+ '; 
+if( $name == 'yqr' ):  
+ echo 'hello'; 
+ else:   
+ echo 'fuck'; 
+  endif;  
+ echo '
+'; 
+ 
+} 
+public function __main__(){ 
+ extract( $this->__vars ); 
+ echo 'extends(\'default.layout.main\')
+plain_text1
+
+
+
+'; 
+  echo print($name);   
+ echo '
+
+'; 
+foreach ( $data as $item ):  
+ echo '
+  '; 
+  $__r =$item['name']; echo htmlspecialchars($__r);  
+ echo ' 
+'; 
+  endforeach;   
+ echo '
+
+'; 
+if( (  $name == 'yqr' )           ):  
+ echo 'dd
+hello
+'; 
+elseif ( $name == 'zsf' ):  
+ echo 'zsf
+'; 
+ else:   
+ echo '
+fuck
+
+'; 
+  endif;  
+ echo '
+a
+'; 
+  $__r =$name.$age; echo htmlspecialchars($__r);  
+ echo 'b
+'; 
+  $__r =$name2['first_name'];echo $__r;  
+ echo 'c
+
+'; 
+ $this->title();  
+ echo '
+
+'; 
+ $this->body();  
+ 
+ 
+ 
+ 
+ echo '
+dd'; 
+} 
+
+}
