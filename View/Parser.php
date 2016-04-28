@@ -125,7 +125,7 @@ class Parser{
 			foreach ( $codes as $code ){
 				if( is_string($code )){
 					if(   $code   != ""){
-						$output .= ' echo \'' . addslashes( $code ) .'\'; ' . "\r\n";
+						$output .= ' echo \'' . addcslashes ( $code ,"'" ) .'\'; ' . "\r\n";
 					}
 				}
 				else{
