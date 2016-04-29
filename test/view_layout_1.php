@@ -20,4 +20,4 @@ $vars = [
 
  //echo View::make("default.index.test",$vars );
 
- echo View::make("default.index.test2",$vars );
+ echo View::make("default.index.layout_1",$vars );

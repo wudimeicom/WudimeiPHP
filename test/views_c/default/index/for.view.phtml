@@ -1,0 +1,67 @@
+<?php 
+class wudimei_view_default_index_for 
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+<table border="1">
+	<tr>
+    	<td>name</td>
+    	<td>age</td>
+    </tr>
+    
+'; 
+for( $i=0; $i< count( $students );$i++):  
+ $__output .= '
+    <tr>
+    	<td>'; 
+  $__r =$students[$i]['name'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    	<td>'; 
+  $__r =$students[$i]['age'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    </tr>
+'; 
+  endfor;   
+ $__output .= '
+
+</table>
+
+<br /> <br />
+
+<table border="1">
+	<tr>
+    	<td>name</td>
+    	<td>age</td>
+    </tr>
+    
+'; 
+for( $i=0; $i< count( $students );$i++):  
+ $__output .= '
+    '; 
+$stu = $students[$i];; 
+ $__output .= '
+    <tr>
+    	<td>'; 
+  $__r =$stu['name'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    	<td>'; 
+  $__r =$stu['age'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    </tr>
+'; 
+  endfor;   
+ $__output .= '
+
+</table>
+
+'; 
+ return $__output; 
+} 
+
+}

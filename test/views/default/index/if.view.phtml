@@ -1,0 +1,20 @@
+
+@if( $success == true )
+success ! <br />
+@endif
+
+@if( $role == "admin" )
+hello,admin! <br />
+@else
+hello,user!<br />
+@endif
+
+@if( $role == "admin" )
+hello,admin! <br />
+@elseif( $role == 'root' )
+hello,root!<br />
+@else
+hello,user!<br />
+@endif
+
+<div class="panel@if( $success == true ) panel-success@endif">success!</div>

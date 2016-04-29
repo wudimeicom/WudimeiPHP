@@ -34,8 +34,16 @@ class Parser{
 						 
 						$vars['superClassPath'] = View::compile($superViewName);
 					}
-					elseif( in_array( $tag , ['if','for','elseif','foreach'] )){
-						$token['code'] =  $tag. $token['expression'].': ' ;
+					elseif( in_array( $tag , ['if','for','elseif','foreach','while'] )){
+						$code = '';
+						if( $tag == 'foreach'){
+							$expr = $token['expression'];
+							preg_match('/\((.+)\s+as\s+[^\)]+\)/i', $expr,$m);
+							//print_r( $m );
+							$code .= 'if( !empty('.$m[1].') ){';
+						}
+						$code .=  $tag. $token['expression'].'{ ' ;
+						$token['code'] = $code;
 					}
 					elseif( $tag == 'else'){
 						$token['code'] = ' else:  ';
@@ -44,9 +52,29 @@ class Parser{
 						$token['code'] = '  endif; ';
 					}
 					elseif( $tag == 'endforeach'){
-						$token['code'] = '  endforeach;  ';
+						$token['code'] = '  }}  ';
 					}
-					 
+					elseif( $tag == 'foreachelse'){
+						$token['code'] = '  }}else{{  ';
+					}
+					elseif( $tag == 'endfor'){
+						$token['code'] = '  endfor;  ';
+					}
+					elseif( $tag == "php" ){
+						$expr = trim($token['expression']);
+						
+						if( substr($expr,0,1) == "("){
+							$expr = substr($expr,1);
+						}
+						$len = strlen( $expr);
+						if( substr($expr,$len-1,1) == ')'){
+							$expr  = substr($expr,0, $len-1 );
+						}
+						$token['code'] = $expr . ';';
+					}
+					elseif( $tag == "endwhile"){
+						$token['code'] = '  endwhile;  ';
+					}
 				}
 				if( $type == 'function' ){
 					$token['code'] = '  $__output .=   '.@$token['function_name'].@$token['expression'].';  ';
@@ -61,6 +89,19 @@ class Parser{
 					}
 					$code .= ' ';
 					$token['code'] = $code;
+				}
+				if( $type == 'php' ){
+					 
+					$expr = trim($token['expression']);
+						
+						if( substr($expr,0,1) == "{"){
+							$expr = substr($expr,1);
+						}
+						$len = strlen( $expr);
+						if( substr($expr,$len-1,1) == '}'){
+							$expr  = substr($expr,0, $len-1 );
+						}
+						$token['code'] = $expr . ';';
 				}
 			}
 			$this->tokens[$i] = $token;

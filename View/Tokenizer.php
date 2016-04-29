@@ -13,7 +13,15 @@ class Tokenizer{
 		for( $i=0; $i< $len; $i++ ){
 			$ch = substr( $content, $i,1);
 			if( $ch == '@'){
-				$ret = $this->getStatement($content, $i);
+				$netCh = @substr( $content, $i+1,1);
+				$ret = array();
+				if( $netCh == '{'){
+					$ret = $this->getPhpExpression($content, $i );
+					$ret['start'] = $i-1;
+				}
+				else{
+					$ret = $this->getStatement($content, $i);
+				}
 				$tokens_1[] = $ret;
 			}
 			if( $ch == '{' ){
@@ -46,7 +54,7 @@ class Tokenizer{
 			$tokens_2[] = $item;
 		}
 		$tokens_2[]=substr($content, $plainTextStart);
-		
+		// print_r( $tokens_2 );
 		return $tokens_2;
 	}
 	/**
@@ -55,8 +63,8 @@ class Tokenizer{
 	 * @param ints $index
 	 */
 	public function getStatement($content, $index){
-		$keywords = ['endsection','section','elseif','else','if','foreach','for','while','do','endphp','endforeach', 'endif','extends','php'];
-		$keywords_needExpressions = ['section','elseif','if','foreach', 'for','while','extends'];
+		$keywords = ['endsection','section','elseif','else','if','foreachelse','foreach','for','while','do' ,'endforeach', 'endif','endfor','endwhile', 'extends','php' ];
+		$keywords_needExpressions = ['section','elseif','if','foreach', 'for','while','extends','php'];
 		$ret = array();
 		$predefinedTagFound = false;
 		for( $i=0;$i<count( $keywords ); $i++ ){
@@ -159,6 +167,34 @@ class Tokenizer{
 				'expression' =>	$expression,
 				'type' => 'variable',
 				'output_type' => $output_type,
+				'end' => $i,
+				
+		];
+	}
+	public function  getPhpExpression($content, $index ){
+		$stack = array();
+		$stack_fresh = true;
+		$expression = "";
+		for( $i= $index+1; $i<$index+1024 ;$i++ ){
+			$ch = substr($content, $i,1);
+			$expression .= $ch;
+			if( $ch == '{'){
+				array_push( $stack, '{');
+				$stack_fresh = false;
+			}
+			if( $ch == '}'){
+				array_pop( $stack );
+			}
+			if( $stack_fresh == false && empty( $stack )){
+				break;
+			}
+		}
+		 
+		return [
+		
+				'expression' =>	$expression,
+				'type' => 'php',
+				
 				'end' => $i,
 				
 		];

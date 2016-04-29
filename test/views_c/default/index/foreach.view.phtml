@@ -1,0 +1,56 @@
+<?php 
+class wudimei_view_default_index_foreach 
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+<table border="1">
+	<tr>
+    	<td>name</td>
+    	<td>age</td>
+    </tr>
+    
+'; 
+if( !empty(   $students) ){foreach(   $students as $stu){  
+ $__output .= '
+    <tr>
+    	<td>'; 
+  $__r =$stu['name'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    	<td>'; 
+  $__r =$stu['age'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '</td>
+    </tr>
+'; 
+  }}   
+ $__output .= '
+
+</table>
+
+<br /> <br />
+
+'; 
+if( !empty(   $students_empty_val) ){foreach(   $students_empty_val as $stu){  
+ $__output .= '
+     '; 
+  $__r =$stu['name'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= ' ,
+     '; 
+  $__r =$stu['age'];  $__output .=  htmlspecialchars($__r);  
+ $__output .= '  <br />
+'; 
+  }}else{{   
+ $__output .= '
+ no data
+'; 
+  }}   
+ 
+ return $__output; 
+} 
+
+}
