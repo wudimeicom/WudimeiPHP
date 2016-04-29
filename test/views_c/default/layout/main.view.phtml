@@ -1,0 +1,44 @@
+<?php 
+class wudimei_view_default_layout_main 
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function title(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= 'WudimeiPHP'; 
+ return $__output; 
+} 
+public function content(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+content
+'; 
+ 
+ return $__output; 
+} 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '<html>
+<head>
+<title>'; 
+ $__output .= $this->title();  
+ $__output .= '</title>
+</head>
+<body>
+
+'; 
+ $__output .= $this->content();  
+ 
+ $__output .= '
+
+</body>
+</html>'; 
+ return $__output; 
+} 
+
+}

@@ -1,29 +1,31 @@
-extends('default.layout.main')
-plain_text1 hello,'world'. ''' """""
+@extends('default.layout.main')
 
+@section('title','WudimeiPHP View')
 
+@section ('content')
 
-@print($name)
-
-@foreach ( $data as $item )
-  {{$item['name']}} 
-@endforeach
-
-@if( (  $name == 'yqr' )           )dd
-hello
-@elseif ( $name == 'zsf' )zsf
-@else
-fuck
-
-@endif
-a
-{{$name.$age}}b
-{!$name2['first_name']!}c
-
-@section('title','abc')
-
-@section ('body')
- efg
- @if( $name == 'yqr' )hello@elsefuck@endif
+ 	plain_text1 hello,'world'. ''' """""
+	
+	
+	
+	@substr($name,0)
+	
+	@foreach ( $data as $item )
+	  {{$item['name']}} 
+	@endforeach
+	
+	@if( (  $name == 'yqr' )           )dd
+	hello
+	@elseif ( $name == 'zsf' )zsf
+	@else
+	fuck
+	
+	@endif
+	a
+	{{$name.$age}}b
+	{!$name2['first_name']!}c
+	 
+	 efg
+	 @if( $name == 'yqr' )hello@elsefuck@endif
+	 dd
 @endsection
-dd

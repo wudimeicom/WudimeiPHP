@@ -24,6 +24,19 @@ class View{
 	}
 	
 	public static function make( $viewName, $vars ){
+		$destFile = self::compile($viewName);
+		  
+		 
+		require_once self::$compiled .$destFile ;
+		$className = Parser::getViewClassName( $viewName  );
+		$obj = new $className(  $vars );
+		$return = $obj->__main__();
+		
+		
+		return $return;
+	}
+	
+	public static function compile( $viewName ){
 		$viewName2 =  str_replace(".", "/", $viewName );
 		$viewFile = self::$path . "/" . $viewName2 . ".view.phtml";
 		$destFile = self::$compiled . "/" . $viewName2 . ".view.phtml";
@@ -31,7 +44,7 @@ class View{
 		
 		$tokenizer = new Tokenizer();
 		$tokens = $tokenizer->tokenize($content);
-
+		
 		$parser = new Parser();
 		$parser->path = self::$path;
 		$parser->compiled = self::$compiled;
@@ -44,12 +57,8 @@ class View{
 			mkdir( $destDir,0777,true );
 		}
 		file_put_contents( $destFile, $result );
-		require_once $destFile ;
-		$className = $parser->getViewClassName( $viewName2 );
-		$obj = new $className(  $vars );
-		$obj->__main__();
-		
-		unset( $tokenizer );
-		unset( $parser );
+		//unset( $tokenizer );
+		//unset( $parser );
+		return   "/" . $viewName2 . ".view.phtml";
 	}
 }
