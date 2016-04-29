@@ -109,42 +109,7 @@ class Parser{
 			}
 			$this->tokens[$i] = $token;
 		}
-		/*
-		for( $i=0;$i<$tokenCount; $i++ ){
-			$token = $this->tokens[$i];
-			$tag = @$token['tag'];
-			if( $tag == 'section'){
-				$expression = $token['expression'];
-				$params = [];
-				eval( "\$params = array" . $expression .";");
-				//print_r( $params );
-				$token['code'] = ' $__output .= $this->' . $params[0] . '(); ';
-				if( count( $params ) == 2 ){
-					$vars['sections'][$params[0]] = [ $params[1]];
-				}
-				else{
-					$vars['sections'][$params[0]] = [ ];
-					for( $j= $i+1;$j<$tokenCount;$j++ ){
-						$tk = $this->tokens[$j];
-						$tk_tag = @$tk['tag'];
-						$vars['sections'][$params[0]][] = $tk;
-						
-						if( is_string( $tk)){
-							$tk = '';
-						}
-						else{
-							$tk['code'] = '';
-						}
-						$this->tokens[$j] = $tk;
-						if( $tk_tag == "endsection" ){
-							break;
-						}
-					}
-				}
-			}
-			$this->tokens[$i] = $token;
-		}
-		$vars['sections']['__main__'] = $this->tokens; */
+		 
 		 // print_r( $this->tokens );  
 		  $sectionNameStack = [];
 		  $sectionName = "";
@@ -175,11 +140,16 @@ class Parser{
 		  		$sectionName = array_pop( $sectionNameStack );
 		  		$sectionName = array_pop( $sectionNameStack );
 		  	}
+		  	elseif( $tag == 'parent'){
+		  		 
+		  		$token['code'] = ' $__output .= parent::' . $sectionName . '();';
+		  		$vars['sections'][$sectionName][] = $token;
+		  	}
 		  	else{
 		  		$vars['sections'][$sectionName][] = $token;
 		  	}
 		}
-		// print_r( $vars['sections'] );
+		//  print_r( $vars['sections'] );
 		$data = $this->toPhp($vars);
 		return $data;
 	}
