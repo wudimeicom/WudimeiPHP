@@ -16,7 +16,7 @@ public function __main__(){
     </tr>
     
 '; 
-for( $i=0; $i< count( $students );$i++):  
+for( $i=0; $i< count( $students );$i++){  
  $__output .= '
     <tr>
     	<td>'; 
@@ -27,7 +27,7 @@ for( $i=0; $i< count( $students );$i++):
  $__output .= '</td>
     </tr>
 '; 
-  endfor;   
+  }   
  $__output .= '
 
 </table>
@@ -41,7 +41,7 @@ for( $i=0; $i< count( $students );$i++):
     </tr>
     
 '; 
-for( $i=0; $i< count( $students );$i++):  
+for( $i=0; $i< count( $students );$i++){  
  $__output .= '
     '; 
 $stu = $students[$i];; 
@@ -55,7 +55,7 @@ $stu = $students[$i];;
  $__output .= '</td>
     </tr>
 '; 
-  endfor;   
+  }   
  $__output .= '
 
 </table>

@@ -42,14 +42,17 @@ class Parser{
 							//print_r( $m );
 							$code .= 'if( !empty('.$m[1].') ){';
 						}
+						if( $tag == 'elseif'){
+							$code .= '}';
+						}
 						$code .=  $tag. $token['expression'].'{ ' ;
 						$token['code'] = $code;
 					}
 					elseif( $tag == 'else'){
-						$token['code'] = ' else:  ';
+						$token['code'] = ' }else{  ';
 					}
 					elseif( $tag == 'endif'){
-						$token['code'] = '  endif; ';
+						$token['code'] = ' } ';
 					}
 					elseif( $tag == 'endforeach'){
 						$token['code'] = '  }}  ';
@@ -58,7 +61,7 @@ class Parser{
 						$token['code'] = '  }}else{{  ';
 					}
 					elseif( $tag == 'endfor'){
-						$token['code'] = '  endfor;  ';
+						$token['code'] = '  }  ';
 					}
 					elseif( $tag == "php" ){
 						$expr = trim($token['expression']);
@@ -73,7 +76,7 @@ class Parser{
 						$token['code'] = $expr . ';';
 					}
 					elseif( $tag == "endwhile"){
-						$token['code'] = '  endwhile;  ';
+						$token['code'] = '  }  ';
 					}
 				}
 				if( $type == 'function' ){

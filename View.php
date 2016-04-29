@@ -41,7 +41,8 @@ class View{
 		$viewFile = self::$path . "/" . $viewName2 . ".view.phtml";
 		$destFile = self::$compiled . "/" . $viewName2 . ".view.phtml";
 		
-		if( file_exists( $destFile) && filemtime( $viewFile) < filemtime( $destFile)){
+		
+		if( file_exists( $destFile) && @filemtime( $viewFile) < filemtime( $destFile)){
 			//echo "no compile! " . $viewName . ' ! ';
 			return "/" . $viewName2 . ".view.phtml";
 		}

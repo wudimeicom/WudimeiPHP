@@ -19,6 +19,7 @@ class Tokenizer{
 					$ret = $this->getPhpExpression($content, $i );
 					$ret['start'] = $i-1;
 				}
+				 
 				else{
 					$ret = $this->getStatement($content, $i);
 				}
@@ -54,7 +55,7 @@ class Tokenizer{
 			$tokens_2[] = $item;
 		}
 		$tokens_2[]=substr($content, $plainTextStart);
-		// print_r( $tokens_2 );
+		 // print_r( $tokens_2 );
 		return $tokens_2;
 	}
 	/**
@@ -63,7 +64,7 @@ class Tokenizer{
 	 * @param ints $index
 	 */
 	public function getStatement($content, $index){
-		$keywords = ['endsection','section','elseif','else','if','foreachelse','foreach','for','while','do' ,'endforeach', 'endif','endfor','endwhile', 'extends','php' ];
+		$keywords = [ 'endsection','section','elseif','else','if','foreachelse','foreach','for','while','do' ,'endforeach', 'endif','endfor','endwhile', 'extends','php' ];
 		$keywords_needExpressions = ['section','elseif','if','foreach', 'for','while','extends','php'];
 		$ret = array();
 		$predefinedTagFound = false;

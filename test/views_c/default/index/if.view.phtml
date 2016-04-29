@@ -10,45 +10,45 @@ public function __main__(){
  extract( $this->__vars ); 
  $__output .= '
 '; 
-if( $success == true ):  
+if( $success == true ){  
  $__output .= '
 success ! <br />
 '; 
-  endif;  
+ }  
  $__output .= '
 
 '; 
-if( $role == "admin" ):  
+if( $role == "admin" ){  
  $__output .= '
 hello,admin! <br />
 '; 
- else:   
+ }else{   
  $__output .= '
 hello,user!<br />
 '; 
-  endif;  
+ }  
  $__output .= '
 
 '; 
-if( $role == "admin" ):  
+if( $role == "admin" ){  
  $__output .= '
 hello,admin! <br />
 '; 
-elseif( $role == 'root' ):  
+}elseif( $role == 'root' ){  
  $__output .= '
 hello,root!<br />
 '; 
- else:   
+ }else{   
  $__output .= '
 hello,user!<br />
 '; 
-  endif;  
+ }  
  $__output .= '
 
 <div class="panel'; 
-if( $success == true ):  
+if( $success == true ){  
  $__output .= ' panel-success'; 
-  endif;  
+ }  
  $__output .= '">success!</div>
 '; 
  return $__output; 
