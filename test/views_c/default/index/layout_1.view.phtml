@@ -1,5 +1,5 @@
 <?php 
- require_once \Wudimei\View::$compiled . '/default/layout/main.view.phtml'; 
+ require_once \Wudimei\View::$compiled . \Wudimei\View::compile('default.layout.main'); 
 class wudimei_view_default_index_layout_1  extends wudimei_view_default_layout_main
 {
  public $__vars; 
@@ -22,7 +22,7 @@ public function content(){
 	'; 
   $__output .=   substr($name,0);   
  $__output .= '
-	 
+	   
 '; 
  
  return $__output; 

@@ -40,6 +40,14 @@ class View{
 		$viewName2 =  str_replace(".", "/", $viewName );
 		$viewFile = self::$path . "/" . $viewName2 . ".view.phtml";
 		$destFile = self::$compiled . "/" . $viewName2 . ".view.phtml";
+		
+		if( file_exists( $destFile) && filemtime( $viewFile) < filemtime( $destFile)){
+			//echo "no compile! " . $viewName . ' ! ';
+			return "/" . $viewName2 . ".view.phtml";
+		}
+		else{
+			//echo 'compile agiain !' . $viewName . ' . ';
+		}
 		$content = file_get_contents($viewFile);
 		
 		$tokenizer = new Tokenizer();

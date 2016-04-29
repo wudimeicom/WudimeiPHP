@@ -16,7 +16,7 @@ class Parser{
 	
 	public function parse(){
 		$tokenCount = count( $this->tokens );
-		$vars = array( 'sections' => array() ,'superClassPath' => '');
+		$vars = array( 'sections' => array() ,'superClassPath' => '' ,'superViewName' =>'');
 		$vars['class'] = self::getViewClassName( $this->viewName );
 		
 		for( $i=0;$i<$tokenCount; $i++ ){
@@ -31,7 +31,7 @@ class Parser{
 						$vars['superClass'] = $this->parseExtends($token);
 						$token['code'] = '';
 						$superViewName = self::getViewName( $token['expression'] );
-						 
+						$vars['superViewName'] = $superViewName;
 						$vars['superClassPath'] = View::compile($superViewName);
 					}
 					elseif( in_array( $tag , ['if','for','elseif','foreach','while'] )){
@@ -152,8 +152,8 @@ class Parser{
 		$output = "";
 		$output = '<' . '?php '."\r\n";
 		if( trim( @$vars['superClass'] ) != '' ){
-			$output .= ' require_once \Wudimei\View::$compiled . \'' . 
-						$vars['superClassPath'] ."'; \r\n";
+			$output .= ' require_once \Wudimei\View::$compiled . \Wudimei\View::compile(\'' . 
+						$vars['superViewName'] ."'); \r\n";
 		}
 		$output .= 'class ' . $vars['class'] . ' ';
 		if( trim( @$vars['superClass'] ) != '' ){
