@@ -10,11 +10,14 @@ class View{
 	public static $path;
 	public static $compiled;
 	public static $vars;
+	public static $forceCompile = false;
 	
 	public static function loadConfig($file){
 		$config = include $file;
 		self::$path = $config['path'];
 		self::$compiled = $config['compiled'];
+		self::$forceCompile = $config['forceCompile'];
+		
 		if( !is_dir( self::$path )){
 			mkdir( self::$path ,0777,true );
 		}
@@ -41,14 +44,17 @@ class View{
 		$viewFile = self::$path . "/" . $viewName2 . ".view.phtml";
 		$destFile = self::$compiled . "/" . $viewName2 . ".view.phtml";
 		
-		
-		if( file_exists( $destFile) && @filemtime( $viewFile) < filemtime( $destFile)){
-			//echo "no compile! " . $viewName . ' ! ';
-			return "/" . $viewName2 . ".view.phtml";
+		if( self::$forceCompile ==  false ){
+			if( file_exists( $destFile) && @filemtime( $viewFile) < filemtime( $destFile)){
+				//echo "no compile! " . $viewName . ' ! ';
+				return "/" . $viewName2 . ".view.phtml";
+			}
+			else{
+				//echo 'compile agiain !' . $viewName . ' . ';
+			}
 		}
-		else{
-			//echo 'compile agiain !' . $viewName . ' . ';
-		}
+		//echo 'test';
+		 
 		$content = file_get_contents($viewFile);
 		
 		$tokenizer = new Tokenizer();

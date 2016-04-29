@@ -3,7 +3,7 @@ require_once __DIR__ .'/../autoload.php';
 use Wudimei\View;
 
 View::loadConfig( __DIR__ . '/view_config.php' );
-
+//View::$forceCompile = false;
 $vars = [
 	'students' => [
    		['name' => 'jim','age'=>14  ],
