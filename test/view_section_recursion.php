@@ -1,4 +1,5 @@
 <?php
+//view_section_recursion 
 require_once __DIR__ .'/../autoload.php';
 use Wudimei\View;
 
@@ -19,4 +20,4 @@ $vars = [
 //echo View::make("default.layout.main",$vars );
 
  
- echo View::make("default.index.layout_1",$vars );
+ echo View::make("default.index.section_recursion2",$vars );

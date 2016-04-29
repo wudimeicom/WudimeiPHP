@@ -6,44 +6,5 @@ class wudimei_view_default_index_layout_1  extends wudimei_view_default_layout_m
  public function __construct( $vars ) { 
     $this->__vars = $vars; 
  } 
-public function title(){ 
- $__output = ""; 
- extract( $this->__vars ); 
- $__output .= 'WudimeiPHP View'; 
- return $__output; 
-} 
-public function content(){ 
- $__output = ""; 
- extract( $this->__vars ); 
- $__output .= '
-
- 	 
- 	
-	'; 
-  $__output .=   substr($name,0);   
- $__output .= '
-	    ddd
-'; 
- 
- return $__output; 
-} 
-public function __main__(){ 
- $__output = ""; 
- extract( $this->__vars ); 
- 
- $__output .= '
-
-'; 
- $__output .= $this->title();  
- $__output .= '
-
-'; 
- $__output .= $this->content();  
- 
- 
- $__output .= '
-'; 
- return parent::__main__(); 
-} 
 
 }

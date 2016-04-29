@@ -109,7 +109,7 @@ class Parser{
 			}
 			$this->tokens[$i] = $token;
 		}
-		
+		/*
 		for( $i=0;$i<$tokenCount; $i++ ){
 			$token = $this->tokens[$i];
 			$tag = @$token['tag'];
@@ -144,9 +144,42 @@ class Parser{
 			}
 			$this->tokens[$i] = $token;
 		}
-		$vars['sections']['__main__'] = $this->tokens;
-		 //print_r( $this->tokens );
-		//print_r( $vars );
+		$vars['sections']['__main__'] = $this->tokens; */
+		 // print_r( $this->tokens );  
+		  $sectionNameStack = [];
+		  $sectionName = "";
+		  for( $i=0;$i<$tokenCount; $i++ ){
+		  	$token = $this->tokens[$i];
+		  	$tag = @$token['tag'];
+		  	if( $tag == 'section'){
+		  		$expression = $token['expression'];
+		  		$params = [];
+		  		eval( "\$params = array" . $expression .";");
+		  		$sectionName = $params[0];
+		  		array_push( $sectionNameStack, $sectionName);
+		  		//print_r( $params );
+		  		$token['code'] = ' $__output .= $this->' . $sectionName . '(); ';
+		  		if( count( $params ) == 2 ){
+		  			$vars['sections'][$sectionName] = [ $params[1]];
+		  			$sectionName = array_pop( $sectionNameStack );
+		  			$sectionName = array_pop( $sectionNameStack );
+		  		}
+		  		else{
+		  			
+		  		}
+		  		$sectionName2 = @$sectionNameStack[count( $sectionNameStack)-2];
+		  		$vars['sections'][$sectionName2][] = $token;
+		  		//print_r( $sectionNameStack );
+		  	}
+		  	elseif( $tag == 'endsection' ){
+		  		$sectionName = array_pop( $sectionNameStack );
+		  		$sectionName = array_pop( $sectionNameStack );
+		  	}
+		  	else{
+		  		$vars['sections'][$sectionName][] = $token;
+		  	}
+		}
+		// print_r( $vars['sections'] );
 		$data = $this->toPhp($vars);
 		return $data;
 	}
@@ -170,6 +203,9 @@ class Parser{
 		$output .= " } \r\n";
 		
 		foreach ( $vars['sections'] as $functionName => $codes ){
+			if( $functionName == ""){
+				$functionName = "__main__";
+			}
 			$output .= "public function " . $functionName . "(){ \r\n";
 			$output .= ' $__output = ""; ' . "\r\n";
 			//$output .= "    print_r( \$this->__vars ); \r\n";

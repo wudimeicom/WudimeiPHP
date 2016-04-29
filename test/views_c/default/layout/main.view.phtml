@@ -5,21 +5,6 @@ class wudimei_view_default_layout_main
  public function __construct( $vars ) { 
     $this->__vars = $vars; 
  } 
-public function title(){ 
- $__output = ""; 
- extract( $this->__vars ); 
- $__output .= 'WudimeiPHP'; 
- return $__output; 
-} 
-public function content(){ 
- $__output = ""; 
- extract( $this->__vars ); 
- $__output .= '
-default content
-'; 
- 
- return $__output; 
-} 
 public function __main__(){ 
  $__output = ""; 
  extract( $this->__vars ); 
@@ -35,12 +20,25 @@ public function __main__(){
 <header>this is header</header>
 '; 
  $__output .= $this->content();  
- 
  $__output .= '
 
 <footer>this is footer </footer>
 </body>
 </html>'; 
+ return $__output; 
+} 
+public function title(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= 'WudimeiPHP'; 
+ return $__output; 
+} 
+public function content(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+default content
+'; 
  return $__output; 
 } 
 

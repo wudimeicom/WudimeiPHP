@@ -1,0 +1,58 @@
+<?php 
+ require_once \Wudimei\View::$compiled . \Wudimei\View::compile('default.layout.main'); 
+class wudimei_view_default_index_section_recursion  extends wudimei_view_default_layout_main
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ 
+ $__output .= '
+
+'; 
+ $__output .= $this->title();  
+ $__output .= '
+
+'; 
+ $__output .= $this->content();  
+ $__output .= '
+'; 
+ return parent::__main__(); 
+} 
+public function title(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= 'WudimeiPHP View'; 
+ return $__output; 
+} 
+public function content(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+
+ 	
+ 	efg
+ 	'; 
+ $__output .= $this->location();  
+ $__output .= '
+ 	
+	'; 
+  $__output .=   substr($name,0);   
+ $__output .= '
+	    ddd
+'; 
+ return $__output; 
+} 
+public function location(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+ 	 location
+ 	'; 
+ return $__output; 
+} 
+
+}
