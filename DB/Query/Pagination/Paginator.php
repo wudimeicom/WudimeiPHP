@@ -43,6 +43,10 @@ class Paginator{
 	 */
 	public function render( $url , $buttonCount = 6 )
 	{
+		 
+		$this->prev = ($this->page -1 >0 )? $this->page -1 : 1;
+		$this->next = ( $this->page+1<= $this->last)? $this->page+1 : $this->last;
+		
 		$html = "<ul class=\"pagination\">";
 		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, 1 , $this->size )  . "\">头页</a></li>";
 		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, $this->prev , $this->size ) . "\">上页</a></li>";

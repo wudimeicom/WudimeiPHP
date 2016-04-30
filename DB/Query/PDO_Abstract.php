@@ -8,7 +8,7 @@ class PDO_Abstract{
 	public $config;
 	public $sqlArray;
 	public $pdo;
-	
+	public static $sqlHistory = [];
 	public function __construct($config){
 		$this->config = $config;
 		
@@ -28,9 +28,13 @@ class PDO_Abstract{
 		return $this;
 	}
 	
-	public function table($tableName){
+	public function from($tableName){
 		$this->sqlArray["table"] = $tableName;
 		return $this;
+	}
+
+	public function table($tableName){
+		return $this->from($tableName);
 	}
 	public function limit($limit,$offset){
 		$this->sqlArray["limit"] = [$limit,$offset];
@@ -69,7 +73,15 @@ class PDO_Abstract{
 		$this->whereRaw($sql,  $bindings  , $boolean = 'or');
 		return $this;
 	}
-	
+	public function whereIn($field, array $values = array(), $boolean = 'and')
+	{
+		$this->sqlArray["where"][] = ['whereIn',$field,$values,$boolean];
+		return $this;
+	}
+	public function orWhereIn($field, array $values = array() )
+	{
+		return $this->whereIn($field,  $values , $boolean = 'or');
+	}
 	public function having($field,$param2,$param3 = null , $boolean = 'and'){
 		if( $param3 === null ){
 			$param3 = $param2;
@@ -102,7 +114,12 @@ class PDO_Abstract{
 		}
 		return $item;
 	}
-	
+	/**
+	 * $where = [
+	 *   [ where , id , =, ?, and ]
+	 *   [ whereIn , id, [1,2,3],and ]
+	 * ]
+	 */
 	
 	public function buildWhere(){
 		$where = $this->getSqlArrayItem('where','' );
@@ -118,6 +135,17 @@ class PDO_Abstract{
 				$boolean = $item[4];
 				$sql .= " " . $boolean . " " . $field . " " . $p1 . " ? ";// . $p2;
 				$this->sqlArray["bindings"][] = $p2;
+			}
+			elseif( $type == 'whereIn'){
+				$field = $item[1];
+				$values = $item[2];
+				$boolean = $item[3];
+				$params = [];
+				for( $j=0;$j< count( $values); $j++ ){
+					$params[] = "?";
+				}
+				$sql .= " " . $boolean . " " . $field . " in(" . implode(',',$params) . " ) ";
+				$this->sqlArray["bindings"] = array_merge( $this->sqlArray["bindings"] , $values );
 			}
 			elseif( $type == "whereRaw" ){
 				$sqlParam = $item[1];
@@ -315,9 +343,90 @@ class PDO_Abstract{
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
-		echo $sql; print_r( $params );
-		print_r( $sth->errorInfo() );
+		//echo $sql; print_r( $params );
+		//print_r( $sth->errorInfo() );
+		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
 		$data = $sth->fetchAll();
 		return $data;
+	}
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param unknown $params
+	 * @return PDOStatement
+	 */
+	public function executeUpdate( $sql,$params = null ){
+		$pdo = $this->getPDO();
+		
+		$sth = $pdo->prepare( $sql );
+		$ret = $sth->execute( $params );
+		//echo $sql; print_r( $params );
+		//print_r( $sth->errorInfo() );
+		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
+		//$data = $sth->fetchAll();
+		return $sth;
+	}
+	
+	
+	public function insert( $data ){
+		//echo $this->toSql();
+		$fields = [];
+		$values = [];
+		$params = [];
+		if( !empty( $data )){
+			foreach ( $data as $field => $value ){
+				$fields[] = $field;
+				$values[] = $value;
+				$params[] = '?';
+			}
+		}
+		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
+		$sql = "insert into " . $tableName . " (" .implode(",", $fields) . ") values(" .implode(",", $params) . ") ";
+		$ret = $this->executeUpdate($sql , $values);
+		//echo $ret;
+		$pdo = $this->getPDO();
+		return $pdo->lastInsertId();
+		
+	}
+	public function update( $data ){
+		//echo $this->toSql();
+		 
+		$setArr = array();
+		$values = [];
+		if( !empty( $data )){
+			foreach ( $data as $field => $value ){
+				$setArr[] = '' . $field . ' = ? ';
+				$values[] = $value;
+			}
+		}
+		$where = $this->buildWhere();
+		$bindings = $this->sqlArray["bindings"];
+		$values = array_merge( $values, $bindings );
+		
+		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
+		$sql = "update " . $tableName . " set " .implode(',', $setArr) . $where  ;
+		
+		$sth = $this->executeUpdate($sql , $values);
+		return $sth->rowCount();
+		//return $ret;
+		//$pdo = $this->getPDO();
+		//return $pdo->
+	
+	}
+	
+	public function delete(  ){
+		  
+		$where = $this->buildWhere();
+		$bindings = $this->sqlArray["bindings"];
+		 
+		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
+		$sql = "delete from " . $tableName . "  "  . $where  ;
+	
+		$sth = $this->executeUpdate($sql ,$bindings);
+		return $sth->rowCount();
+		//return $ret;
+		//$pdo = $this->getPDO();
+		//return $pdo->
+	
 	}
 }
