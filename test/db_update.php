@@ -16,7 +16,7 @@ $data = array(
 	'created_at' => date("Y-m-d H:i:s")
 );
 
-$lastInsertId = $select->table("blog")->where('id',12)->orWhere('id',11)->orWhere('id',10)->update( $data );
+$lastInsertId = $select->table("blog")->where('id',1 )->update( $data );
 echo $lastInsertId;
 
  

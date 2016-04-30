@@ -12,6 +12,7 @@ class Tokenizer{
 
 		for( $i=0; $i< $len; $i++ ){
 			$ch = substr( $content, $i,1);
+			//secho $i . ' ';
 			if( $ch == '@'){
 				$netCh = @substr( $content, $i+1,1);
 				$ret = array();
@@ -24,16 +25,33 @@ class Tokenizer{
 					$ret = $this->getStatement($content, $i);
 				}
 				$tokens_1[] = $ret;
+				$i = $ret['end'];
+				continue;
 			}
-			if( $ch == '{' ){
+			elseif( $ch == '{' ){
 				$netCh = @substr( $content, $i+1,1);
 				if( $netCh == "{" || $netCh == "!" ){
 					$var = $this->getVariableExpression($content, $i );
 					$var['start'] = $i-1;
 					$tokens_1[] = $var;
+					$i = $var['end'];
+					continue;
 				}
+				
+			}
+			elseif( $ch == '\\'){
+				$netCh = @substr( $content, $i+1,1);
+				if( $netCh == '@' or $netCh == '{'){
+					$tag = substr( $content, $i,2);
+					$tk = ['start' => $i-1,'end'=> $i+1,'tag' => $tag, 'type' => 'escaped' ];
+					$tokens_1[] = $tk;
+					$i = $i+1;
+					continue;
+				}
+				
 			}
 		}
+		//print_r( $tokens_1 ); exit();
 		$tokens_2 = array();
 		$plainTextStart =0;
 		for( $i=0;$i< count( $tokens_1); $i++ ){
@@ -55,7 +73,7 @@ class Tokenizer{
 			$tokens_2[] = $item;
 		}
 		$tokens_2[]=substr($content, $plainTextStart);
-		 // print_r( $tokens_2 );
+		//  print_r( $tokens_2 );
 		return $tokens_2;
 	}
 	/**

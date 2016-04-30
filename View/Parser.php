@@ -106,10 +106,15 @@ class Parser{
 						}
 						$token['code'] = $expr . ';';
 				}
+				if( $type == 'escaped' ){
+					$tag = trim($token['tag'],'\\');
+					$token['code'] =  ' $__output .=   \''.$tag .'\';';
+					//echo $token['code']; 
+				}
 			}
 			$this->tokens[$i] = $token;
 		}
-		 
+		//exit();
 		 // print_r( $this->tokens );  
 		  $sectionNameStack = [];
 		  $sectionName = "";
