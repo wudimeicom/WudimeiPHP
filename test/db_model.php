@@ -30,23 +30,22 @@ echo $blogModel->insert( $newBlog );
 /*
 $blog = $blogModel->find(8); print_r( $blog );
 $blog->title = "happy new year2";
-//$blog2 = get_object_vars( $blog);
-echo $blogModel->where("id", 8)->update(['title'=>'abc333']);
+
 echo $blogModel->where("id", 8)->update( $blog );
+// echo $blogModel->where("id", 8)->update(['title'=>'abc333']);
 $blog = $blogModel->find(8); print_r( $blog );
 */
 /*
-$blog = $blogModel->find(8); print_r( $blog );
+
 $newBlog = new \stdClass();
 $newBlog->title = 'yang qing-rong';
 $newBlog->content = 'yang';
 $newBlog->created_at = date('Y-m-d H:i:s');
 echo $blogModel->insert( $newBlog );
-$blog = $blogModel->find(8); print_r( $blog );
+
 */
 /*
-$blog = $blogModel->find(8); print_r( $blog );
- 
+
 echo $blogModel->where('id',13)->delete();
-$blog = $blogModel->find(8); print_r( $blog );
+
 */
