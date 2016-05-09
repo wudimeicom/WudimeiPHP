@@ -9,6 +9,7 @@ class PDO_Abstract{
 	public $sqlArray;
 	public $pdo;
 	public static $sqlHistory = [];
+	public static $fetchStyle = \PDO::FETCH_OBJ;
 	public function __construct($config){
 		$this->config = $config;
 		
@@ -246,6 +247,12 @@ class PDO_Abstract{
 		return $data;
 		
 	}
+	public function all(){
+		
+		return $this->get();
+	}
+	
+	
 	/**
 	 * 
 	 * @param number $perPage
@@ -343,10 +350,10 @@ class PDO_Abstract{
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
-		//echo $sql; print_r( $params );
+		 //echo $sql; print_r( $params );
 		//print_r( $sth->errorInfo() );
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
-		$data = $sth->fetchAll();
+		$data = $sth->fetchAll(static::$fetchStyle);
 		return $data;
 	}
 	/**
@@ -385,6 +392,7 @@ class PDO_Abstract{
 		$ret = $this->executeUpdate($sql , $values);
 		//echo $ret;
 		$pdo = $this->getPDO();
+		$this->clearSqlArray();
 		return $pdo->lastInsertId();
 		
 	}
@@ -401,12 +409,16 @@ class PDO_Abstract{
 		}
 		$where = $this->buildWhere();
 		$bindings = $this->sqlArray["bindings"];
+		//print_r( $values ); print_r( $bindings);
 		$values = array_merge( $values, $bindings );
+		//print_r( $values );
 		
 		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
 		$sql = "update " . $tableName . " set " .implode(',', $setArr) . $where  ;
+		//echo $sql;
 		
 		$sth = $this->executeUpdate($sql , $values);
+		$this->clearSqlArray();
 		return $sth->rowCount();
 		//return $ret;
 		//$pdo = $this->getPDO();
@@ -423,6 +435,7 @@ class PDO_Abstract{
 		$sql = "delete from " . $tableName . "  "  . $where  ;
 	
 		$sth = $this->executeUpdate($sql ,$bindings);
+		$this->clearSqlArray();
 		return $sth->rowCount();
 		//return $ret;
 		//$pdo = $this->getPDO();
