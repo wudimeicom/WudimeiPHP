@@ -2,6 +2,7 @@
 namespace Wudimei\DB;
 use Wudimei\DB;
 use Wudimei\DB\Query\PDO_MYSQL;
+use Wudimei\DefaultInstance;
 
 class Model{
 	public $table; //without prefix
@@ -12,6 +13,9 @@ class Model{
 	 * @var PDO_MYSQL
 	 */
 	public $select;
+	
+	
+	
 	public function __construct(){
 		$select = DB::connection($this->connection);
 		$select->table( $this->table );
@@ -151,5 +155,12 @@ class Model{
 		$data = $this->select->where($this->primaryKey, $id )->limit(1, 0)->get();
 		
 		return @$data[0];
+	}
+	
+	use DefaultInstance;
+
+	public static function createDefaultInstance(){
+		$model = new BlogModel();
+		return $model->select;
 	}
 }

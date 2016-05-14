@@ -11,7 +11,7 @@ return [
     | requests. By default, we will use the lightweight native driver but
     | you may specify any of the other wonderful drivers provided here.
     |
-    | Supported: "file",   "database"
+    | Supported: "file" 
     |
     */
 
@@ -30,7 +30,7 @@ return [
 
     'lifetime' =>  0,
 
-    'expire_on_close' => false,
+    //'expire_on_close' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
     | unimplement
     */
 
-    'encrypt' => false,
+    //'encrypt' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ return [
     | unimplement
     */
 
-    'connection' => null,
+    //'connection' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
     | unimplement
     */
 
-    'table' => 'sessions',
+    //'table' => 'sessions',
 
     /*
     |--------------------------------------------------------------------------
@@ -95,7 +95,7 @@ return [
     | unimplement
     */
 
-    'lottery' => [2, 100],
+    //'lottery' => [2, 100],
 
     /*
     |--------------------------------------------------------------------------

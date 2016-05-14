@@ -5,6 +5,8 @@ class DB{
 	
 	protected  static $connections;
 	protected  static $configs;
+	
+	use DefaultInstance;
 	public function __construct(){
 		
 	}
@@ -50,5 +52,13 @@ class DB{
 			return static::$connections[$name] = $conn;
 			
 		}
+	}
+	
+	/**
+	 * @return PDO_MYSQL
+	 */
+	public static function createDefaultInstance(){
+		
+		return self::connection();
 	}
 }

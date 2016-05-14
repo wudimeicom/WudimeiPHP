@@ -311,7 +311,7 @@ class PDO_Abstract{
 	public function _function($function,$field = "*"){
 		$this->select( $function.'(' . $field . ') as cnt' );
 		$data = $this->get();
-		$cnt = $data[0]['cnt'];
+		$cnt = @$data[0]->cnt;
 		return $cnt;
 	}
 	

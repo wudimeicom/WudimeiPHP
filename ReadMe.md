@@ -7,17 +7,19 @@ the "test" folder can be deleted for saving disk space.
 ## Installation:
 
 1. please download wudimeiPHP https://github.com/wudimeicom/WudimeiPHP/archive/master.zip
-2. unzip it and move to a directory you want
+2. unzip it and move to a directory you want, rename the folder to "WudimeiPHP"
 3. require the autoload.php
 3. use namespance of the specified class you need
 for example:
+
 ```php
 <?php
-//test/hello.php
-require_once __DIR__ .'/../autoload.php';
+// test.php
+require_once __DIR__ .'/WudimeiPHP/autoload.php';
+
 use Wudimei\Registry;
-Registry::set("name","world");
-echo "hello," . Registry::get("name") . "!";
+Registry::set("name",'yqr');
+echo Registry::get("name");
 ?>
 ```
 

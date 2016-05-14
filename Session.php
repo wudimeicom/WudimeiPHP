@@ -11,7 +11,7 @@ class Session{
 			}
 		}
 		else{
-			throw new \Exception('sesstion file ' . $file . ' not exists');
+			throw new \Exception('sesstion config file "' . $file . '" does not exists');
 		}
 		self::$session = $session;
 

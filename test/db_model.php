@@ -15,7 +15,7 @@ DB::addConnection($config);
 
 //PDO_Abstract::$fetchStyle = \PDO::FETCH_NUM;
 $blogModel = new BlogModel();
-//$data = $blogModel->where('id', '>',0)->get(); print_r( $data );
+ $data = $blogModel->where('id', '>',0)->get(); print_r( $data );
 
 // $blog = $blogModel->find(8); print_r( $blog );
 
