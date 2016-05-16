@@ -73,4 +73,15 @@ class BasicSession
 		$this->hasChanged = true;
 		$this->session_data = [];
 	}
+	
+	public function saveSession(){
+		
+	}
+	
+	public function __destruct(){
+			
+		if( $this->hasChanged ){
+			$this->saveSession(   );
+		}
+	}
 }

@@ -13,22 +13,10 @@ class File  extends BasicSession
 		$id = $this->session_id;
 		$lifetime =  $this->config["lifetime"];
 		
-		static $hasClean = false;
 		
-		if( $hasClean == false ){
-			$this->gc( $lifetime );
-			$hasClean = true;
-			
-		}
-		if( !is_dir( $this->config["files"] )){
-			@mkdir($this->config["files"],777,true);
-		}
-		$file = $this->config["files"]."/sess_".$id;
-		if( $lifetime>0 ){
-			if (@filemtime($file) + $lifetime < time() && file_exists($file)) {
-				unlink($file);
-			}
-		}
+		$this->gc( $lifetime );
+		$file = $this->getSessionFileName();
+		
 		$content = '';
 		if( file_exists( $file )){
 			$content =  (string)@file_get_contents( $file );
@@ -36,34 +24,55 @@ class File  extends BasicSession
 		$this->session_data = unserialize( $content);
 	}
 
-	function write($id, $data)
+	
+	
+	function saveSession()
 	{
-		$data = serialize( $data );
-		return file_put_contents($this->config["files"]."/sess_".$id, $data) === false ? false : true;
+		$data = serialize( $this->session_data );
+		$filePath = $this->getSessionFileName();
+		$dir = dirname( $filePath );
+		if( !is_dir( $dir )){
+			mkdir( $dir ,0777, true );
+		}
+		return file_put_contents( $filePath , $data) === false ? false : true;
 	}
 
-	
+	public function getSessionFileName(){
+		$folder = substr( $this->session_id, 0,2);
+		$filePath = $this->config["files"]. "/" . $folder . "/" . $this->session_id;
+		return $filePath;
+	}
 
 	function gc($maxlifetime)
 	{
-		foreach (glob($this->config["files"]."/sess_*") as $file) {
-			if( $maxlifetime >0 ){
-				if (filemtime($file) + $maxlifetime < time() && file_exists($file)) {
-					unlink($file);
-				}
-			}
-		}
-
+		$this->gcDir($maxlifetime, $this->config["files"] );
+		
 		return true;
 	}
 	
-	
-	
-	
-	public function __destruct(){
-		 
-		if( $this->hasChanged ){
-			$this->write( $this->session_id, $this->session_data );
+	function gcDir($maxlifetime, $dir ){
+		$gc_maxlifetime = $this->config['gc_maxlifetime'];
+		if( $dir == "" || $dir = "/" || strlen( $dir )<3){ //protect file system
+			return false;
 		}
+		$files = glob($dir."/*");
+		 
+		foreach ($files as $file) {
+			$path = $dir . "/" . basename($file);
+			if( is_dir( $path )){
+				$this->gcDir($maxlifetime, $path );
+			}
+			else{
+				if( $maxlifetime>0 ){
+					$gc_maxlifetime = $maxlifetime;
+				}
+				if (filemtime($file) + $gc_maxlifetime < time() && file_exists($file)) {
+					unlink($file);
+				} 
+			}
+		}
+		
 	}
+	
+	
 }

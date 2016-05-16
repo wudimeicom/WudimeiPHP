@@ -29,7 +29,7 @@ return [
     */
 
     'lifetime' =>  0,
-
+	'gc_maxlifetime' => 3600,
     //'expire_on_close' => false,
 
     /*
