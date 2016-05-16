@@ -18,7 +18,7 @@ class Parser{
 		$tokenCount = count( $this->tokens );
 		$vars = array( 'sections' => array() ,'superClassPath' => '' ,'superViewName' =>'');
 		$vars['class'] = self::getViewClassName( $this->viewName );
-		
+		//print_r( $this->tokens );
 		for( $i=0;$i<$tokenCount; $i++ ){
 			$token = $this->tokens[$i];
 			if( !empty($token)){
@@ -33,6 +33,12 @@ class Parser{
 						$superViewName = self::getViewName( $token['expression'] );
 						$vars['superViewName'] = $superViewName;
 						$vars['superClassPath'] = View::compile($superViewName);
+					}
+					elseif( $tag == 'include' ){
+						$viewName = $this->parseInclude($token);
+						$token['code'] = '$__output .= \Wudimei\View::make("'. $viewName.'",$this->__vars ); ';
+						//echo $viewPath;
+						
 					}
 					elseif( in_array( $tag , ['if','for','elseif','foreach','while'] )){
 						$code = '';
@@ -214,6 +220,13 @@ class Parser{
 		$superClass = $this->getViewClassName( $superClass );
 		
 		return $superClass;
+	}
+	
+	public function parseInclude( $token ){
+		$viewNameOriginal = $token['expression'];
+		$viewName = trim( $viewNameOriginal,'\'"()');
+		
+		return $viewName;
 	}
 	
 	public static function getViewName($str){

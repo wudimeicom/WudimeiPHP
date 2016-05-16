@@ -14,7 +14,8 @@ $vars = [
    		['name' => 'javascript'],
    		['name' => 'jquery']
    		
-   ]
+   ],
+   'username' => 'Yang Qing-rong',
 ];
 
 //echo View::make("default.layout.main",$vars );

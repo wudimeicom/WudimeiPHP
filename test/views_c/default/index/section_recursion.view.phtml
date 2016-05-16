@@ -33,7 +33,9 @@ public function content(){
  extract( $this->__vars ); 
  $__output .= '
 
- 	
+ 	'; 
+$__output .= \Wudimei\View::make("default.index.inc_head",$this->__vars );  
+ $__output .= '
  	efg
  	'; 
  $__output .= $this->location();  
