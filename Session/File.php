@@ -11,14 +11,17 @@ class File  extends BasicSession
 	function loadSession()
 	{
 		$id = $this->session_id;
-		$lifetime =  $this->config["lifetime"];
 		
 		
-		$this->gc( $lifetime );
+		if( rand(0, $this->config['gc_max_random_num']) == 1  ){
+			//echo 'gc';
+			$this->gc(  );
+		}
 		$file = $this->getSessionFileName();
 		
 		$content = '';
 		if( file_exists( $file )){
+			$this->tryGcFile($file);
 			$content =  (string)@file_get_contents( $file );
 		}
 		$this->session_data = unserialize( $content);
@@ -43,15 +46,16 @@ class File  extends BasicSession
 		return $filePath;
 	}
 
-	function gc($maxlifetime)
+	function gc( )
 	{
-		$this->gcDir($maxlifetime, $this->config["files"] );
+		$this->gcDir(  $this->config["files"] );
 		
 		return true;
 	}
 	
-	function gcDir($maxlifetime, $dir ){
-		$gc_maxlifetime = $this->config['gc_maxlifetime'];
+	function gcDir(  $dir ){
+		
+		$dir = realpath( $dir );
 		if( $dir == "" || $dir = "/" || strlen( $dir )<3){ //protect file system
 			return false;
 		}
@@ -63,16 +67,25 @@ class File  extends BasicSession
 				$this->gcDir($maxlifetime, $path );
 			}
 			else{
-				if( $maxlifetime>0 ){
-					$gc_maxlifetime = $maxlifetime;
-				}
-				if (filemtime($file) + $gc_maxlifetime < time() && file_exists($file)) {
-					unlink($file);
-				} 
+				$this->gcFile($file);
 			}
 		}
 		
 	}
 	
+	public function gcFile($file){
+		$lifetime =  $this->config["lifetime"];
+		$gc_maxlifetime = $this->config['gc_maxlifetime'];
+		if( $lifetime>0){
+			$gc_maxlifetime = $lifetime;
+		}
+		if (filemtime($file) + $gc_maxlifetime < time() && file_exists($file)) {
+			unlink($file);
+		}
+	}
+	
+	public function tryGcFile($file){
+		$this->gcFile($file);
+	}
 	
 }

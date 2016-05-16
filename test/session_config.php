@@ -30,7 +30,13 @@ return [
 
     'lifetime' =>  0,
 	'gc_maxlifetime' => 3600,
-    //'expire_on_close' => false,
+	/*
+	 * for reduce the CPU usage
+	 * must greater than 1
+	 * if( rand(0,gc_max_random_num) == 1 ){ try to gc session files }
+	 */
+	'gc_max_random_num' => 3 ,  
+     
 
     /*
     |--------------------------------------------------------------------------
@@ -84,18 +90,7 @@ return [
 
     //'table' => 'sessions',
 
-    /*
-    |--------------------------------------------------------------------------
-    | Session Sweeping Lottery
-    |--------------------------------------------------------------------------
-    |
-    | Some session drivers must manually sweep their storage location to get
-    | rid of old sessions from storage. Here are the chances that it will
-    | happen on a given request. By default, the odds are 2 out of 100.
-    | unimplement
-    */
-
-    //'lottery' => [2, 100],
+    
 
     /*
     |--------------------------------------------------------------------------
