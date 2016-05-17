@@ -1,0 +1,28 @@
+
+
+@if( $role == 'admin' )
+	hello,admin
+@else
+	hello,guest
+@end
+
+<br />
+
+@for( $i=0; $i< 5;$i++ )
+	{{$i}},
+@end
+
+<br />
+
+@{$i=0}
+
+@while($i<8)
+	{{$i++}} ,
+@end
+
+<br />
+the tag \@end do'not support \@foreach and \@section
+<br />
+@section('footer')
+copyright (c) wudimei.com
+@endsection

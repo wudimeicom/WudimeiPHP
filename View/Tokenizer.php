@@ -82,7 +82,7 @@ class Tokenizer{
 	 * @param ints $index
 	 */
 	public function getStatement($content, $index){
-		$keywords = [ 'endsection','section','elseif','else','if','foreachelse','foreach','for','while','do' ,'endforeach', 'endif','endfor','endwhile', 'extends','php','parent','include' ];
+		$keywords = [ 'endsection','section','elseif','else','if','foreachelse','foreach','for','while','do' ,'endforeach', 'endif','endfor','endwhile','end', 'extends','php','parent','include' ];
 		$keywords_needExpressions = ['section','elseif','if','foreach', 'for','while','extends','php','include'];
 		$ret = array();
 		$predefinedTagFound = false;

@@ -60,6 +60,9 @@ class Parser{
 					elseif( $tag == 'endif'){
 						$token['code'] = ' } ';
 					}
+					elseif( $tag == 'end'){
+						$token['code'] = ' } ';
+					}
 					elseif( $tag == 'endforeach'){
 						$token['code'] = '  }}  ';
 					}
