@@ -13,8 +13,8 @@ class File  extends BasicSession
 		$id = $this->session_id;
 		
 		
-		if( rand(0, $this->config['gc_max_random_num']) == 1  ){
-			//echo 'gc';
+		if( rand(0, $this->config['gc_max_random_num']) == 0  ){
+			 //echo 'gc';
 			$this->gc(  );
 		}
 		$file = $this->getSessionFileName();
@@ -76,7 +76,7 @@ class File  extends BasicSession
 	public function gcFile($file){
 		$lifetime =  $this->config["lifetime"];
 		$gc_maxlifetime = $this->config['gc_maxlifetime'];
-		if( $lifetime>0){
+		if( $lifetime>0){ //if lifetime equals 0,will expire on close
 			$gc_maxlifetime = $lifetime;
 		}
 		if (filemtime($file) + $gc_maxlifetime < time() && file_exists($file)) {

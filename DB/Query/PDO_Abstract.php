@@ -252,6 +252,12 @@ class PDO_Abstract{
 		return $this->get();
 	}
 	
+	public function first(){
+		$this->limit(1, 0);
+		$rows = $this->get();
+		
+		return @$rows[0];
+	}
 	
 	/**
 	 * 
@@ -328,7 +334,9 @@ class PDO_Abstract{
 			else{
 				$dsn = $this->getDSN();
 			}
-			return $this->pdo = new \PDO($dsn, $this->config['username'], $this->config['password'] );
+			return $this->pdo = new \PDO($dsn, $this->config['username'], $this->config['password'] ,
+						array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '". $this->config['charset'] ."'" ) 
+					);
 		}
 	}
 	

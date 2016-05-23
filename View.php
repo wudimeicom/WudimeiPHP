@@ -2,8 +2,12 @@
 
 namespace Wudimei;
 
+require_once __DIR__.'/View/html.php';
+
 use Wudimei\View\Tokenizer;
 use Wudimei\View\Parser;
+
+
 
 class View{
 	

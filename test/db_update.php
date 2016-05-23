@@ -16,8 +16,8 @@ $data = array(
 	'created_at' => date("Y-m-d H:i:s")
 );
 
-$lastInsertId = $select->table("blog")->where('id',1 )->update( $data );
-echo $lastInsertId;
+$intAffectedRows = $select->table("blog")->where('id',1 )->update( $data );
+echo $intAffectedRows;
 
  
 

@@ -12,8 +12,8 @@ DB::addConnection($config);
 $select = DB::connection( );
 
  
-$lastInsertId = $select->table("blog")->where('id',12)->orWhere('id',11)->orWhere('id',10)->delete( );
-echo $lastInsertId;
+$intAffectedRows = $select->table("blog")->where('id',12)->orWhere('id',11)->orWhere('id',10)->delete( );
+echo $intAffectedRows;
 
 
 

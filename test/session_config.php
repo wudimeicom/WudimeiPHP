@@ -31,11 +31,11 @@ return [
     'lifetime' =>  0,
 	'gc_maxlifetime' => 3600,
 	/*
-	 * for reduce the CPU usage
-	 * must greater than 1
-	 * if( rand(0,gc_max_random_num) == 1 ){ try to gc session files }
+	 * for reduce the CPU/hard disk usage
+	 * must greater than 0
+	 * if( rand(0,gc_max_random_num) == 1 ){ try to gc old session files }
 	 */
-	'gc_max_random_num' => 3 ,  
+	'gc_max_random_num' => 5,  
      
 
     /*

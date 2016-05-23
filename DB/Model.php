@@ -100,6 +100,10 @@ class Model{
 		return $this->select->all();
 	}
 	
+	public function first(){
+		return $this->select->first();
+	}
+	
 	public function paginate($perPage = 15, $page = null)
 	{
 		return $this->select->paginate($perPage  , $page);
