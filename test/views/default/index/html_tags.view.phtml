@@ -1,0 +1,22 @@
+
+@{ 
+  //php source code
+  $cust_ids = [1,2,3,4];
+  $cust_names = ['jim','lucy','hanmeimei','yang'];
+  $selected = [2,3];
+}
+
+
+<h3>demo1</h3>
+{[ html_checkboxes    name='customers[]' values=$cust_ids  output=$cust_names
+   selected=$selected  separator='<br />']}
+   
+   
+<h3>demo2</h3>
+{[ html_checkboxes    name='customers[]' values=$cust_ids  output=$cust_names
+   selected=$selected  separator='<br />' class="round-checkbox myCss" ]}
+   
+   
+<h3>demo3</h3>
+{[ html_checkboxes    name='customers[]' values=$cust_ids  output=$cust_names
+   selected=$selected  separator='<br />' class="round-checkbox myCss" id_prefix="customer_" ]}

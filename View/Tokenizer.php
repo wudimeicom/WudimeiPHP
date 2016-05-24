@@ -12,7 +12,7 @@ class Tokenizer{
 
 		for( $i=0; $i< $len; $i++ ){
 			$ch = substr( $content, $i,1);
-			//secho $i . ' ';
+			
 			if( $ch == '@'){
 				$netCh = @substr( $content, $i+1,1);
 				$ret = array();
@@ -37,7 +37,14 @@ class Tokenizer{
 					$i = $var['end'];
 					continue;
 				}
-				
+				elseif( $netCh == "[" ){
+					$tag = $this->getTagExpression($content, $i );
+					
+					$tag['start'] = $i-1;
+					$tokens_1[] = $tag;
+					$i = $tag['end'];
+					continue;
+				}
 			}
 			elseif( $ch == '\\'){
 				$netCh = @substr( $content, $i+1,1);
@@ -51,7 +58,7 @@ class Tokenizer{
 				
 			}
 		}
-		//print_r( $tokens_1 ); exit();
+		
 		$tokens_2 = array();
 		$plainTextStart =0;
 		for( $i=0;$i< count( $tokens_1); $i++ ){
@@ -73,7 +80,7 @@ class Tokenizer{
 			$tokens_2[] = $item;
 		}
 		$tokens_2[]=substr($content, $plainTextStart);
-		//  print_r( $tokens_2 );
+		
 		return $tokens_2;
 	}
 	/**
@@ -216,6 +223,36 @@ class Tokenizer{
 				
 				'end' => $i,
 				
+		];
+	}
+	
+	public function getTagExpression($content, $i ){
+		$end = strpos( $content, "]}",$i);
+		$len = $end -$i-2;
+		$tag = substr($content, $i+2,$len);
+		
+		preg_match_all("/^\s*([a-zA-Z0-9\_]+)\s*(.+)\s*/is", $tag,$m);
+		
+		$function = @$m[1][0];
+		$attrs = @$m[2][0];
+		
+		preg_match_all("/([a-zA-Z0-9\_\\\$]+)\s*=/is", $attrs,$m2);
+		
+		$vals = preg_split("/([a-zA-Z0-9\_\\\$]+)\s*=/is", $attrs );
+		
+		$attrs2 = array();
+		for( $j=0; $j< count( $m2[1]); $j++ )
+		{
+			$key = $m2[1][$j];
+			$val = $vals[$j+1];
+			$attrs2[$key] = $val;
+		}
+		
+		return [
+			'type' => 'tag' ,
+		    'end' => $end+1,
+			'attrs' => $attrs2,
+			'function_name' => $function 
 		];
 	}
 }

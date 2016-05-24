@@ -18,7 +18,7 @@ class Parser{
 		$tokenCount = count( $this->tokens );
 		$vars = array( 'sections' => array() ,'superClassPath' => '' ,'superViewName' =>'');
 		$vars['class'] = self::getViewClassName( $this->viewName );
-		//print_r( $this->tokens );
+		
 		for( $i=0;$i<$tokenCount; $i++ ){
 			$token = $this->tokens[$i];
 			if( !empty($token)){
@@ -88,10 +88,10 @@ class Parser{
 						$token['code'] = '  }  ';
 					}
 				}
-				if( $type == 'function' ){
+				elseif( $type == 'function' ){
 					$token['code'] = '  $__output .=   '.@$token['function_name'].@$token['expression'].';  ';
 				}
-				if( $type == 'variable') {
+				elseif( $type == 'variable') {
 					$code = '  $__r ='  . $token['expression'] . ';';
 					if( $token['output_type'] == 'encode'){
 						$code .= '  $__output .=  htmlspecialchars($__r);';
@@ -102,7 +102,7 @@ class Parser{
 					$code .= ' ';
 					$token['code'] = $code;
 				}
-				if( $type == 'php' ){
+				elseif( $type == 'php' ){
 					 
 					$expr = trim($token['expression']);
 						
@@ -115,16 +115,25 @@ class Parser{
 						}
 						$token['code'] = $expr . ';';
 				}
-				if( $type == 'escaped' ){
+				elseif( $type == 'escaped' ){
 					$tag = trim($token['tag'],'\\');
 					$token['code'] =  ' $__output .=   \''.$tag .'\';';
-					//echo $token['code']; 
+					
+				}
+				elseif( $type == "tag" ){
+					$function_name = $token['function_name'];
+					$attrs = $token['attrs'];
+					$args = "[";
+					foreach ( $attrs as $k=> $v ){
+						$args .= "\"" . $k ."\" => " . $v . ",";
+					}
+					$args .= "]";
+					$token['code'] =  ' $__output .= '.$function_name .'( '.$args.') ;';
 				}
 			}
 			$this->tokens[$i] = $token;
 		}
-		//exit();
-		 // print_r( $this->tokens );  
+		
 		  $sectionNameStack = [];
 		  $sectionName = "";
 		  for( $i=0;$i<$tokenCount; $i++ ){
@@ -136,7 +145,7 @@ class Parser{
 		  		eval( "\$params = array" . $expression .";");
 		  		$sectionName = $params[0];
 		  		array_push( $sectionNameStack, $sectionName);
-		  		//print_r( $params );
+		  		
 		  		$token['code'] = ' $__output .= $this->' . $sectionName . '(); ';
 		  		if( count( $params ) == 2 ){
 		  			$vars['sections'][$sectionName] = [ $params[1]];
@@ -148,7 +157,7 @@ class Parser{
 		  		}
 		  		$sectionName2 = @$sectionNameStack[count( $sectionNameStack)-2];
 		  		$vars['sections'][$sectionName2][] = $token;
-		  		//print_r( $sectionNameStack );
+		  		
 		  	}
 		  	elseif( $tag == 'endsection' ){
 		  		$sectionName = array_pop( $sectionNameStack );
@@ -163,7 +172,7 @@ class Parser{
 		  		$vars['sections'][$sectionName][] = $token;
 		  	}
 		}
-		//  print_r( $vars['sections'] );
+		
 		$data = $this->toPhp($vars);
 		return $data;
 	}

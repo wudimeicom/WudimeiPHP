@@ -1,0 +1,44 @@
+<?php 
+class wudimei_view_default_index_html_tags 
+{
+ public $__vars; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+'; 
+ 
+  //php source code
+  $cust_ids = [1,2,3,4];
+  $cust_names = ['jim','lucy','hanmeimei','yang'];
+  $selected = [2,3];
+; 
+ $__output .= '
+
+
+<h3>demo1</h3>
+'; 
+ $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
+   ,"selected" => $selected  ,"separator" => '<br />',]) ; 
+ $__output .= '
+   
+   
+<h3>demo2</h3>
+'; 
+ $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
+   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,]) ; 
+ $__output .= '
+   
+   
+<h3>demo3</h3>
+'; 
+ $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
+   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,"id_prefix" => "customer_" ,]) ; 
+ 
+ return $__output; 
+} 
+
+}
