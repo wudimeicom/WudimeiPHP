@@ -4,6 +4,7 @@
   $cust_ids = [1,2,3,4];
   $cust_names = ['jim','lucy','hanmeimei','yang'];
   $selected = [2,3];
+  $customer_id =3;
 }
 
 
@@ -20,3 +21,8 @@
 <h3>demo3</h3>
 {[ html_checkboxes    name='customers[]' values=$cust_ids  output=$cust_names
    selected=$selected  separator='<br />' class="round-checkbox myCss" id_prefix="customer_" ]}
+   
+<h3>radios</h3>
+
+{[html_radios  name='customer' values=$cust_ids output=$cust_names
+       selected=$customer_id separator='<br />']}

@@ -2,6 +2,8 @@
 
 
 use Wudimei\ArrayHelper;
+use Wudimei\Html\CheckBox;
+use Wudimei\Html\Radio;
 
 function html_checkboxes( $attrs ){
 	$html = "";
@@ -13,22 +15,49 @@ function html_checkboxes( $attrs ){
 	$id_prefix = @$attrs['id_prefix'];
 	
 	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix'] );
-	//print_r( $otherAttrs );
+	 
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
-		$html .= "<input type=\"checkbox\" name=\"" . $name."\" value=\"" . $val ."\" " ;
+		$checkbox = new CheckBox();
+		$checkbox->name($name)->value($val);
 		if( in_array( $val, $selected) ){
-			$html .= " checked=\"checked\" ";
+			$checkbox->checked(true);
 		}
 		if( $id_prefix != "" ){
-			$html .= " id=\"".$id_prefix. $val."\" ";
+			$checkbox->id($id_prefix. $val );
 		}
-		if( !empty($otherAttrs) ){
-			foreach ( $otherAttrs as $k => $v ){
-				$html .= " " . $k . "=\"" . $v . "\" ";
-			}
+		$checkbox->attr($otherAttrs);
+		 
+		$html .= $checkbox . $output[$i] . $separator . "\r\n";
+	}
+	return $html;
+}
+
+
+function html_radios( $attrs ){
+	$html = "";
+	$values = $attrs['values'];
+	$name = $attrs['name'];
+	$selected = $attrs['selected'];
+	$output = $attrs['output'];
+	$separator = @$attrs['separator'];
+	$id_prefix = @$attrs['id_prefix'];
+
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix'] );
+	 
+	for( $i=0; $i< count( $values ); $i++ ){
+		$val = $values[$i];
+		$radio = new Radio();
+		$radio->name($name)->value($val);
+		if(   $val == $selected  ){
+			$radio->checked(true);
 		}
-		$html .= " />  " . $output[$i] . $separator . "\r\n";
+		if( $id_prefix != "" ){
+			$radio->id( $id_prefix. $val);
+		}
+		
+		$radio->attr( $otherAttrs );
+		$html .= $radio . $output[$i] . $separator . "\r\n";
 	}
 	return $html;
 }
