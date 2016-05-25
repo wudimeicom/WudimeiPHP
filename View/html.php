@@ -21,8 +21,7 @@ function html_checkboxes( $attrs ){
 		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
 			$values = ArrayHelper::getColumn( $options, $value_key);
 			$output = ArrayHelper::getColumn($options, $output_key);
-			print_r( $values );
-			echo "a";
+			
 		}
 		else{
 			list($values,$output ) = ArrayHelper::divide( $options);
@@ -64,8 +63,7 @@ function html_radios( $attrs ){
 		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
 			$values = ArrayHelper::getColumn( $options, $value_key);
 			$output = ArrayHelper::getColumn($options, $output_key);
-			print_r( $values );
-			echo "a";
+			
 		}
 		else{
 			list($values,$output ) = ArrayHelper::divide( $options);
