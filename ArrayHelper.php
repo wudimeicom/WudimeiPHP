@@ -13,4 +13,30 @@ class  ArrayHelper{
 		}
 		return $arr;
 	}
+	
+	public static function divide( $arr ){
+		$keys = array();
+		$values = array();
+		if( !empty( $arr )){
+			foreach ( $arr as $k => $v ){
+				$keys[] = $k;
+				$values[] = $v;
+			}
+		}
+		return [$keys, $values];
+	}
+	
+	public static function getColumn($array, $columnName ){
+		$rs = array();
+		for( $i=0; $i< count( $array); $i++ ){
+			$item = $array[$i];
+			if( is_array( $item )){
+				$rs[] = $item[$columnName];
+			}
+			else{
+				$rs[] = $item->$columnName;
+			}
+		}
+		return $rs;
+	}
 }

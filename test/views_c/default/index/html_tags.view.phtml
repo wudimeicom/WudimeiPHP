@@ -16,36 +16,95 @@ public function __main__(){
   $cust_names = ['jim','lucy','hanmeimei','yang'];
   $selected = [2,3];
   $customer_id =3;
+  
+  $customers = [
+  	1 => 'jim',
+  	2 => 'lucy',
+  	3 => 'han MeiMei',
+  	4 => 'Yang'
+  ];
+  
+  $customers_2d = [
+    [ 'stu_id' => 1 , 'stu_name' => 'jim'],
+    [ 'stu_id' => 2 , 'stu_name' => 'lucy'],
+    [ 'stu_id' => 3 , 'stu_name' => 'wudimei.com'],
+    [ 'stu_id' => 4 , 'stu_name' => 'Yang Qing-rong'],
+  ];
+  
+  $stu1 = new \stdClass();
+  $stu1->stu_id =1;
+  $stu1->stu_name = 'jim';
+  
+  $stu2 = new \stdClass();
+  $stu2->stu_id =2;
+  $stu2->stu_name = 'lucy';
+  
+  $stu3 = new \stdClass();
+  $stu3->stu_id =3;
+  $stu3->stu_name = 'wudimei.com';
+  
+  $stu4 = new \stdClass();
+  $stu4->stu_id =4;
+  $stu4->stu_name = 'Yang Qing-rong ,hello';
+  
+  $customers_2d_obj = [$stu1,$stu2,$stu3,$stu4  ];
 ; 
  $__output .= '
 
 
 <h3>demo1</h3>
 '; 
- $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
+ $__output .= html_checkboxes( ["name" => 'customers_1[]' ,"values" => $cust_ids  ,"output" => $cust_names
    ,"selected" => $selected  ,"separator" => '<br />',]) ; 
  $__output .= '
    
    
 <h3>demo2</h3>
 '; 
- $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
+ $__output .= html_checkboxes( ["name" => 'customers_2[]' ,"values" => $cust_ids  ,"output" => $cust_names
    ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,]) ; 
  $__output .= '
    
    
 <h3>demo3</h3>
 '; 
- $__output .= html_checkboxes( ["name" => 'customers[]' ,"values" => $cust_ids  ,"output" => $cust_names
-   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,"id_prefix" => "customer_" ,]) ; 
+ $__output .= html_checkboxes( ["name" => 'customers_3[]' ,"values" => $cust_ids  ,"output" => $cust_names
+   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,"id_prefix" => "customer3_" ,]) ; 
  $__output .= '
-   
+
+<h3>checkboxes options</h3>
+'; 
+ $__output .= html_checkboxes( ["name" => 'customers_4[]'   ,"options" => $customers
+   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,"id_prefix" => "customer4_" ,]) ; 
+ $__output .= '
+
+<h3>checkboxes options 2D array</h3>
+'; 
+ $__output .= html_checkboxes( ["name" => 'customers_5[]'   ,"options" => $customers_2d ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
+   ,"selected" => $selected  ,"separator" => '<br />' ,"class" => "round-checkbox myCss" ,"id_prefix" => "customer5_" ,]) ; 
+ $__output .= '
+    
+     
 <h3>radios</h3>
 
 '; 
- $__output .= html_radios( ["name" => 'customer' ,"values" => $cust_ids ,"output" => $cust_names
+ $__output .= html_radios( ["name" => 'customer_1' ,"values" => $cust_ids ,"output" => $cust_names
        ,"selected" => $customer_id ,"separator" => '<br />',]) ; 
- 
+ $__output .= '
+       
+<h3>radios options</h3>
+
+'; 
+ $__output .= html_radios( ["name" => 'customer_2' ,"options" => $customers
+       ,"selected" => $customer_id ,"separator" => '<br />',]) ; 
+ $__output .= '
+       
+<h3>radios options 2D Array</h3>
+
+'; 
+ $__output .= html_radios( ["name" => 'customer_2' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
+       ,"selected" => $customer_id ,"separator" => '<br />',]) ; 
+ $__output .= '       '; 
  return $__output; 
 } 
 

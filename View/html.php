@@ -7,14 +7,28 @@ use Wudimei\Html\Radio;
 
 function html_checkboxes( $attrs ){
 	$html = "";
-	$values = $attrs['values'];
+	$values = @$attrs['values'];
 	$name = $attrs['name'];
 	$selected = $attrs['selected'];
-	$output = $attrs['output'];
+	$output = @$attrs['output'];
 	$separator = @$attrs['separator'];
 	$id_prefix = @$attrs['id_prefix'];
+	$options = @$attrs['options'];
+	$value_key = @$attrs['value_key'];
+	$output_key = @$attrs['output_key'];
 	
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix'] );
+	if( !empty( $options)){
+		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
+			$values = ArrayHelper::getColumn( $options, $value_key);
+			$output = ArrayHelper::getColumn($options, $output_key);
+			print_r( $values );
+			echo "a";
+		}
+		else{
+			list($values,$output ) = ArrayHelper::divide( $options);
+		}
+	}
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options'] );
 	 
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
@@ -36,14 +50,28 @@ function html_checkboxes( $attrs ){
 
 function html_radios( $attrs ){
 	$html = "";
-	$values = $attrs['values'];
-	$name = $attrs['name'];
-	$selected = $attrs['selected'];
-	$output = $attrs['output'];
+	$values = @$attrs['values'];
+	$name = @$attrs['name'];
+	$selected = @$attrs['selected'];
+	$output = @$attrs['output'];
 	$separator = @$attrs['separator'];
 	$id_prefix = @$attrs['id_prefix'];
-
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix'] );
+	$options = @$attrs['options'];
+	$value_key = @$attrs['value_key'];
+	$output_key = @$attrs['output_key'];
+	 
+	if( !empty( $options)){
+		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
+			$values = ArrayHelper::getColumn( $options, $value_key);
+			$output = ArrayHelper::getColumn($options, $output_key);
+			print_r( $values );
+			echo "a";
+		}
+		else{
+			list($values,$output ) = ArrayHelper::divide( $options);
+		}
+	}
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options'] );
 	 
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
