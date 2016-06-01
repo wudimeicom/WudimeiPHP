@@ -59,11 +59,15 @@ class Element{
 		return $this->attr('id', $value);
 	}
 	
+	public function className( $value = null){
+		return $this->attr('class', $value);
+	}
+	
 	public function toString(){
 		$html = "<" . $this->tagName . " ";
 		if( !empty( $this->attrs )){
 			foreach ( $this->attrs as $attr => $value ){
-				$html .= " " . $attr . " = \"" . $value . "\" ";
+				$html .= " " . $attr . "=\"" . $value . "\" ";
 			}
 		}
 		if( count( $this->children)==0 ){
@@ -74,6 +78,9 @@ class Element{
 			foreach ( $this->children as $childElement ){
 				if( $childElement instanceof Element){
 					$html .= $childElement->toString();
+				}
+				elseif( is_string( $childElement)){
+					$html.= $childElement;
 				}
 			}
 			$html .= "</" . $this->tagName . ">";

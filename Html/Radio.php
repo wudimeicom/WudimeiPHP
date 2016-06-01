@@ -1,6 +1,6 @@
 <?php
 namespace Wudimei\Html;
-use Wudimei\Html\Element;
+use Wudimei\Html\Input;
 
 class Radio extends Input {
 	function __construct() {

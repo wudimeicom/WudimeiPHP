@@ -104,7 +104,21 @@ public function __main__(){
 '; 
  $__output .= html_radios( ["name" => 'customer_2' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
        ,"selected" => $customer_id ,"separator" => '<br />',]) ; 
- $__output .= '       '; 
+ $__output .= ' 
+
+<h3>select1</h3>       
+'; 
+ $__output .= html_select( ["name" => 'customers_select1' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
+   ,"selected" => $selected  ,"multiple" => "multiple" ,"size" => "5" ,"class" => "testCssClassName" ,]) ; 
+ $__output .= '
+   
+<h3>select multiple</h3>     
+'; 
+ $__output .= html_select( ["name" => 'customers_select2' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
+   ,"selected" => $customer_id   ,]) ; 
+ $__output .= ' 
+   
+       '; 
  return $__output; 
 } 
 

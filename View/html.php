@@ -4,6 +4,8 @@
 use Wudimei\ArrayHelper;
 use Wudimei\Html\CheckBox;
 use Wudimei\Html\Radio;
+use Wudimei\Html\Select;
+use Wudimei\Html\Option;
 
 function html_checkboxes( $attrs ){
 	$html = "";
@@ -27,7 +29,7 @@ function html_checkboxes( $attrs ){
 			list($values,$output ) = ArrayHelper::divide( $options);
 		}
 	}
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options'] );
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options','value_key','output_key'] );
 	 
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
@@ -69,7 +71,7 @@ function html_radios( $attrs ){
 			list($values,$output ) = ArrayHelper::divide( $options);
 		}
 	}
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options'] );
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options','value_key','output_key'] );
 	 
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
@@ -85,5 +87,52 @@ function html_radios( $attrs ){
 		$radio->attr( $otherAttrs );
 		$html .= $radio . $output[$i] . $separator . "\r\n";
 	}
+	return $html;
+}
+
+
+
+function html_select( $attrs ){
+	$html = "";
+	$values = @$attrs['values'];
+	$name = $attrs['name'];
+	$selected = $attrs['selected'];
+	$output = @$attrs['output'];
+	 
+	$id_prefix = @$attrs['id_prefix'];
+	$options = @$attrs['options'];
+	$value_key = @$attrs['value_key'];
+	$output_key = @$attrs['output_key'];
+	
+	if( !is_array( $selected)){
+		$selected = array( $selected );
+	}
+	if( !empty( $options)){
+		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
+			$values = ArrayHelper::getColumn( $options, $value_key);
+			$output = ArrayHelper::getColumn($options, $output_key);
+				
+		}
+		else{
+			list($values,$output ) = ArrayHelper::divide( $options);
+		}
+	}
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options','value_key','output_key'] );
+	$select = new Select();
+	$select->name($name);
+	$select->attr($otherAttrs);
+	
+	for( $i=0; $i< count( $values ); $i++ ){
+		$val = $values[$i];
+		$text = $output[$i];
+		$option = new Option();
+		$option->addChild( $text );
+		$option->value($val);
+		if( in_array( $val, $selected) ){
+			$option->selected(true);
+		}
+		$select->addChild( $option );
+	}
+	$html .= $select .   "\r\n";
 	return $html;
 }

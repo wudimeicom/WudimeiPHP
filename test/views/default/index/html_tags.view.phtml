@@ -76,4 +76,14 @@
 <h3>radios options 2D Array</h3>
 
 {[html_radios  name='customer_2' options=$customers_2d_obj  value_key='stu_id' output_key='stu_name'
-       selected=$customer_id separator='<br />']}       
+       selected=$customer_id separator='<br />']} 
+
+<h3>select1</h3>       
+{[ html_select    name='customers_select1' options=$customers_2d_obj  value_key='stu_id' output_key='stu_name'
+   selected=$selected  multiple="multiple" size="5" class="testCssClassName" ]}
+   
+<h3>select multiple</h3>     
+{[ html_select    name='customers_select2' options=$customers_2d_obj  value_key='stu_id' output_key='stu_name'
+   selected=$customer_id   ]} 
+   
+       
