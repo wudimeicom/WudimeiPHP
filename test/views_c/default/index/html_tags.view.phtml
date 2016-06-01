@@ -102,17 +102,17 @@ public function __main__(){
 <h3>radios options 2D Array</h3>
 
 '; 
- $__output .= html_radios( ["name" => 'customer_2' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
+ $__output .= html_radios( ["name" => 'customer_3' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
        ,"selected" => $customer_id ,"separator" => '<br />',]) ; 
  $__output .= ' 
 
-<h3>select1</h3>       
+<h3>select multiple</h3>       
 '; 
  $__output .= html_select( ["name" => 'customers_select1' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
    ,"selected" => $selected  ,"multiple" => "multiple" ,"size" => "5" ,"class" => "testCssClassName" ,]) ; 
  $__output .= '
    
-<h3>select multiple</h3>     
+<h3>select one </h3>     
 '; 
  $__output .= html_select( ["name" => 'customers_select2' ,"options" => $customers_2d_obj  ,"value_key" => 'stu_id' ,"output_key" => 'stu_name'
    ,"selected" => $customer_id   ,]) ; 

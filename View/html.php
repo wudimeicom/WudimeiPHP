@@ -117,7 +117,7 @@ function html_select( $attrs ){
 			list($values,$output ) = ArrayHelper::divide( $options);
 		}
 	}
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','separator','id_prefix','options','value_key','output_key'] );
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','id_prefix','options','value_key','output_key'] );
 	$select = new Select();
 	$select->name($name);
 	$select->attr($otherAttrs);
