@@ -23,6 +23,18 @@ class DB{
 		static::$configs[$name] = $config;
 	}
 	
+	public static function loadConfig( $configFile ){
+		$cfg = include( $configFile );
+		$connections = $cfg['connections'];
+		$def = $cfg['default'];
+		foreach ( $connections as $key => $item ){
+			$name = $key;
+			if( $key == $def ){
+				$name = "default";
+			}
+			self::addConnection($item , $name );
+		}
+	}
 	/**
 	 * 
 	 * @param string $name

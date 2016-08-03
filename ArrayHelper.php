@@ -39,4 +39,18 @@ class  ArrayHelper{
 		}
 		return $rs;
 	}
+	
+	public static function fetch( $array, $keys ){
+		$kArr = explode(".", $keys);
+		for( $i=0;$i<count( $kArr);$i++ ){
+			$k = $kArr[$i];
+			if( !isset($array[$k] )){
+				throw new \Exception("Undefined inde '" . $k . "'");
+			}
+			else{
+				$array= $array[$k];
+			}
+		}
+		return $array;
+	}
 }

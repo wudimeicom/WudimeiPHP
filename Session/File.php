@@ -13,10 +13,10 @@ class File  extends BasicSession
 		$id = $this->session_id;
 		
 		
-		if( rand(0, $this->config['gc_max_random_num']) == 0  ){
+		//if( rand(0, $this->config['gc_max_random_num']) == 0  ){
 			 //echo 'gc';
-			$this->gc(  );
-		}
+		$this->gc(  );
+		//}
 		$file = $this->getSessionFileName();
 		
 		$content = '';
@@ -48,7 +48,13 @@ class File  extends BasicSession
 
 	function gc( )
 	{
-		$this->gcDir(  $this->config["files"] );
+		$last_gc_time_filename = $this->config["files"] . "/last_gc_time.txt";
+		$last_gc_time = @file_get_contents( $last_gc_time_filename );
+		$last_gc_time = intval( $last_gc_time );
+		if( $last_gc_time + $this->config["gc_maxlifetime"] < time() ){
+			$this->gcDir(  $this->config["files"] );
+			file_put_contents( $last_gc_time_filename, time() );
+		}
 		
 		return true;
 	}
@@ -80,7 +86,9 @@ class File  extends BasicSession
 			$gc_maxlifetime = $lifetime;
 		}
 		if (filemtime($file) + $gc_maxlifetime < time() && file_exists($file)) {
-			unlink($file);
+			if( strpos($file, "last_gc_time.txt") === false){
+				unlink($file);
+			}
 		}
 	}
 	

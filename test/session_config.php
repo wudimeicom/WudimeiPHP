@@ -35,7 +35,7 @@ return [
 	 * must greater than 0
 	 * if( rand(0,gc_max_random_num) == 1 ){ try to gc old session files }
 	 */
-	'gc_max_random_num' => 5,  
+	//'gc_max_random_num' => 5,  
      
 
     /*
