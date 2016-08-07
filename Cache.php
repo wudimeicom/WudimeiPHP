@@ -1,37 +1,55 @@
 <?php
 namespace Wudimei;
 class Cache{
-	public static $config;
-	public static $instances;
-	public static function loadConfig( $file ){
+	public $config;
+	public  $stores;
+	/**
+	 * 
+	 * @param string $file
+	 * @throws \Exception
+	 */
+	public  function loadConfig( $file ){
 		if( file_exists( $file ) ){
 			$config = include $file;
-			self::$config = $config;
+			$this->config = $config;
 		}
 		else{
 			throw new \Exception('cache configuration file ' . $file . ' does not exists');
 		}
-		 
 	}
-	
-	public static function set($name,$value,$lifetime=  30){
-		return self::store()->set($name,$value,$lifetime);
+	/**
+	 * 
+	 * @param string $name
+	 * @param mixed $value
+	 * @param int $lifetime
+	 * @return void
+	 */
+	public  function set($name,$value,$lifetime=  30){
+		return $this->store()->set($name,$value,$lifetime);
 	}
-	
-	public static function get( $name ){
-		return self::store()->get( $name );
+	/**
+	 * 
+	 * @param string $name
+	 * @return mixed
+	 */
+	public  function get( $name ){
+		return $this->store()->get( $name );
 	}
-	
-	public static function store( $name = ""){
+	/**
+	 * 
+	 * @param string $name
+	 * @return \Wudimei\Cache\File
+	 */
+	public  function store( $name = ""){
 		if( $name == "" ){
-			$name = self::$config['default'];
+			$name = $this->config['default'];
 		}
-		if( isset( self::$instances[$name] ) ){
-			return self::$instances[$name];
+		if( isset( $this->stores[$name] ) ){
+			return $this->stores[$name];
 		}
 		else{
-			$cfg = self::$config['stores'][$name];
-			$cfg['prefix'] = self::$config['prefix'];
+			$cfg = $this->config['stores'][$name];
+			$cfg['prefix'] = $this->config['prefix'];
 			$driver = $cfg['driver'];
 			$obj = null;
 			if( $driver == 'file' ){
@@ -48,7 +66,7 @@ class Cache{
 					$obj = new $userDriverCls( $cfg );
 				}
 			}
-			return self::$instances[$name] = $obj;
+			return $this->stores[$name] = $obj;
 		}
 	}
 }

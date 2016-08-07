@@ -1,9 +1,9 @@
 <?php
 
 require_once __DIR__ .'/../autoload.php';
-use Wudimei\DB;
+use Wudimei\StaticProxies\DB;
 use Wudimei\DB\Model;
-use Wudimei\DB\Query\PDO_Abstract;
+
 
 class BlogModel extends Model{
 	public $table = "blog";

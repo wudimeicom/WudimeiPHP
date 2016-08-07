@@ -1,6 +1,6 @@
 <?php
 namespace Wudimei\DB;
-use Wudimei\DB;
+use Wudimei\StaticProxies\DB;
 use Wudimei\DB\Query\PDO_MYSQL;
 use Wudimei\DefaultInstance;
 
@@ -20,8 +20,12 @@ class Model{
 		$select = DB::connection($this->connection);
 		$select->table( $this->table );
 		$this->select = $select;
+		
 	}
-	
+	public function __call($name,$args){
+		return call_user_func_array([$this->select,$name], $args );
+	}
+	/*
 	public function select($select="*")
 	{
 		return $this->select->select( $select );
@@ -162,9 +166,17 @@ class Model{
 	}
 	
 	use DefaultInstance;
-
-	public static function createDefaultInstance(){
-		$model = new BlogModel();
-		return $model->select;
+*/
+	public static function __callstatic($method,$args){
+		$model = new static();
+		return call_user_func_array([$model,$method], $args );
+	}
+	
+	
+	
+	public function find( $id ){
+		$data = $this->select->where($this->primaryKey, $id )->limit(1, 0)->get();
+	
+		return @$data[0];
 	}
 }

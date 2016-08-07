@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ .'/../autoload.php';
-use Wudimei\DB;
+use Wudimei\StaticProxies\DB;
 
 
 $config = include __DIR__ . "/db_config.php";
@@ -12,4 +12,4 @@ $data = DB::table("blog")->where('id','>',0)->orderBy("title","desc")->orderBy('
 
 echo "<pre>";
 print_r( $data );
-echo "</pre>";
+echo "</pre>"; 

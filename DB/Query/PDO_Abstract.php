@@ -24,33 +24,69 @@ class PDO_Abstract{
 		$this->sqlArray["groupBy"] = "";
 		$this->sqlArray["having"] = [];
 	}
+	/**
+	 * 
+	 * @param string $select
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function select($select="*"){
 		$this->sqlArray["select"] = $select;
 		return $this;
 	}
-	
+	/**
+	 * 
+	 * @param unknown $tableName
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function from($tableName){
 		$this->sqlArray["table"] = $tableName;
 		return $this;
 	}
-
+	/**
+	 * 
+	 * @param unknown $tableName
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function table($tableName){
 		return $this->from($tableName);
 	}
+	/**
+	 * 
+	 * @param unknown $limit
+	 * @param unknown $offset
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function limit($limit,$offset){
 		$this->sqlArray["limit"] = [$limit,$offset];
 		return $this;
 	}
-	
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param string $direction
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orderBy($field,$direction="asc"){
 		$this->sqlArray["orderBy"][$field] = $direction;
 		return $this;
 	}
-	
+	/**
+	 * 
+	 * @param unknown $field
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function groupBy( $field ){
 		$this->sqlArray["groupBy"] = $field ;
 		return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param unknown $param2
+	 * @param unknown $param3
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function where($field,$param2,$param3 = null , $boolean = 'and'  ){
 		if( $param3 === null ){
 			$param3 = $param2;
@@ -59,30 +95,69 @@ class PDO_Abstract{
 		$this->sqlArray["where"][] = ['where',$field,$param2,$param3,$boolean];
 		return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param unknown $param2
+	 * @param unknown $param3
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orWhere($field,$param2,$param3 = null  ){
 		return $this->where($field,$param2,$param3  , 'or');
 	}
-	
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param array $bindings
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function whereRaw($sql, array $bindings = array(), $boolean = 'and')
 	{
 		$this->sqlArray["where"][] = ['whereRaw',$sql,$bindings,$boolean];
 		return $this;
 	}
-	
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param array $bindings
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orWhereRaw($sql, array $bindings = array() )
 	{
 		$this->whereRaw($sql,  $bindings  , $boolean = 'or');
 		return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param array $values
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function whereIn($field, array $values = array(), $boolean = 'and')
 	{
 		$this->sqlArray["where"][] = ['whereIn',$field,$values,$boolean];
 		return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param array $values
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orWhereIn($field, array $values = array() )
 	{
 		return $this->whereIn($field,  $values , $boolean = 'or');
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param unknown $param2
+	 * @param unknown $param3
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function having($field,$param2,$param3 = null , $boolean = 'and'){
 		if( $param3 === null ){
 			$param3 = $param2;
@@ -91,23 +166,46 @@ class PDO_Abstract{
 		$this->sqlArray["having"][] = ['having',$field,$param2,$param3,$boolean];
 		return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $field
+	 * @param unknown $param2
+	 * @param unknown $param3
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orHaving($field,$param2,$param3 = null  ){
 		return $this->having($field,$param2,$param3  , 'or');
 	}
-	
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param array $bindings
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function havingRaw($sql, array $bindings = array(), $boolean = 'and')
 	{
 		$this->sqlArray["having"][] = ['havingRaw',$sql,$bindings,$boolean];
 		return $this;
 	}
-	
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param array $bindings
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
 	public function orHavingRaw($sql, array $bindings = array() )
 	{
 		$this->havingRaw($sql,  $bindings  , $boolean = 'or');
 		return $this;
 	}
 	
-	
+	/**
+	 * 
+	 * @param unknown $name
+	 * @param unknown $default
+	 * @return string
+	 */
 	public function getSqlArrayItem( $name , $default = null){
 		$item = @$this->sqlArray[$name];
 		if( $item == null ){
@@ -120,6 +218,7 @@ class PDO_Abstract{
 	 *   [ where , id , =, ?, and ]
 	 *   [ whereIn , id, [1,2,3],and ]
 	 * ]
+	 * @return string
 	 */
 	
 	public function buildWhere(){
@@ -169,7 +268,9 @@ class PDO_Abstract{
 		return $sql;
 	}
 	
-
+	/**
+	 * @return string
+	 */
 	public function buildHaving(){
 		$where = $this->getSqlArrayItem('having','' );
 		//print_r($where);
@@ -206,6 +307,9 @@ class PDO_Abstract{
 		return $sql;
 	}
 	
+	/**
+	 * @return string
+	 */
 	public function toSql(){
 		$select =$this->getSqlArrayItem("select","*");
 		
@@ -240,6 +344,10 @@ class PDO_Abstract{
 		
 		return $sql;
 	}
+	
+	/**
+	 * @return array
+	 */
 	public function get(){
 		$sql = $this->toSql();
 		$data = $this->executeQuery( $sql , $this->sqlArray["bindings"] );
@@ -247,11 +355,16 @@ class PDO_Abstract{
 		return $data;
 		
 	}
+	/**
+	 * @return array
+	 */
 	public function all(){
 		
 		return $this->get();
 	}
-	
+	/**
+	 * @return array|stdClass
+	 */
 	public function first(){
 		$this->limit(1, 0);
 		$rows = $this->get();
@@ -263,6 +376,7 @@ class PDO_Abstract{
 	 * 
 	 * @param number $perPage
 	 * @param null|int $page
+	 * @return Paginator
 	 */
 	public function paginate($perPage = 15, $page = null)
 	{
@@ -450,4 +564,5 @@ class PDO_Abstract{
 		//return $pdo->
 	
 	}
+	
 }

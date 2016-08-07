@@ -1,5 +1,5 @@
 <?php
-use Wudimei\Cache;
+use Wudimei\StaticProxies\Cache;
 
 require_once __DIR__ .'/../autoload.php';
 
@@ -9,5 +9,6 @@ $value = ['yqr','yqr2'];
 Cache::set('name', $value ,10  );
 
 $val =  Cache::get('name');
+
 
  print_r( $val );

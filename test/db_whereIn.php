@@ -1,7 +1,7 @@
 <?php
  
 require_once __DIR__ .'/../autoload.php';
-use Wudimei\DB;
+use Wudimei\StaticProxies\DB;
 
 
 $config = include __DIR__ . "/db_config.php";

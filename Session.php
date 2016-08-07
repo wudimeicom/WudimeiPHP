@@ -1,50 +1,51 @@
 <?php
 namespace Wudimei;
 class Session{
-	public static $session;
-	public static function loadConfig( $file ){
+	public  $session;
+	public  function loadConfig( $file ){
 		if( file_exists( $file ) ){
 			$config = include $file;
 			$driver = $config['driver'];
 			if( $driver == 'file'){
 				$session = new \Wudimei\Session\File($config);
 			}
+			$this->session = $session;
 		}
 		else{
 			throw new \Exception('sesstion config file "' . $file . '" does not exists');
 		}
-		self::$session = $session;
+		
 
 	}
 	
-	public static function start(){
+	public  function start(){
 		//session_start();
-		self::$session->start();
+		$this->session->start();
 	}
 	
-	public static function set( $name,$value ){
-		return self::$session->set( $name,$value );
+	public  function set( $name,$value ){
+		return $this->session->set( $name,$value );
 	}
 	
-	public static function get( $name ,$default = null ){
-		$value = self::$session->get( $name  );
+	public  function get( $name ,$default = null ){
+		$value = $this->session->get( $name  );
 		if( is_null( $value) || !isset( $value)){
 			return $default;
 		}
 		return $value;
 	}
 	
-	public static function all(){
+	public  function all(){
 		//session_start();
-		return self::$session->all();
+		return $this->session->all();
 	}
 	
-	public static function delete( $name ){
-		return self::$session->delete( $name );
+	public  function delete( $name ){
+		return $this->session->delete( $name );
 	}
 	
-	public static function destroy()
+	public  function destroy()
 	{
-		return self::$session->destroy();
+		return $this->session->destroy();
 	}
 }

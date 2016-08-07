@@ -3,10 +3,10 @@ namespace Wudimei;
 use Wudimei\DB\Query\PDO_MYSQL;
 class DB{
 	
-	protected  static $connections;
-	protected  static $configs;
+	protected   $connections;
+	protected   $configs;
 	
-	use DefaultInstance;
+	
 	public function __construct(){
 		
 	}
@@ -18,12 +18,13 @@ class DB{
 	 * @param  string  $name
 	 * @return void
 	 */
-	public static function addConnection(array $config, $name = 'default')
+	public  function addConnection(array $config, $name = 'default')
 	{
-		static::$configs[$name] = $config;
+		$this->configs[$name] = $config;
+		 
 	}
 	
-	public static function loadConfig( $configFile ){
+	public  function loadConfig( $configFile ){
 		$cfg = include( $configFile );
 		$connections = $cfg['connections'];
 		$def = $cfg['default'];
@@ -32,7 +33,7 @@ class DB{
 			if( $key == $def ){
 				$name = "default";
 			}
-			self::addConnection($item , $name );
+			$this->addConnection($item , $name );
 		}
 	}
 	/**
@@ -40,13 +41,13 @@ class DB{
 	 * @param string $name
 	 * @return  \Wudimei\DB\Query\PDO_Abstract
 	 */
-	public static function connection( $name = 'default' ){
-		if( isset( static::$connections[$name] )){
-			return static::$connections[$name];
+	public  function connection( $name = 'default' ){
+		if( isset( $this->connections[$name] )){
+			return $this->connections[$name];
 		}
 		else{
-			$cfg = static::$configs[$name];
-			//print_r( $cfg );
+			$cfg = $this->configs[$name];
+			
 			$driver = $cfg['driver'];
 			$conn = null;
 			if( $driver == "PDO_MYSQL"){
@@ -61,16 +62,9 @@ class DB{
 					$conn = new $driver( $cfg );
 				}
 			} 
-			return static::$connections[$name] = $conn;
+			return $this->connections[$name] = $conn;
 			
 		}
 	}
 	
-	/**
-	 * @return PDO_MYSQL
-	 */
-	public static function createDefaultInstance(){
-		
-		return self::connection();
-	}
 }
