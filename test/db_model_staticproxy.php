@@ -1,10 +1,8 @@
 <?php
 
 
-require_once __DIR__ .'/../autoload.php';
-
-use Wudimei\ClassAlias;
-ClassAlias::withStaticProxies();
+require_once __DIR__ .'/../autoload2.php';
+ 
 //use Wudimei\StaticProxies\DB;
 use Wudimei\DB\Model;
 

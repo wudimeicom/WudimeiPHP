@@ -9,7 +9,7 @@ class Parser{
 	public $viewName;
 	public $path;
 	public $compiled;
-	
+	public $view;
 	public function __construct(   ){
 		
 	}
@@ -32,11 +32,11 @@ class Parser{
 						$token['code'] = '';
 						$superViewName = self::getViewName( $token['expression'] );
 						$vars['superViewName'] = $superViewName;
-						$vars['superClassPath'] = View::compile($superViewName);
+						$vars['superClassPath'] = $this->view->compile($superViewName);
 					}
 					elseif( $tag == 'include' ){
 						$viewName = $this->parseInclude($token);
-						$token['code'] = '$__output .= \Wudimei\View::make("'. $viewName.'",$this->__vars ); ';
+						$token['code'] = '$__output .= $this->__view->make("'. $viewName.'",$this->__vars ); ';
 						//echo $viewPath;
 						
 					}
@@ -181,8 +181,11 @@ class Parser{
 		$output = "";
 		$output = '<' . '?php '."\r\n";
 		if( trim( @$vars['superClass'] ) != '' ){
-			$output .= ' require_once \Wudimei\View::$compiled . \Wudimei\View::compile(\'' . 
+			//$output .= ' require_once \Wudimei\View::$compiled . \Wudimei\View::compile(\'' . 
+			//			$vars['superViewName'] ."'); \r\n";
+			$output .= ' require_once $__tmpView->compiled . $__tmpView->compile(\'' .
 						$vars['superViewName'] ."'); \r\n";
+						
 		}
 		$output .= 'class ' . $vars['class'] . ' ';
 		if( trim( @$vars['superClass'] ) != '' ){
@@ -190,6 +193,7 @@ class Parser{
 		}
 		$output .= "\r\n".'{'  . "\r\n";
 		$output .= " public \$__vars; \r\n";
+		$output .= " public \$__view; \r\n";
 		$output .= " public function __construct( \$vars ) { \r\n";
 		$output .= "    \$this->__vars = \$vars; \r\n";
 		

@@ -11,44 +11,59 @@ use Wudimei\View\Parser;
 
 class View{
 	
-	public static $path;
-	public static $compiled;
-	public static $vars;
-	public static $forceCompile = false;
-	
-	public static function loadConfig($file){
+	public  $path;
+	public  $compiled;
+	public  $vars;
+	public  $forceCompile = false;
+	/**
+	 * load config array into View from file 
+	 * @param string $file config file name
+	 * @return void
+	 */
+	public  function loadConfig($file){
 		$config = include $file;
-		self::$path = $config['path'];
-		self::$compiled = $config['compiled'];
-		self::$forceCompile = $config['forceCompile'];
+		$this->path = $config['path'];
+		$this->compiled = $config['compiled'];
+		$this->forceCompile = $config['forceCompile'];
 		
-		if( !is_dir( self::$path )){
-			mkdir( self::$path ,0777,true );
+		if( !is_dir( $this->path )){
+			mkdir( $this->path ,0777,true );
 		}
-		if( !is_dir( self::$compiled )){
-			mkdir( self::$compiled ,0777,true );
+		if( !is_dir( $this->compiled )){
+			mkdir( $this->compiled ,0777,true );
 		}
 	}
-	
-	public static function make( $viewName, $vars ){
-		$destFile = self::compile($viewName);
+	/**
+	 * 
+	 * @param string $viewName view's name,eg default.article.index
+	 * @param array $vars
+	 * @return string 
+	 */
+	public  function make( $viewName, $vars ){
+		$destFile = $this->compile($viewName);
 		  
-		 
-		require_once self::$compiled .$destFile ;
+		$__tmpView = $this; 
+		require_once $this->compiled .$destFile ;
 		$className = Parser::getViewClassName( $viewName  );
 		$obj = new $className(  $vars );
+		$obj->__view = $this;
 		$return = $obj->__main__();
 		
 		
 		return $return;
 	}
 	
-	public static function compile( $viewName ){
+	/**
+	 * 
+	 * @param string $viewName view's name,eg default.article.index
+	 * @return string return the dest view's relative path
+	 */
+	public  function compile( $viewName ){
 		$viewName2 =  str_replace(".", "/", $viewName );
-		$viewFile = self::$path . "/" . $viewName2 . ".view.phtml";
-		$destFile = self::$compiled . "/" . $viewName2 . ".view.phtml";
+		$viewFile = $this->path . "/" . $viewName2 . ".view.phtml";
+		$destFile = $this->compiled . "/" . $viewName2 . ".view.phtml";
 		
-		if( self::$forceCompile ==  false ){
+		if( $this->forceCompile ==  false ){
 			if( file_exists( $destFile) && @filemtime( $viewFile) < filemtime( $destFile)){
 				//echo "no compile! " . $viewName . ' ! ';
 				return "/" . $viewName2 . ".view.phtml";
@@ -65,10 +80,11 @@ class View{
 		$tokens = $tokenizer->tokenize($content);
 		
 		$parser = new Parser();
-		$parser->path = self::$path;
-		$parser->compiled = self::$compiled;
+		$parser->path = $this->path;
+		$parser->compiled = $this->compiled; //compiled dir
 		$parser->tokens = $tokens;
 		$parser->viewName = $viewName;
+		$parser->view = $this;
 		$result = $parser->parse();
 		//echo $result;
 		$destDir = dirname( $destFile );
@@ -79,5 +95,14 @@ class View{
 		//unset( $tokenizer );
 		//unset( $parser );
 		return   "/" . $viewName2 . ".view.phtml";
+	}
+	
+	/**
+	 * 
+	 * @param bool $bool
+	 * @return void
+	 */
+	public function setForceCompile( $bool = true ){
+		$this->forceCompile = $bool;
 	}
 }

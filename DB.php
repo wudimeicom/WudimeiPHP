@@ -2,7 +2,10 @@
 namespace Wudimei;
 use Wudimei\DB\Query\PDO_MYSQL;
 class DB{
-	
+	/**
+	 * 
+	 * @var array
+	 */
 	protected   $connections;
 	protected   $configs;
 	
@@ -67,4 +70,8 @@ class DB{
 		}
 	}
 	
+	public function __call( $method, $args ){
+		$conn = $this->connection();
+		return call_user_func_array( [$conn,$method], $args );
+	}
 }

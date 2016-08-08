@@ -6,6 +6,6 @@ class ClassAlias{
 		class_alias("Wudimei\\StaticProxies\\DB", 'DB' );
 		class_alias("Wudimei\\StaticProxies\\Cache", 'Cache' );
 		class_alias("Wudimei\\StaticProxies\\Session", 'Session' );
-		
+		class_alias("Wudimei\\StaticProxies\\View", 'View' );
 	}
 }

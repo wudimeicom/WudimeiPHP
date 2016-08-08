@@ -20,6 +20,7 @@ trait StaticProxy {
 		return static::callstatic($method, $arguments);
 	}
 	
+	
 	/**
 	 * please override this function while use this trait
 	 * 

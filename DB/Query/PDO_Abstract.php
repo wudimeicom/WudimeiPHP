@@ -35,7 +35,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $tableName
+	 * @param string $tableName
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function from($tableName){
@@ -44,7 +44,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $tableName
+	 * @param string $tableName
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function table($tableName){
@@ -52,8 +52,8 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $limit
-	 * @param unknown $offset
+	 * @param int $limit
+	 * @param int $offset
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function limit($limit,$offset){
@@ -62,7 +62,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
+	 * @param string $field
 	 * @param string $direction
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -72,7 +72,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
+	 * @param string $field
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function groupBy( $field ){
@@ -81,9 +81,9 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
-	 * @param unknown $param2
-	 * @param unknown $param3
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
 	 * @param string $boolean
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -97,9 +97,9 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
-	 * @param unknown $param2
-	 * @param unknown $param3
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function orWhere($field,$param2,$param3 = null  ){
@@ -107,7 +107,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $sql
+	 * @param string $sql
 	 * @param array $bindings
 	 * @param string $boolean
 	 * @return \Wudimei\DB\Query\PDO_Abstract
@@ -119,7 +119,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $sql
+	 * @param string $sql
 	 * @param array $bindings
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -130,7 +130,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
+	 * @param string $field
 	 * @param array $values
 	 * @param string $boolean
 	 * @return \Wudimei\DB\Query\PDO_Abstract
@@ -142,7 +142,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
+	 * @param string $field
 	 * @param array $values
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -152,9 +152,9 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
-	 * @param unknown $param2
-	 * @param unknown $param3
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
 	 * @param string $boolean
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -168,9 +168,9 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $field
-	 * @param unknown $param2
-	 * @param unknown $param3
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function orHaving($field,$param2,$param3 = null  ){
@@ -178,7 +178,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $sql
+	 * @param string $sql
 	 * @param array $bindings
 	 * @param string $boolean
 	 * @return \Wudimei\DB\Query\PDO_Abstract
@@ -190,7 +190,7 @@ class PDO_Abstract{
 	}
 	/**
 	 * 
-	 * @param unknown $sql
+	 * @param string $sql
 	 * @param array $bindings
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
@@ -202,8 +202,8 @@ class PDO_Abstract{
 	
 	/**
 	 * 
-	 * @param unknown $name
-	 * @param unknown $default
+	 * @param string $name
+	 * @param string $default
 	 * @return string
 	 */
 	public function getSqlArrayItem( $name , $default = null){
@@ -273,7 +273,7 @@ class PDO_Abstract{
 	 */
 	public function buildHaving(){
 		$where = $this->getSqlArrayItem('having','' );
-		//print_r($where);
+		
 		$sql = "  having 1 ";
 		for( $i=0; $i< count( $where); $i++ ){
 			$item = @$where[$i];
@@ -375,14 +375,14 @@ class PDO_Abstract{
 	/**
 	 * 
 	 * @param number $perPage
-	 * @param null|int $page
+	 * @param int $page
 	 * @return Paginator
 	 */
 	public function paginate($perPage = 15, $page = null)
 	{
 		$othis = clone $this;
 		$total = $othis->count();
-		// echo $total;
+		
 		$pageCount = ceil( $total / $perPage );
 		if( $page == null ){
 			$page = intval( @$_GET["page"] );
@@ -394,10 +394,8 @@ class PDO_Abstract{
 			$page = $pageCount;
 		}
 		$offset = ($page-1)*$perPage;
-		//echo "[" .$page . " , ".  $pageCount . " , ". $offset. "]";
 		
 		$data = $this->limit( $perPage, $offset )->get();
-		//print_r( $data );
 		
 		$paginator = new Paginator();
 		$paginator->first =1;
@@ -408,33 +406,60 @@ class PDO_Abstract{
 		$paginator->data = $data;
 		return $paginator;
 	}
+	/**
+	 * 
+	 * @param string $field
+	 * @return int
+	 */
 	public function count($field = "*"){
 		return $this->_function("count",$field );
 	}
-	
+	/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
 	public function max($field = "*"){
 		return $this->_function("max",$field );
 	}
-	
+	/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
 	public function min($field = "*"){
 		return $this->_function("min",$field );
 	}
-	
+	/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
 	public function sum($field = "*"){
 		return $this->_function("sum",$field );
 	}
-	
+	/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
 	public function avg($field = "*"){
 		return $this->_function("avg",$field );
 	}
-	
+	/**
+	 * @param string $function sql function name,eg. max,count
+	 * @param string $field
+	 * @return int|float|double
+	 */
 	public function _function($function,$field = "*"){
 		$this->select( $function.'(' . $field . ') as cnt' );
 		$data = $this->get();
 		$cnt = @$data[0]->cnt;
 		return $cnt;
 	}
-	
+	/**
+	 * @return \PDO
+	 */
 	public function getPDO(){
 		if( $this->pdo != null ){
 			return $this->pdo;
@@ -457,23 +482,19 @@ class PDO_Abstract{
 	public function getDSN(){
 		return "";
 	}
-	/*
-	public function execute( $sql ,$params = null){
-		$pdo = $this->getPDO();
-		echo $sql;
-		$sth = $pdo->prepare( $sql );
-		$ret = $sth->execute( $params );
-		print_r( $pdo->errorInfo() );
-		return $ret;
-	}
-	*/
+	
+	/**
+	 * 
+	 * @param unknown $sql
+	 * @param unknown $params
+	 * @return array
+	 */
 	public function executeQuery( $sql ,$params = null ){
 		$pdo = $this->getPDO();
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
-		 //echo $sql; print_r( $params );
-		//print_r( $sth->errorInfo() );
+		
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
 		$data = $sth->fetchAll(static::$fetchStyle);
 		return $data;
@@ -489,16 +510,19 @@ class PDO_Abstract{
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
-		//echo $sql; print_r( $params );
-		//print_r( $sth->errorInfo() );
+		
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
-		//$data = $sth->fetchAll();
+		
 		return $sth;
 	}
 	
-	
+	/**
+	 * 
+	 * @param array|\stdClass $data
+	 * @return int last insert id
+	 */
 	public function insert( $data ){
-		//echo $this->toSql();
+		
 		$fields = [];
 		$values = [];
 		$params = [];
@@ -512,15 +536,19 @@ class PDO_Abstract{
 		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
 		$sql = "insert into " . $tableName . " (" .implode(",", $fields) . ") values(" .implode(",", $params) . ") ";
 		$ret = $this->executeUpdate($sql , $values);
-		//echo $ret;
+		
 		$pdo = $this->getPDO();
 		$this->clearSqlArray();
 		return $pdo->lastInsertId();
 		
 	}
+	/**
+	 * 
+	 * @param array|\stdClass $data
+	 * @return int affected rows
+	 */
 	public function update( $data ){
-		//echo $this->toSql();
-		 
+		
 		$setArr = array();
 		$values = [];
 		if( !empty( $data )){
@@ -531,23 +559,22 @@ class PDO_Abstract{
 		}
 		$where = $this->buildWhere();
 		$bindings = $this->sqlArray["bindings"];
-		//print_r( $values ); print_r( $bindings);
+		
 		$values = array_merge( $values, $bindings );
-		//print_r( $values );
 		
 		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
 		$sql = "update " . $tableName . " set " .implode(',', $setArr) . $where  ;
-		//echo $sql;
 		
 		$sth = $this->executeUpdate($sql , $values);
 		$this->clearSqlArray();
 		return $sth->rowCount();
-		//return $ret;
-		//$pdo = $this->getPDO();
-		//return $pdo->
+		
 	
 	}
 	
+	/**
+	 * @return int affected rows
+	 */
 	public function delete(  ){
 		  
 		$where = $this->buildWhere();
@@ -559,10 +586,7 @@ class PDO_Abstract{
 		$sth = $this->executeUpdate($sql ,$bindings);
 		$this->clearSqlArray();
 		return $sth->rowCount();
-		//return $ret;
-		//$pdo = $this->getPDO();
-		//return $pdo->
-	
+		
 	}
 	
 }
