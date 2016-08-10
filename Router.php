@@ -1,5 +1,8 @@
 <?php 
 namespace Wudimei;
+
+
+
 class Router{
 	
 	public  function handle($routeFile){
@@ -34,6 +37,9 @@ class Router{
 			@list( $c,$method) = @explode("@", $route);
 			//echo $c, $m;
 			$class = "\\App\\Controllers\\".$c;
+			if( class_exists( $class) == false ){
+				$class = $c;
+			}
 			if( $method== null ){
 				$method = "index";
 			}
@@ -51,7 +57,7 @@ class Router{
 			$vars = [
 				"uri" => $uri	
 			];
-			echo View::make("default.404", $vars);
+			echo \View::make("default.404", $vars);
 		}
 		//$c = new  \App\Controllers\IndexController();
 		//$c->index();

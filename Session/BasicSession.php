@@ -54,8 +54,12 @@ class BasicSession
 	}
 	
 	public function get( $name  ){
-			
-		return  $this->session_data[$name];
+		if( isset( $this->session_data[$name])){	
+			return  $this->session_data[$name];
+		}
+		else{
+			return null;
+		}
 	}
 	public function all(  ){
 	

@@ -9,5 +9,7 @@ class ClassAlias{
 		class_alias("Wudimei\\StaticProxies\\View", 'View' );
 		class_alias("Wudimei\\StaticProxies\\Router", 'Router' );
 		class_alias("Wudimei\\StaticProxies\\Lang", 'Lang' );
+		class_alias("Wudimei\\StaticProxies\\Auth", 'Auth' );
+		
 	}
 }

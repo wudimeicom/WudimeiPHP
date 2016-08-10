@@ -494,6 +494,7 @@ class PDO_Abstract{
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
+		$this->errorInfo($sth);
 		
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
 		$data = $sth->fetchAll(static::$fetchStyle);
@@ -510,10 +511,26 @@ class PDO_Abstract{
 		
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
+		$this->errorInfo($sth);
 		
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
 		
 		return $sth;
+	}
+	/**
+	 * 
+	 * @param \PDOStatement $sth
+	 */
+	public function errorInfo($sth){
+		$e = $sth->errorInfo();
+		$msg = "SQLSTATE error code: " . $e[0] . " \r\n";
+		$msg .= "Driver-specific error code: " . $e[1] . " \r\n";
+		$msg .= "Driver-specific error message: " . $e[2] . " \r\n";
+		
+		if( $this->config['sql_error_display_method'] == "output" ){
+			if( $e[1]>0)
+			echo $msg;
+		}
 	}
 	
 	/**

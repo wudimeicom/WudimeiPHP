@@ -1143,3 +1143,23 @@ public static  function compile( $viewName);
 public static  function setForceCompile( $bool = true);
 }
 }
+namespace { 
+class Auth{
+
+public static  function loadConfig( $configFile);
+/**
+	 * Determine if the current user is authenticated.
+	 *
+	 * @return bool
+	 */
+public static  function check( );
+
+public static  function user( );
+
+public static  function logout( );
+
+public static  function setUser( $user);
+
+public static  function attempt( $kvArray,$remember);
+}
+}
