@@ -3,6 +3,8 @@ a php 7 development framework created by wudimei.com
 
 more infomation please see the "test" folder
 the "test" folder can be deleted for saving disk space.
+## try WudimeiMVC
+WudimeiMVC is a ready-to-use project that wrote by the same author,it's base on WudimeiPHP, url https://github.com/wudimeicom/WudimeiMVC
 
 ## Installation:
 
