@@ -2,7 +2,7 @@
 namespace Wudimei;
 class Router{
 	
-	public static function handle($routeFile){
+	public  function handle($routeFile){
 		$routeArray = include $routeFile;
 		$uri = $_SERVER['REQUEST_URI'];
 		
@@ -15,7 +15,7 @@ class Router{
 			// echo $uri;
 			//print_r( $routeArray );
 			foreach ( $routeArray as $routeExpr => $item ){
-				$expr = self::parseRoute($routeExpr);
+				$expr = $this->parseRoute($routeExpr);
 				if( preg_match( $expr , $uri)){
 					//echo $expr;
 					preg_match_all( $expr, $uri,$m);
@@ -57,7 +57,7 @@ class Router{
 		//$c->index();
 	}
 	
-	public static function parseRoute($expr){
+	public  function parseRoute($expr){
 		preg_match_all('/(\([^\)]+\))/i', $expr ,$m );
 		//print_r( $m );
 		$arr =preg_split( '/(\([^\)]+\))/i' , $expr );

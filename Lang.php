@@ -1,28 +1,28 @@
 <?php
 namespace Wudimei;
 class Lang{
-	public static $locale;
-	public static $path;
-	public static $langs = array();
+	public  $locale;
+	public  $path;
+	public  $langs = array();
 	
-	public static function setPath( $path2 ){
-		self::$path = $path2;
+	public  function setPath( $path2 ){
+		$this->path = $path2;
 	}
 	
-	public static function  setLocale( $locale ){
-		self::$locale = $locale;
+	public  function  setLocale( $locale ){
+		$this->locale = $locale;
 	}
 	
-	public static function load($group){
-		$file = self::$path . "/" . self::$locale . "/" . $group . ".php";
+	public  function load($group){
+		$file = $this->path . "/" . $this->locale . "/" . $group . ".php";
 		$langs2 = include $file;
 		if( !empty( $langs2)){
-			self::$langs = array_merge( self::$langs,$langs2);
+			$this->langs = array_merge( $this->langs,$langs2);
 		}
 	}
 	
-	public static function  get( $name, $args = array() ){
-		$lang = ArrayHelper::fetch( self::$langs, $name );
+	public  function  get( $name, $args = array() ){
+		$lang = ArrayHelper::fetch( $this->langs, $name );
 		if( !empty( $args ) ){
 			foreach ( $args as $k => $v ){
 				$lang = str_replace(":" . $k, $v, $lang );

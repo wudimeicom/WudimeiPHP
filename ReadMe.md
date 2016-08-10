@@ -14,12 +14,34 @@ for example:
 
 ```php
 <?php
-// test.php
-require_once __DIR__ .'/WudimeiPHP/autoload.php';
+//db_config.php
+return [
+    'driver'    => 'PDO_MYSQL', // 'PDO_MYSQL' 'Wudimei\\DB\\Query\\PDO_MYSQL' 'your\\driver\\className'
+    'host'      => 'localhost',
+    'database'  => 'wudimei_cms',
+    'username'  => 'root',
+    'password'  => '123456',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => 'w_',
+] ;
 
-use Wudimei\Registry;
-Registry::set("name",'yqr');
-echo Registry::get("name");
+<?php
+// test.php
+require_once __DIR__ .'/WudimeiPHP/autoload2.php';
+
+$config = include __DIR__ . "/db_config.php";
+DB::addConnection($config);
+
+$select = DB::connection( );
+
+$pg = $select->table("blog")->where('id','>',1)->where('id','<',10)->paginate(2);
+
+echo "<pre>";
+print_r( $pg->data );
+echo "</pre>";
+
+echo $pg->render("db_paginate.php?page={page}");
 ?>
 ```
 
