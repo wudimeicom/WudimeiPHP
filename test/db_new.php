@@ -4,12 +4,11 @@ use Wudimei\DB;
 
 require_once __DIR__ .'/../autoload2.php';
 
-
+ 
 
 $db = new DB();
 
-$config = include __DIR__ . "/db_config.php";
-$db->addConnection($config);
+$db->loadConfig( __DIR__ . "/db_config.php");
 
 
 $select = $db->connection(  );

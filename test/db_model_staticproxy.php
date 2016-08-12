@@ -6,6 +6,7 @@ require_once __DIR__ .'/../autoload2.php';
 //use Wudimei\StaticProxies\DB;
 use Wudimei\DB\Model;
 
+DB::loadConfig(__DIR__ . "/db_config.php" );
 
 class BlogModel extends Model{
 	public $table = "blog";
@@ -13,8 +14,7 @@ class BlogModel extends Model{
 	
 }
 
-$config = include __DIR__ . "/db_config.php";
-DB::addConnection($config);
+
 
 
 $data = BlogModel::where("id",'>',0)->get();

@@ -4,8 +4,7 @@ require_once __DIR__ .'/../autoload2.php';
 //use DB;
 
 
-$config = include __DIR__ . "/db_config.php";
-DB::addConnection($config);
+DB::loadConfig(__DIR__ . "/db_config.php" );
 
 
 $select = DB::connection( );

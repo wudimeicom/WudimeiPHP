@@ -10,8 +10,7 @@ class BlogModel extends Model{
 	//public $primaryKey = "id";
 }
 
-$config = include __DIR__ . "/db_config.php";
-DB::addConnection($config);
+DB::loadConfig(__DIR__ . "/db_config.php" );
 
 //PDO_Abstract::$fetchStyle = \PDO::FETCH_NUM;
 $blogModel = new BlogModel();

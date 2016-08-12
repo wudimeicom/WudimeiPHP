@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @author yangqingrong@wudimei.com
+ * @copyright yangqingrong@wudimei.com
+ * @link http://www.wudimei.com
+ * @license The MIT license(MIT)
+ */
 namespace Wudimei;
 
 require_once __DIR__.'/View/html.php';
