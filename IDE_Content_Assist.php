@@ -254,6 +254,11 @@ public function executeQuery( $sql,$params = NULL);
 public function executeUpdate( $sql,$params = NULL);
 /**
 	 * 
+	 * @param \PDOStatement $sth
+	 */
+public function errorInfo( $sth);
+/**
+	 * 
 	 * @param array|\stdClass $data
 	 * @return int last insert id
 	 */
@@ -515,6 +520,11 @@ public static  function executeQuery( $sql,$params = NULL);
 public static  function executeUpdate( $sql,$params = NULL);
 /**
 	 * 
+	 * @param \PDOStatement $sth
+	 */
+public static  function errorInfo( $sth);
+/**
+	 * 
 	 * @param array|\stdClass $data
 	 * @return int last insert id
 	 */
@@ -762,6 +772,11 @@ public static  function executeQuery( $sql,$params = NULL);
 	 * @return PDOStatement
 	 */
 public static  function executeUpdate( $sql,$params = NULL);
+/**
+	 * 
+	 * @param \PDOStatement $sth
+	 */
+public static  function errorInfo( $sth);
 /**
 	 * 
 	 * @param array|\stdClass $data
@@ -1024,6 +1039,11 @@ public function executeQuery( $sql,$params = NULL);
 public function executeUpdate( $sql,$params = NULL);
 /**
 	 * 
+	 * @param \PDOStatement $sth
+	 */
+public function errorInfo( $sth);
+/**
+	 * 
 	 * @param array|\stdClass $data
 	 * @return int last insert id
 	 */
@@ -1147,6 +1167,12 @@ namespace {
 class Auth{
 
 public static  function loadConfig( $configFile);
+
+public static  function setConfigItem( $key,$value);
+
+public static  function getConfigItem( $key);
+
+public static  function setTokenLifeTime( $seconds);
 /**
 	 * Determine if the current user is authenticated.
 	 *
@@ -1160,6 +1186,27 @@ public static  function logout( );
 
 public static  function setUser( $user);
 
-public static  function attempt( $kvArray,$remember);
+public static  function attempt( $kvArray,$remember = false);
+}
+}
+namespace { 
+class Lang{
+
+public static  function setPath( $path2);
+
+public static  function setLocale( $locale);
+
+public static  function load( $group);
+
+public static  function get( $name,$args = array (
+));
+}
+}
+namespace { 
+class Router{
+
+public static  function handle( $routeFile);
+
+public static  function parseRoute( $expr);
 }
 }
