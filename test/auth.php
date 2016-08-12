@@ -16,8 +16,9 @@ namespace {
 	 
 	Session::loadConfig( __DIR__ . '/session_config.php' );
 	Session::start();
-	$config = include __DIR__ . "/db_config.php";
-	DB::addConnection($config);
+	 
+	DB::loadConfig( __DIR__ . "/db_config.php" );
+	
 	Auth::loadConfig( __DIR__ . '/auth_config.php' );
 	
 	//echo md5('123456'); 
