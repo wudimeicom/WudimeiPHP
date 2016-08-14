@@ -62,7 +62,7 @@ class User extends Model{
 	 */
 	public function checkPassword( $kvArr , $userObj ){
 		$password = @$kvArr["password"];
-		if( $this->encryptPassword( $password) == $userObj->password  ){
+		if( $this->encryptPassword( $password) == @$userObj->password  ){
 			return true;
 		}
 		else{

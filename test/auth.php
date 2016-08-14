@@ -45,7 +45,7 @@ namespace {
 	elseif( $act == "login" ){
 		
 		Auth::setTokenLifeTime(3600*24*7);//7 days
-		$b = Auth::attempt(['username'=>'yqr','type'=>1,'password'=>'123456'], true );
+		$b = Auth::attempt(['username'=>'yqr','role_id'=>1,'password'=>'123456'], true );
 		var_dump( $b );
 		echo " <a href=\"auth.php?act=\">back</a> ";
 		

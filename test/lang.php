@@ -1,7 +1,7 @@
 <?php
-use Wudimei\Lang;
 
-require_once __DIR__ .'/../autoload.php';
+
+require_once __DIR__ .'/../autoload2.php';
 
 Lang::setLocale("en");
 //Lang::setLocale("zh-cn");
@@ -13,3 +13,4 @@ echo $val; echo "<br />";
 
 $val = Lang::get("hello",['name'=>'yqr']);
 echo $val;
+

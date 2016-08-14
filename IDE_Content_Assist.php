@@ -1210,3 +1210,25 @@ public static  function handle( $routeFile);
 public static  function parseRoute( $expr);
 }
 }
+namespace { 
+class Request{
+
+public static  function method( );
+
+public static  function isMethod( $method);
+
+public static  function isPost( );
+
+public static  function isGet( );
+
+public static  function isPut( );
+
+public static  function isHead( );
+
+public static  function isDelete( );
+
+public static  function get( $key,$default = NULL);
+
+public static  function post( $key,$default = NULL);
+}
+}

@@ -63,7 +63,7 @@ class Router{
 			$vars = [
 				"uri" => $uri	
 			];
-			echo \View::make("default.404", $vars);
+			echo \View::make("404", $vars);
 		}
 		//$c = new  \App\Controllers\IndexController();
 		//$c->index();

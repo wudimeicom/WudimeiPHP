@@ -32,8 +32,7 @@ return [
 // test.php
 require_once __DIR__ .'/WudimeiPHP/autoload2.php';
 
-$config = include __DIR__ . "/db_config.php";
-DB::addConnection($config);
+DB::loadConfig(__DIR__ . "/db_config.php" );
 
 $select = DB::connection( );
 
@@ -48,9 +47,10 @@ echo $pg->render("db_paginate.php?page={page}");
 ```
 
 ## Documentation
-please see [doc/][1]
+soon
+
 ## Licence:
 
 The MIT License (MIT)
 
-[1]: doc/index.md
+

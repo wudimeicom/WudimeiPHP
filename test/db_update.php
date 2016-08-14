@@ -15,6 +15,11 @@ $data = array(
 	'created_at' => date("Y-m-d H:i:s")
 );
 
+/*
+$data = new stdClass();
+$data->title = "hello";
+*/
+
 $intAffectedRows = $select->table("blog")->where('id',1 )->update( $data );
 echo $intAffectedRows;
 

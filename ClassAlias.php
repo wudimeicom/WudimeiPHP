@@ -16,6 +16,8 @@ class ClassAlias{
 		class_alias("Wudimei\\StaticProxies\\Router", 'Router' );
 		class_alias("Wudimei\\StaticProxies\\Lang", 'Lang' );
 		class_alias("Wudimei\\StaticProxies\\Auth", 'Auth' );
+		class_alias("Wudimei\\StaticProxies\\Request", 'Request' );
+		class_alias("Wudimei\\StaticProxies\\Redirect", 'Redirect' );
 		
 	}
 }
