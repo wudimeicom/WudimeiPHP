@@ -4,11 +4,19 @@ use Wudimei\Validator;
 require_once __DIR__ .'/../autoload2.php';
 
 DB::loadConfig(__DIR__ . "/db_config.php" );
+Lang::loadConfig( __DIR__ . '/lang_config.php');
+
+Lang::setLocale("en");
+
+//Lang::set('fieldlabels.login','username');
+Lang::replaceGroup('fieldlabels',[
+	'login' => 	'username'
+]);
 
 $v = new Validator();
 
 $_POST_DATA = [
-		'login'=> 'yqr' , 
+		'login'=> '' , 
 		'password' => 'aaaabb',
 		'confirm_password'=>'aaaabb',
 		'tel' => '8613714715608',
@@ -18,43 +26,18 @@ $_POST_DATA = [
 ];
 
 $rules = [
-		/*
-		'login'=>[
-				'required'=>true,
-				'email'=> true ,
-				'unique' => ['users','username'] 
-				
-		] , */
-		'login'=>[
-				'required'=>true,
-				//'email'=> true ,
-				'unique' => ['users','username',2,'id'] ,
-				'rangelength' => [4,30]
-		] ,
-		'password'=>['required'=>true ] ,
-		'confirm_password' => [
-				'required'=>true,
-				'equalTo' => 'password',
-				'minlength'=>5,
-				'maxlength' => 6,
-		],
-		'tel' => [
-				'digits' => true
-		],
-		'score' => [
-				'number' => true
-		],
-		'age' => [
-				'min' => 18,
-				'max' => 65
-		],
-		'month' => [
-				'range' => [1,12]
-		]
+		//'login'=> 'required;unique:users,username' , 
+		'login'=> 'required; unique:users,username,2,id; rangelength:3,30' ,
+		'password'=> 'required' ,
+		'confirm_password' => 'required; equalTo:password; minlength:5; maxlength:6' ,
+		'tel' => 'digits:true',
+		'score' => 'number' ,
+		'age' => 'min:18; max:65' ,
+		'month' => 'range:1,12'
 ];
 
 $messages = [
-		'login.required'=>'please enter login.',
+		//'login.required'=>'please enter login.',
 		'login.email'=>'must be an email. ',
 		'login.unique' => 'username should be unique',
 		'login.rangelength' => 'username length 4-30',

@@ -3,14 +3,16 @@
 
 require_once __DIR__ .'/../autoload2.php';
 
+Lang::loadConfig( __DIR__ . '/lang_config.php');
 Lang::setLocale("en");
 //Lang::setLocale("zh-cn");
-Lang::setPath(__DIR__ . "/lang");
+//Lang::setPath(__DIR__ . "/lang");
 Lang::load("index");
-
-$val = Lang::get("name");
+//Lang::load("index");
+//Lang::reload("index");
+$val = Lang::get("index.name");
 echo $val; echo "<br />";
 
-$val = Lang::get("hello",['name'=>'yqr']);
+$val = Lang::get("index.hello",['name'=>'yqr']);
 echo $val;
 

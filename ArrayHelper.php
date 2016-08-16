@@ -48,15 +48,18 @@ class  ArrayHelper{
 	
 	public static function fetch( $array, $keys ){
 		$kArr = explode(".", $keys);
+		$result = $array;
 		for( $i=0;$i<count( $kArr);$i++ ){
 			$k = $kArr[$i];
-			if( !isset($array[$k] )){
-				throw new \Exception("Undefined inde '" . $k . "'");
+			if( !isset($result[$k] )){
+				//throw new \Exception("Undefined index '" . $k . "'");
+				$result = null;
+				break;
 			}
 			else{
-				$array= $array[$k];
+				$result= $result[$k];
 			}
 		}
-		return $array;
+		return $result;
 	}
 }

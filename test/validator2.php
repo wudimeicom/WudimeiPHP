@@ -18,39 +18,14 @@ $_POST_DATA = [
 ];
 
 $rules = [
-		/*
-		'login'=>[
-				'required'=>true,
-				'email'=> true ,
-				'unique' => ['users','username'] 
-				
-		] , */
-		'login'=>[
-				'required'=>true,
-				//'email'=> true ,
-				'unique' => ['users','username',2,'id'] ,
-				'rangelength' => [4,30]
-		] ,
-		'password'=>['required'=>true ] ,
-		'confirm_password' => [
-				'required'=>true,
-				'equalTo' => 'password',
-				'minlength'=>5,
-				'maxlength' => 6,
-		],
-		'tel' => [
-				'digits' => true
-		],
-		'score' => [
-				'number' => true
-		],
-		'age' => [
-				'min' => 18,
-				'max' => 65
-		],
-		'month' => [
-				'range' => [1,12]
-		]
+		//'login'=> 'required;unique:users,username' , 
+		'login'=> 'required; unique:users,username,2,id; rangelength:3,30' ,
+		'password'=> 'required' ,
+		'confirm_password' => 'required; equalTo:password; minlength:5; maxlength:6' ,
+		'tel' => 'digits:true',
+		'score' => 'number' ,
+		'age' => 'min:18; max:65' ,
+		'month' => 'range:1,12'
 ];
 
 $messages = [
