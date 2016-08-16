@@ -69,6 +69,25 @@ not 4 years
  $__output .= $this->body();  
  
  $__output .= '
+
+'; 
+ $__output .= "<!--";  
+ $__output .= ' this is html comment,was regnized by Wudimei::Parser2 '; 
+ $__output .= "-->";  
+ $__output .= '
+
+
+'; 
+ $__output .= "<!--";  
+ $__output .= '[if lt IE 9]>
+
+      <script src="/'; 
+  $__r =$role;  $__output .=  htmlspecialchars($__r);  
+ $__output .= '/assets/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="/assets/libs/respond/1.4.2/respond.min.js"></script>
+<![endif]'; 
+ $__output .= "-->";  
+ $__output .= '
 '; 
  return $__output; 
 } 

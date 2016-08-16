@@ -1161,6 +1161,12 @@ public static  function compile( $viewName);
 	 * @return void
 	 */
 public static  function setForceCompile( $bool = true);
+
+public static  function getForceCompile( );
+
+public static  function setSkipCommentTags( $bool = true);
+
+public static  function getSkipCommentTags( );
 }
 }
 namespace { 

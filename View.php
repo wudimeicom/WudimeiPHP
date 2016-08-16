@@ -8,6 +8,7 @@
 namespace Wudimei;
 
 require_once __DIR__.'/View/html.php';
+require_once __DIR__.'/View/function.php';
 
 use Wudimei\View\Tokenizer;
 use Wudimei\View\Parser;
@@ -31,6 +32,7 @@ class View{
 		$this->path = $config['path'];
 		$this->compiled = $config['compiled'];
 		$this->forceCompile = $config['forceCompile'];
+		$this->skipCommentTags = $config['skipCommentTags'];
 		
 		if( !is_dir( $this->path )){
 			mkdir( $this->path ,0777,true );
@@ -112,7 +114,15 @@ class View{
 		$this->forceCompile = $bool;
 	}
 	
+	public function getForceCompile(){
+		return $this->forceCompile;
+	}
+	
 	public function setSkipCommentTags( $bool = true ){
 		$this->skipCommentTags = $bool;
+	}
+	
+	public function getSkipCommentTags(){
+		return $this->skipCommentTags;
 	}
 }

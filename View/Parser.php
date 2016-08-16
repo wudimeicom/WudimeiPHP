@@ -28,7 +28,7 @@ class Parser{
 		$tokenCount = count( $this->tokens );
 		$vars = array( 'sections' => array() ,'superClassPath' => '' ,'superViewName' =>'');
 		$vars['class'] = self::getViewClassName( $this->viewName );
-		
+		// print_r( $this->tokens );
 		for( $i=0;$i<$tokenCount; $i++ ){
 			$token = $this->tokens[$i];
 			if( !empty($token)){
@@ -144,15 +144,34 @@ class Parser{
 					$tag = $token['tag'];
 					if( $this->view->skipCommentTags == true ){
 						if( $tag == 'startComment'){
+							
 							$nextTk = $this->tokens[$i+1];
-							if( trim($nextTk) == ""){
+							
+							if( isset( $nextTk['type']) ){ //none-string token
+								$token['code'] = '';
+							}
+							elseif( trim($nextTk) == "")
+							{
 								$this->tokens[$i+1] = "";
+							}
+							elseif( is_string( $nextTk)  ){//restore norml html comment
+								$tk3 =  $this->tokens[$i+2]  ;
+								 
+								$token['code'] =' $__output .= "<!--"; ';
 							}
 						}
 						elseif( $tag == 'endComment'){
 							$prevTk = $this->tokens[$i-1];
-							if( trim($prevTk) == ""){
+							if( isset( $prevTk['type'])){//none-string token
+								$token['code'] = '';
+							}
+							elseif( trim($prevTk) == ""){
 								$this->tokens[$i-1] = "";
+							}
+							elseif( is_string( $prevTk)){ //restore norml html comment
+								$tk3 = $this->tokens[$i-2];
+								
+								$token['code'] =' $__output .= "-->"; ';
 							}
 						}
 					}

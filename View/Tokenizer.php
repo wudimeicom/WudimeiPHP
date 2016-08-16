@@ -71,7 +71,7 @@ class Tokenizer{
 						 
 						$tk = ['start' => $i-1,'end'=> $i+3,'tag' => 'startComment', 'type' => 'HtmlComment' ];
 						$tokens_1[] = $tk;
-						$i = $i+4;
+						$i = $i+3;
 						continue;
 					}
 				}

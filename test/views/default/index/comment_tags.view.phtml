@@ -1,5 +1,5 @@
 
-<!-- @if( $role == 'admin') -->
+<!--@if( $role == 'admin')-->
 hello,{{$role}}
 <!-- @else -->
 hello,guest
@@ -20,3 +20,12 @@ not 4 years
 <!-- @section('body') -->
 this is the body
 <!-- @endsection -->
+
+<!-- this is html comment,was regnized by Wudimei::Parser2 -->
+
+
+<!--[if lt IE 9]>
+
+      <script src="/{{$role}}/assets/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="/assets/libs/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
