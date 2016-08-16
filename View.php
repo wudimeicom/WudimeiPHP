@@ -20,6 +20,7 @@ class View{
 	public  $compiled;
 	public  $vars;
 	public  $forceCompile = false;
+	public  $skipCommentTags = false;
 	/**
 	 * load config array into View from file 
 	 * @param string $file config file name
@@ -109,5 +110,9 @@ class View{
 	 */
 	public function setForceCompile( $bool = true ){
 		$this->forceCompile = $bool;
+	}
+	
+	public function setSkipCommentTags( $bool = true ){
+		$this->skipCommentTags = $bool;
 	}
 }

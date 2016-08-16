@@ -15,6 +15,10 @@ class Parser{
 	public $viewName;
 	public $path;
 	public $compiled;
+	/**
+	 * 
+	 * @var View
+	 */
 	public $view;
 	public function __construct(   ){
 		
@@ -135,6 +139,33 @@ class Parser{
 					}
 					$args .= "]";
 					$token['code'] =  ' $__output .= '.$function_name .'( '.$args.') ;';
+				}
+				elseif ($type == 'HtmlComment'){
+					$tag = $token['tag'];
+					if( $this->view->skipCommentTags == true ){
+						if( $tag == 'startComment'){
+							$nextTk = $this->tokens[$i+1];
+							if( trim($nextTk) == ""){
+								$this->tokens[$i+1] = "";
+							}
+						}
+						elseif( $tag == 'endComment'){
+							$prevTk = $this->tokens[$i-1];
+							if( trim($prevTk) == ""){
+								$this->tokens[$i-1] = "";
+							}
+						}
+					}
+					else{
+						
+						if( $tag == 'startComment'){
+							$token['code'] =  ' $__output .= "<!--" ;';
+							
+						}
+						elseif( $tag == 'endComment'){
+							$token['code'] =  ' $__output .= "-->" ;';
+						}
+					}
 				}
 			}
 			$this->tokens[$i] = $token;

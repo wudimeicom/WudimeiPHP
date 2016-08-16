@@ -1,0 +1,22 @@
+
+<!-- @if( $role == 'admin') -->
+hello,{{$role}}
+<!-- @else -->
+hello,guest
+<!-- @endif -->
+
+<!-- @foreach($years as $year) -->
+<!-- {{$year}} --><br />
+<!-- @foreachelse -->
+sorry,years arrary is empty
+<!-- @endforeach -->
+
+@if( count( $years) == 4 )
+4 years
+@else
+not 4 years
+@endif
+
+<!-- @section('body') -->
+this is the body
+<!-- @endsection -->

@@ -18,11 +18,11 @@ class Tokenizer{
 
 		for( $i=0; $i< $len; $i++ ){
 			$ch = substr( $content, $i,1);
-			
+			$nextCh = @substr( $content, $i+1,1);
 			if( $ch == '@'){
-				$netCh = @substr( $content, $i+1,1);
+				//$nextCh = @substr( $content, $i+1,1);
 				$ret = array();
-				if( $netCh == '{'){
+				if( $nextCh == '{'){
 					$ret = $this->getPhpExpression($content, $i );
 					$ret['start'] = $i-1;
 				}
@@ -35,15 +35,15 @@ class Tokenizer{
 				continue;
 			}
 			elseif( $ch == '{' ){
-				$netCh = @substr( $content, $i+1,1);
-				if( $netCh == "{" || $netCh == "!" ){
+				//$nextCh = @substr( $content, $i+1,1);
+				if( $nextCh == "{" || $nextCh == "!" ){
 					$var = $this->getVariableExpression($content, $i );
 					$var['start'] = $i-1;
 					$tokens_1[] = $var;
 					$i = $var['end'];
 					continue;
 				}
-				elseif( $netCh == "[" ){
+				elseif( $nextCh == "[" ){
 					$tag = $this->getTagExpression($content, $i );
 					
 					$tag['start'] = $i-1;
@@ -53,8 +53,8 @@ class Tokenizer{
 				}
 			}
 			elseif( $ch == '\\'){
-				$netCh = @substr( $content, $i+1,1);
-				if( $netCh == '@' or $netCh == '{'){
+				//$nextCh = @substr( $content, $i+1,1);
+				if( $nextCh == '@' or $nextCh == '{'){
 					$tag = substr( $content, $i,2);
 					$tk = ['start' => $i-1,'end'=> $i+1,'tag' => $tag, 'type' => 'escaped' ];
 					$tokens_1[] = $tk;
@@ -62,6 +62,30 @@ class Tokenizer{
 					continue;
 				}
 				
+			}
+			elseif( $ch == '<'){
+				//$nextCh = @substr( $content, $i+1,1);
+				if( $nextCh == '!' ){
+					$str = substr( $content, $i,4);
+					if( $str == '<!--'){
+						 
+						$tk = ['start' => $i-1,'end'=> $i+3,'tag' => 'startComment', 'type' => 'HtmlComment' ];
+						$tokens_1[] = $tk;
+						$i = $i+4;
+						continue;
+					}
+				}
+			}
+			elseif( $ch == '-'){
+				if( $nextCh == '-'){
+					$str = substr( $content, $i,3);
+					if( $str == '-->'){
+						$tk = ['start' => $i-1,'end'=> $i+2,'tag' => 'endComment', 'type' => 'HtmlComment' ];
+						$tokens_1[] = $tk;
+						$i = $i+3;
+						continue;
+					}
+				}
 			}
 		}
 		
