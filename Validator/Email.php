@@ -1,9 +1,10 @@
 <?php
 namespace Wudimei\Validator;
 class Email  extends RuleValidator{
-	 
-	public function isValid($emailRequired = true){
-		if( $emailRequired == true ){
+	
+	
+	public function isValid($wantValidation = true){
+		if( $wantValidation == true ){
 			if(preg_match("/^([a-zA-Z0-9\.\-\_]+)@([a-zA-Z0-9\-]+)(\.([a-zA-Z]{2,3}))*$/i", $this->value))
 			{
 				return true;
@@ -17,4 +18,6 @@ class Email  extends RuleValidator{
 			return true;
 		}
 	}
+	
+	
 }

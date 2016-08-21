@@ -7,15 +7,17 @@ DB::loadConfig(__DIR__ . "/db_config.php" );
 Lang::loadConfig( __DIR__ . '/lang_config.php');
 
 Lang::setLocale("en");
-
+Lang::setLocale("zh-cn");
 //Lang::set('fieldlabels.login','username');
+
 /*
 Lang::groupUpdate('fieldlabels',[
-	'login' => 	'username',
+	'login' => 	'用户名',
 	'tel' => 'Telphone Number ',
-	'email' => 'Your email'
-]);
-*/
+	'email' => 'Your email',
+	'confirm_password' => '确认密码',
+	'password' => '密码'
+]); */
 Lang::groupAppend('fieldlabels','validator_test');
 
 $v = new Validator();

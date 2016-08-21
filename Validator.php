@@ -8,6 +8,7 @@
  */
 namespace Wudimei;
 use Validator;
+use Wudimei\Validator\RuleValidator;
 
 class Validator {
 	public $errors = [ ];
@@ -15,6 +16,12 @@ class Validator {
 		
 	}
 	
+	/**
+	 * 
+	 * @param array $array
+	 * @param array $rules
+	 * @param array $messages
+	 */
 	public function validate($array, $rules, $messages = []) {
 		\Lang::load('validation');
 		$success = true;
@@ -37,9 +44,12 @@ class Validator {
 					$class = $ruleClassName;
 				}
 				
+				//print_r( $ruleValue );
+				
 				$obj = new $class ();
 				$obj->value = $value;
 				$obj->fieldName = $fieldName;
+				$obj->ruleName = $ruleName;
 				$obj->data = &$array;
 				$result = call_user_func_array ( [ 
 						$obj,
@@ -47,13 +57,17 @@ class Validator {
 				], $ruleValue );
 				if ($result == false) {
 					$success = false;
-					$this->addError ( $fieldName, $ruleName, $messages );
+					$this->addError ( $fieldName, $ruleName, $messages , $obj);
 				}
 				
 			}
 		}
 		return $success;
 	}
+	/**
+	 * 
+	 * @param string $rules
+	 */
 	public function parseRule( $rules ){
 		$result = array();
 		$ruleArr = preg_split('/[;\|]/i', $rules );
@@ -70,20 +84,23 @@ class Validator {
 					$params[$j] = trim( $params[$j] );
 				}
 			}
-			//print_r( $params );
+			 //print_r( $params );
 			$result[ $ruleName] = $params;
 		}
 		return $result;
 	}
-	public function addError($fieldName, $ruleName, $messages) {
+	/**
+	 * 
+	 * @param string $fieldName
+	 * @param string $ruleName
+	 * @param array $messages
+	 * @param RuleValidator $ruleValidator
+	 */
+	public function addError($fieldName, $ruleName, $messages , $ruleValidator ) {
 		$msg = "";
 		
-		$fieldLabel = \Lang::get('fieldlabels.'.$fieldName);
-		//var_dump( $fieldLabel );
-		if( $fieldLabel == ''){
-			$fieldLabel = $fieldName;
-		}
-		$langText = \Lang::get('validation.'.$ruleName ,['field' => $fieldLabel]);
+		
+		$langText = $ruleValidator->formatErrorMessage();
 		//var_dump( $langText );
 		
 		if (isset ( $messages [$fieldName] )) {
@@ -102,7 +119,10 @@ class Validator {
 		}
 		$this->errors [$fieldName] .= $msg;
 	}
-	
+	/**
+	 * get error array
+	 * @return array errors
+	 */
 	public function getErrors(){
 			return $this->errors;
 	}

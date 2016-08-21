@@ -11,4 +11,6 @@ class Number  extends RuleValidator{
 			return true;
 		}
 	}
+	
+
 }
