@@ -19,5 +19,6 @@ class ClassAlias{
 		class_alias("Wudimei\\StaticProxies\\Request", 'Request' );
 		class_alias("Wudimei\\StaticProxies\\Redirect", 'Redirect' );
 		class_alias("Wudimei\\StaticProxies\\Validator", 'Validator' );
+		class_alias("Wudimei\\StaticProxies\\XSS", 'XSS' );
 	}
 }
