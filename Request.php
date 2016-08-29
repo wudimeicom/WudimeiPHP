@@ -50,4 +50,18 @@ class Request{
 			return $default;
 		}
 	}
+	
+	public function item($key,$default = NULL ){
+		if( isset( $_REQUEST[$key] )){
+			return $_REQUEST[$key];
+		}
+		else{
+			return $default;
+		}
+	}
+	
+	public function all(){
+		return $_REQUEST;
+	}
+	
 }

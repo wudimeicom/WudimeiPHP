@@ -45,6 +45,7 @@ class Auth{
 	 */
 	public function check()
 	{
+		 
 		return ! is_null($this->user());
 	}
 	

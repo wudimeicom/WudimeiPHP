@@ -22,6 +22,7 @@ class PDO_Abstract{
 	}
 	
 	public function clearSqlArray(){
+		$this->sqlArray["select"] = "*";
 		$this->sqlArray["where"] = [];
 		$this->sqlArray["bindings"] = [ ];
 		$this->sqlArray["limit"] = [];
@@ -503,6 +504,7 @@ class PDO_Abstract{
 		
 		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
 		$data = $sth->fetchAll(static::$fetchStyle);
+		//echo $sql;
 		return $data;
 	}
 	/**
@@ -513,7 +515,7 @@ class PDO_Abstract{
 	 */
 	public function executeUpdate( $sql,$params = null ){
 		$pdo = $this->getPDO();
-		
+		//echo $sql;
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
 		$this->errorInfo($sth);

@@ -52,7 +52,11 @@ class User extends Model{
 	 */
 	public function getUserByToken($config){
 		$token = @$_COOKIE[ $config['token_name'] ];
+		if( trim( $token) == ""){
+			return null;
+		}
 		$user = $this->where('remember_token', $token )->first();
+		
 		return $user;
 	}
 	/**

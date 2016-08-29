@@ -23,7 +23,7 @@ Lang::groupAppend('fieldlabels','validator_test');
 $v = new Validator();
 
 $_POST_DATA = [
-		'login'=> 'yq' , 
+		'login'=> 'yq_' , 
 		'password' => 'a',
 		'confirm_password'=>'addddddddddddddddd',
 		'tel' => '8613714715608a',
@@ -34,7 +34,7 @@ $_POST_DATA = [
 
 $rules = [
 		//'login'=> 'required;unique:users,username' , 
-		'login'=> 'required; email:true ; unique:users,username,21,id; rangelength:3,30' ,
+		'login'=> 'required; alpha_num_dash;email:true ; unique:users,username,21,id; rangelength:3,30' ,
 		'password'=> 'required' ,
 		'confirm_password' => 'required; equalTo:password; minlength:5; maxlength:6' ,
 		'tel' => 'digits:true',

@@ -39,6 +39,9 @@ class Validator {
 					];
 				}
 				$ruleClassName = ucfirst ( strtolower ( $ruleName ) );
+				if( trim( $ruleName) == ""){
+					continue;
+				}
 				$class = "\\Wudimei\\Validator\\" . $ruleClassName;
 				if (class_exists ( $class ) == false) {
 					$class = $ruleClassName;
@@ -125,6 +128,10 @@ class Validator {
 	 */
 	public function getErrors(){
 			return $this->errors;
+	}
+	
+	public function prepareFieldLabels( $langGroupName ){
+		\Lang::groupAppend('fieldlabels',$langGroupName);
 	}
 	
 }
