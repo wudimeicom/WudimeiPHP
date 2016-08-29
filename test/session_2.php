@@ -8,3 +8,7 @@ Session::start();
 $name = Session::get("name");
 
 echo $name;
+
+echo Session::get("age");
+//Session::keep(['age']);
+//Session::reflash();

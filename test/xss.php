@@ -101,3 +101,15 @@ script:location.href=\'http://www.wudimei.com/\'">XSS</A>
 		';
 //$text = '\'><SCRIPT>alert("XSS")</SCRIPT><xss a=\'';
 echo $xss->clean($text);
+
+$dt = [
+		'name' => 'abc',
+		'name' => 'age <script>alert("hello");</script> ',
+		'hobbies' => [
+				'food' => ['drink' =>  'watter<script>alert("hello");</script> ',
+						'drink2' =>  'watter2<script>alert("hello");</script> ',
+				]
+		]
+];
+$dt2 = $xss->cleanDeep( $dt );
+print_r( $dt2 );

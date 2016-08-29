@@ -15,7 +15,7 @@ trait StaticProxy {
 			self::$instance = static::createObject();
 		}
 		if( !method_exists(self::$instance , $method)){
-			throw new \Exception(__CLASS__ . " donot have method '" . $method . "'");
+			//throw new \Exception( get_class(self::$instance) . " does not have method '" . $method . "'");
 			 
 		}
 		

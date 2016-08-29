@@ -7,3 +7,4 @@ Session::start();
 
 Session::set("name",'Yang Qing-rong');
 
+Session::flash('age',31);

@@ -5,10 +5,16 @@
  * @link http://www.wudimei.com
  * @license The MIT license(MIT)
  */
+ 
+
 function write($string){
 	return $string;
 }
 
 function writeln( $string ){
 	return $string . "\n";
+}
+
+function trans( $text ,$params = [] ){
+	return Lang::get( $text, $params );
 }

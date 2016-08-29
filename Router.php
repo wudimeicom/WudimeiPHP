@@ -7,7 +7,7 @@
  */
 namespace Wudimei;
 
-
+use Request;
 
 class Router{
 	
@@ -40,6 +40,10 @@ class Router{
 		}
 		
 		if( $route != ''){
+			 
+			if( is_array( $route)){
+				$route = $route[Request::method()];
+			}
 			@list( $c,$method) = @explode("@", $route);
 			//echo $c, $m;
 			$class = "\\App\\Controllers\\".$c;

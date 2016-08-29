@@ -11,6 +11,7 @@ class BasicSession
 	protected $config;
 	protected $session_id;
 	protected $session_data;
+	protected $flash_flags;
 	protected $hasChanged = false;
 	
 	public function __construct($config){
@@ -58,7 +59,27 @@ class BasicSession
 		$this->session_data[$name] = $value;
 	}
 	
+	public function flash($name,$value){
+		$this->set( $name, $value );
+		$this->flash_flags[$name] = true;
+	}
+	
+	public function reflash(){
+		foreach ( $this->flash_flags as $k => $v ){
+			$this->flash_flags[$k] = true;
+		}
+	}
+	public function keep( $keys ){
+		foreach ( $keys as $key ){
+			$this->flash_flags[$key] = true;
+		}
+	}
+	
 	public function get( $name  ){
+		if( isset( $this->flash_flags[$name])){
+			$this->flash_flags[$name] = false;
+			$this->hasChanged = true;
+		}
 		if( isset( $this->session_data[$name])){	
 			return  $this->session_data[$name];
 		}
@@ -90,6 +111,16 @@ class BasicSession
 	public function __destruct(){
 			
 		if( $this->hasChanged ){
+			if( !empty($this->flash_flags)){
+				 
+				
+				foreach ( $this->flash_flags as $k => $v ){
+					if( $v == false ){
+						unset( $this->flash_flags[$k]);
+						unset( $this->session_data[$k]);
+					}
+				}
+			}
 			$this->saveSession(   );
 		}
 	}

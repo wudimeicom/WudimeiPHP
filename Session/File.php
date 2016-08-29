@@ -29,14 +29,16 @@ class File  extends BasicSession
 			$this->tryGcFile($file);
 			$content =  (string)@file_get_contents( $file );
 		}
-		$this->session_data = unserialize( $content);
+		$dt  = unserialize( $content);
+		$this->session_data = $dt['session_data'];
+		$this->flash_flags = $dt['flash_flags'];
 	}
 
 	
 	
 	function saveSession()
 	{
-		$data = serialize( $this->session_data );
+		$data = serialize( ['session_data' => $this->session_data ,'flash_flags' => $this->flash_flags] );
 		$filePath = $this->getSessionFileName();
 		$dir = dirname( $filePath );
 		if( !is_dir( $dir )){
