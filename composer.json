@@ -1,5 +1,5 @@
 {
-    "name": "wudimei.com/Wudimei-php",
+    "name": "wudimei.com/wudimei-php",
     "description": "wudimei php framework for web mvc development",
     "require": {
         "php": ">=5.6.0"
