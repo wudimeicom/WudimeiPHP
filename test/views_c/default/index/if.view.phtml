@@ -1,0 +1,58 @@
+<?php 
+class wudimei_view_default_index_if 
+{
+ public $__vars; 
+ public $__view; 
+ public function __construct( $vars ) { 
+    $this->__vars = $vars; 
+ } 
+public function __main__(){ 
+ $__output = ""; 
+ extract( $this->__vars ); 
+ $__output .= '
+'; 
+if( $success == true ){  
+ $__output .= '
+success ! <br />
+'; 
+ }  
+ $__output .= '
+
+'; 
+if( $role == "admin" ){  
+ $__output .= '
+hello,admin! <br />
+'; 
+ }else{   
+ $__output .= '
+hello,user!<br />
+'; 
+ }  
+ $__output .= '
+
+'; 
+if( $role == "admin" ){  
+ $__output .= '
+hello,admin! <br />
+'; 
+}elseif( $role == 'root' ){  
+ $__output .= '
+hello,root!<br />
+'; 
+ }else{   
+ $__output .= '
+hello,user!<br />
+'; 
+ }  
+ $__output .= '
+
+<div class="panel'; 
+if( $success == true ){  
+ $__output .= ' panel-success'; 
+ }  
+ $__output .= '">success!</div>
+'; 
+ return $__output; 
+} 
+
+}

@@ -1,7 +1,8 @@
 <?php
 use Wudimei\Validator;
 
-require_once __DIR__ .'/../autoload2.php';
+require_once __DIR__ .'/../autoload.php';
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 
 DB::loadConfig(__DIR__ . "/db_config.php" );
 Lang::loadConfig( __DIR__ . '/lang_config.php');
@@ -9,6 +10,11 @@ Lang::loadConfig( __DIR__ . '/lang_config.php');
 Lang::setLocale("en");
 Lang::setLocale("zh-cn");
 //Lang::set('fieldlabels.login','username');
+
+
+//echo $text;
+ 
+//echo $text;
 
 /*
 Lang::groupUpdate('fieldlabels',[
@@ -30,7 +36,10 @@ $_POST_DATA = [
 		'score' => '65.5a',
 		'age' =>  2 ,
 		'month' => 10,
+		'desc' => 'i am <b>Yang Qing-rong</b><br />a php programmer.'
 ];
+
+ 
 
 $rules = [
 		//'login'=> 'required;unique:users,username' , 
@@ -40,7 +49,8 @@ $rules = [
 		'tel' => 'digits:true',
 		'score' => 'number' ,
 		'age' => 'min:18; max:65' ,
-		'month' => 'range:1,12'
+		'month' => 'range:1,12',
+		'desc' => 'no_tags'
 ];
 
 $messages = [

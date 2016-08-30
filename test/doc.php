@@ -4,7 +4,8 @@
  */
 use Wudimei\Html\Document;
 
-require_once __DIR__ .'/../autoload2.php';
+require_once __DIR__ .'/../autoload.php';
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 
 $doc = new Document();
 

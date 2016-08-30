@@ -1,7 +1,8 @@
 <?php
 use Wudimei\Validator;
 
-require_once __DIR__ .'/../autoload2.php';
+require_once __DIR__ .'/../autoload.php';
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 
 DB::loadConfig(__DIR__ . "/db_config.php" );
 Lang::loadConfig( __DIR__ . '/lang_config.php');

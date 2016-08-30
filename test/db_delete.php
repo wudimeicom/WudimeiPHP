@@ -1,8 +1,8 @@
 <?php
  
 
-require_once __DIR__ .'/../autoload2.php';
-//use Wudimei\StaticProxies\DB;
+require_once __DIR__ .'/../autoload.php';
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 
 
  

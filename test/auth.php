@@ -4,7 +4,10 @@
 
 
 namespace App{	
-	require_once __DIR__ .'/../autoload2.php';
+	 
+	
+	require_once __DIR__ .'/../autoload.php';
+	\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 	class User extends \Wudimei\Auth\User{
 		public $table = "users";
 		public $connection = "default";

@@ -2,11 +2,11 @@
     "name": "wudimei.com/WudimeiPHP",
     "description": "wudimei php framework for web mvc development",
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.6.0"
     },
     "homepage": "http://www.wudimei.com",
     "type": "library",
-    "license": "LGPL",
+    "license": "MIT",
     "authors": [
         {
             "name": "Yang Qing-rong",

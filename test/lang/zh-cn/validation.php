@@ -13,5 +13,6 @@ return [
 	'unique' => '{field}必须唯一，不能重复。',
 	'rangelength' => '{field}的长度必须介于{min}和{max}之间。',
 	'alpha_num' => '{field}应当由字母和数字组成。',
-	'alpha_num_dash' => '{field}应当由字母和数字、中划线、下划线组成。'
+	'alpha_num_dash' => '{field}应当由字母和数字、中划线、下划线组成。',
+	'no_tags' => '{field}不接受html标记。'
 ];

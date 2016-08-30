@@ -2,8 +2,8 @@
 //ini_set("display_errors",1);
 //error_reporting(E_ALL|E_ERROR|E_COMPILE_ERROR|E_CORE_ERROR);
 
-require_once __DIR__ .'/../autoload2.php';
-//use Wudimei\StaticProxies\DB;
+require_once __DIR__ .'/../autoload.php';
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
  
 
 DB::loadConfig(__DIR__ . "/db_config.php" );

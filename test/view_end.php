@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ .'/../autoload.php';
-use Wudimei\View;
+\Wudimei\ClassAlias::loadConfig(__DIR__."/class_alias_config.php");
 
 View::loadConfig( __DIR__ . '/view_config.php' );
 
