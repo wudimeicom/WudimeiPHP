@@ -1099,38 +1099,9 @@ class Session{
 	 */
 public static  function loadConfig( $file);
 /**
-	 * session start
-	 * @return void
-	 */
-public static  function start( );
-/**
-	 * set data to session from name $name
-	 * @param string $name
-	 * @param mixed $value
-	 * @return void
-	 */
-public static  function set( $name,$value);
-/**
-	 * get session item value by $name,if null then return the $default
-	 * @param string $name
-	 * @param mixed $default
-	 * @return mixed
-	 */
-public static  function get( $name,$default = NULL);
-/**
-	 * get all session
-	 */
-public static  function all( );
-/**
-	 * delete the sesion item by name
-	 * @param string $name
-	 * @return bool
-	 */
-public static  function delete( $name);
-/**
 	 * remove all session data,empty it!
 	 */
-public static  function destroy( );
+public static  function __call( $name,$args);
 }
 }
 namespace { 
@@ -1279,5 +1250,96 @@ public static  function isDelete( );
 public static  function get( $key,$default = NULL);
 
 public static  function post( $key,$default = NULL);
+
+public static  function item( $key,$default = NULL);
+
+public static  function getInt( $key,$default = 0);
+
+public static  function getFloat( $key,$default = 0);
+
+public static  function getDouble( $key,$default = 0);
+
+public static  function all( );
+}
+}
+namespace { 
+class Validator{
+/**
+	 * 
+	 * @param array $array
+	 * @param array $rules
+	 * @param array $messages
+	 */
+public static  function validate( $array,$rules,$messages = array (
+));
+/**
+	 * 
+	 * @param string $rules
+	 */
+public static  function parseRule( $rules);
+/**
+	 * 
+	 * @param string $fieldName
+	 * @param string $ruleName
+	 * @param array $messages
+	 * @param RuleValidator $ruleValidator
+	 */
+public static  function addError( $fieldName,$ruleName,$messages,$ruleValidator);
+/**
+	 * get error array
+	 * @return array errors
+	 */
+public static  function getErrors( );
+
+public static  function prepareFieldLabels( $langGroupName);
+}
+}
+namespace { 
+class Redirect{
+
+public static  function to( $url);
+}
+}
+namespace { 
+class XSS{
+
+public static  function clean( $htmlStr);
+
+private static  function wantRemove( $nodeName);
+
+public static  function cleanDeep( $arr);
+}
+}
+namespace { 
+class Mail{
+
+public static  function loadConfig( $configFile);
+
+public static  function __call( $method,$args);
+
+public static  function send( );
+
+public static  function to( $to);
+
+public static  function cc( $cc);
+
+public static  function bcc( $bcc);
+
+public static  function subject( $subject);
+
+public static  function content( $content);
+
+public static  function contentType( $contentType);
+
+public static  function debug( $debug);
+
+public static  function setProperties( $cfg);
+
+public static  function getEmailAddressArray( $address);
+/**
+	 * pending array("name"=>"","email"=>"")
+	 * @var type string
+	 */
+public static  function formatEmailAddresses( $address);
 }
 }

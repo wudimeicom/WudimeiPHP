@@ -60,6 +60,33 @@ class Request{
 		}
 	}
 	
+	public function getInt( $key ,$default = 0){
+		if( is_numeric( $_REQUEST[$key])){
+			return intval( $_REQUEST[$key] );
+		}
+		else{
+			return $default;
+		}
+	}
+	
+	public function getFloat( $key ,$default = 0){
+		if( is_numeric( $_REQUEST[$key])){
+			return floatval( $_REQUEST[$key] );
+		}
+		else{ 
+			return $default;
+		}
+	}
+	
+	public function getDouble( $key ,$default = 0){
+		if( is_numeric( $_REQUEST[$key])){
+			return doubleval( $_REQUEST[$key] );
+		}
+		else{
+			return $default;
+		}
+	}
+	
 	public function all(){
 		return $_REQUEST;
 	}

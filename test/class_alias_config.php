@@ -11,4 +11,5 @@ return [
 'Redirect' => "Wudimei\\StaticProxies\\Redirect",  
 'Validator'  => "Wudimei\\StaticProxies\\Validator", 
 'XSS' => "Wudimei\\StaticProxies\\XSS",  
+'Mail' => "Wudimei\\StaticProxies\\Mail",
 ];
