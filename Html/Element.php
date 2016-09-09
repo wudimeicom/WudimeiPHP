@@ -11,6 +11,7 @@ class Element{
 	protected $tagName;
 	protected $attrs = array(); //k=>v array
 	protected $children = array(); //2d array
+	protected $isEmptyElementTag = false; //empty-element tag
 	
 	public function __construct( $tagName ){
 		$this->tagName = $tagName;
@@ -73,14 +74,21 @@ class Element{
 		$html = "<" . $this->tagName . " ";
 		if( !empty( $this->attrs )){
 			foreach ( $this->attrs as $attr => $value ){
+				 
+				if( is_array( $value)){
+					$value = implode(",", $value );
+				}
 				$html .= " " . $attr . "=\"" . $value . "\" ";
 			}
 		}
-		if( count( $this->children)==0 ){
-			$html .= "/";
+		if( $this->isEmptyElementTag == true ){
+			if( count( $this->children)==0 ){
+				$html .= "/";
+			}
 		}
 		$html .= ">";
-		if( count( $this->children)>0 ){
+		
+		if( $this->isEmptyElementTag == false ){
 			foreach ( $this->children as $childElement ){
 				if( $childElement instanceof Element){
 					$html .= $childElement->toString();

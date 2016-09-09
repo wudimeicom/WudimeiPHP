@@ -62,4 +62,29 @@ class  ArrayHelper{
 		}
 		return $result;
 	}
+	
+	public static function toAssoc( $array_2d , $keyFiledName, $valueFieldName ){
+		$arr = [];
+		if( !empty( $array_2d )){
+			foreach ( $array_2d as $item ){
+				$key = "";
+				$value = "";
+				if( is_array( $item ) && isset( $item[$keyFiledName])){
+					$key = $item[$keyFiledName];
+				}
+				elseif( isset( $item->{$keyFiledName} ) ){
+					$key = $item->{$keyFiledName};
+				}
+				
+				if( is_array( $item ) && isset( $item[$valueFieldName])){
+					$value = $item[$valueFieldName];
+				}
+				elseif( isset( $item->{$valueFieldName} ) ){
+					$value = $item->{$valueFieldName};
+				}
+				$arr[ $key] = $value;
+			}
+		}
+		return $arr;
+	}
 }

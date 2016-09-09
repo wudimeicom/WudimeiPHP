@@ -8,16 +8,8 @@
 namespace Wudimei\Html;
 use Wudimei\Html\Element;
 
-class Textarea extends Element{
+class Span extends Element {
 	function __construct(  ) {
-		parent::__construct("textarea");
+		parent::__construct("span");
 	}
-	public function value($value){
-		$this->children([$value]);
-		return $this;
-	}
-	public function name($value = null ){
-		return $this->attr('name', $value);
-	}
-	
 }

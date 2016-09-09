@@ -11,7 +11,7 @@ use Wudimei\Html\Element;
 class Input extends Element {
 	function __construct(  ) {
 		parent::__construct("input");
-		
+		$this->isEmptyElementTag = true;
 	}
 	
 	public function name($value = null ){

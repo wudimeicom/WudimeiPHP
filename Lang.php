@@ -68,6 +68,12 @@ class Lang{
 	 * @param array $args
 	 */
 	public  function  get( $name, $args = array() ){
+		$tokens = explode(".", $name );
+		 
+		if( count( $tokens)<=1 ){
+			return $name;
+		}
+		$this->load( $tokens[0] );
 		
 		$lang = ArrayHelper::fetch( $this->langs, $name );
 		
