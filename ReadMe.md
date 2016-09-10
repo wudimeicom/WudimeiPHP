@@ -47,7 +47,7 @@ echo $pg->render("db_paginate.php?page={page}");
 ```
 
 ## Documentation
-soon
+http://php.wudimei.com/doc/cn/201609/index.md.html
 
 ## Licence:
 

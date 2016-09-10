@@ -27,7 +27,7 @@ class Setting{
 		file_put_contents( $this->save_path, $cnt );
 	}
 	
-	public function item( $name ){
+	public function get( $name ){
 		if( !isset( $this->data )){
 			$this->data = include $this->save_path;
 		}
