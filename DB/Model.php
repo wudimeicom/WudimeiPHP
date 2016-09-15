@@ -6,9 +6,9 @@
  * @license The MIT license(MIT)
  */
 namespace Wudimei\DB;
-use Wudimei\StaticProxies\DB;
+use DB;
 use Wudimei\DB\Query\PDO_MYSQL;
-use Wudimei\DefaultInstance;
+ 
 
 class Model{
 	public $table; //without prefix

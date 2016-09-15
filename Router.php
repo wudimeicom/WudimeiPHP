@@ -11,6 +11,9 @@ use Request;
 
 class Router{
 	
+	public function run(){
+		
+	}
 	public  function handle($routeFile){
 		$routeArray = include $routeFile;
 		$uri = $_SERVER['REQUEST_URI'];

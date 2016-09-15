@@ -57,7 +57,7 @@ class View{
 		$obj->__view = $this;
 		$return = $obj->__main__();
 		
-		
+		//echo $destFile;
 		return $return;
 	}
 	

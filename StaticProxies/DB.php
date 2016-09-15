@@ -21,6 +21,7 @@ class DB {
 	public static function callstatic($method, $arguments)  {
 		if( !isset( self::$instance)){
 			self::$instance = static::createObject();
+			self::callInitMethod();
 		}
 		if( !method_exists(self::$instance , $method)){
 			$conn = static::$instance->connection();

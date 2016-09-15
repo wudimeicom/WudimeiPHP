@@ -6,6 +6,8 @@ the "test" folder can be deleted for saving disk space.
 ## Try WudimeiMVC
 WudimeiMVC is a ready-to-use project that wrote by the same author,it's base on WudimeiPHP, url https://github.com/wudimeicom/WudimeiMVC
 
+Note: the `test` folder is deprecated ,please view the new things from WudimeiMVC
+
 ## Installation:
 
 1. please download wudimeiPHP https://github.com/wudimeicom/WudimeiPHP/archive/master.zip

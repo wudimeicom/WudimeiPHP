@@ -18,7 +18,6 @@ class Mail{
 		}
 		$this->sender = new $class();
 		$this->sender->setProperties($cfg);
-		//print_r( $this->sender );
 	}
 	
 	public function __call($method, $args){

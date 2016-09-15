@@ -14,11 +14,12 @@ class DB{
 	 */
 	protected   $connections;
 	protected   $configs;
-	
+	protected   $config_loaded = false;
 	
 	public function __construct(){
 		
 	}
+	 
 	
 	/**
 	 * Register a connection with the manager.
@@ -35,6 +36,7 @@ class DB{
 	
 	public  function loadConfig( $configFile ){
 		$cfg = include( $configFile );
+		 
 		$connections = $cfg['connections'];
 		$def = $cfg['default'];
 		foreach ( $connections as $key => $item ){
@@ -44,6 +46,7 @@ class DB{
 			}
 			$this->addConnection($item , $name );
 		}
+		$this->config_loaded = true;
 	}
 	/**
 	 * 
@@ -51,6 +54,9 @@ class DB{
 	 * @return  \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public  function connection( $name = 'default' ){
+		if( $this->config_loaded == false ){
+			
+		}
 		if( isset( $this->connections[$name] )){
 			return $this->connections[$name];
 		}
