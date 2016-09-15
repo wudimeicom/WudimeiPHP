@@ -63,6 +63,27 @@ class  ArrayHelper{
 		return $result;
 	}
 	
+	public static function set( &$array, $keys , $value ){
+		$kArr = explode(".", $keys);
+		$cursor = &$array;
+		for( $i=0;$i<count( $kArr);$i++ ){
+			$k = $kArr[$i];
+			if( !isset($cursor[$k] )){
+				//throw new \Exception("Undefined index '" . $k . "'");
+				$cursor = null;
+				break;
+			}
+			else{
+				$cursor= &$cursor[$k];
+			}
+		}
+		if( $cursor != null ){
+			$cursor = $value;
+			 
+		}
+		return $array;
+	}
+	
 	public static function toAssoc( $array_2d , $keyFiledName, $valueFieldName ){
 		$arr = [];
 		if( !empty( $array_2d )){
@@ -83,6 +104,26 @@ class  ArrayHelper{
 					$value = $item->{$valueFieldName};
 				}
 				$arr[ $key] = $value;
+			}
+		}
+		return $arr;
+	}
+	
+	public static function groupBy( $array_2d , $fieldName ){
+		$arr = [];
+		if( !empty( $array_2d )){
+			foreach ( $array_2d as $item ){
+				$value = "";
+				if( is_array( $item ) && isset( $item[$fieldName])){
+					$value = $item[$fieldName];
+				}
+				elseif( isset( $item->{$fieldName} ) ){
+					$value = $item->{$fieldName};
+				}
+				if( !isset( $arr[ $value] )){
+					$arr[ $value] = [];
+				}
+				$arr[ $value][] = $item;
 			}
 		}
 		return $arr;

@@ -1343,3 +1343,25 @@ public static  function getEmailAddressArray( $address);
 public static  function formatEmailAddresses( $address);
 }
 }
+namespace { 
+class Setting{
+
+public static  function loadConfig( $file);
+
+public static  function storeToFile( );
+
+public static  function get( $name);
+
+public static  function buildControl( $settingItem);
+}
+}
+namespace { 
+class Config{
+
+public static  function setDir( $dir);
+
+public static  function get( $keys);
+
+public static  function set( $keys,$value);
+}
+}

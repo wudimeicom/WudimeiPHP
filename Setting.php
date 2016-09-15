@@ -84,7 +84,7 @@ class Setting{
 						$radio->checked(true);
 					}
 					 $control->addChild( $radio );
-					 $control->addChild( \Lang::get( $opt['text']) );
+					 $control->addChild( \Lang::get( $opt['text']) ." " );
 				}
 			}
 			unset($properties['options']);
@@ -106,7 +106,7 @@ class Setting{
 						$radio->checked(true);
 					}
 					$control->addChild( $radio );
-					$control->addChild( \Lang::get( $opt['text']) );
+					$control->addChild( \Lang::get( $opt['text']) . " " );
 				}
 			}
 			unset($properties['options']);

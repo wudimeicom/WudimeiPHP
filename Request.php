@@ -61,7 +61,7 @@ class Request{
 	}
 	
 	public function getInt( $key ,$default = 0){
-		if( is_numeric( $_REQUEST[$key])){
+		if( is_numeric( @$_REQUEST[$key])){
 			return intval( $_REQUEST[$key] );
 		}
 		else{

@@ -22,3 +22,4 @@ $data = BlogModel::where("id",'>',0)->get();
 //$data = BlogModel::where("id",'>',0)->toSql();
 print_r( $data );
 
+
