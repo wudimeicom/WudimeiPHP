@@ -11,59 +11,63 @@ use Request;
 
 class Router{
 	
-	public function run(){
-		
+	public $routeArray;
+	
+	public function loadConfig($routeFile){
+		$this->routeArray = include $routeFile;
 	}
-	public  function handle($routeFile){
-		$routeArray = include $routeFile;
-		$uri = $_SERVER['REQUEST_URI'];
+	
+	public  function handle(){
+		$routeArray = $this->routeArray;
+		$req_uri = $_SERVER['REQUEST_URI'];
+		$uriArr = parse_url( $req_uri );
+		//print_r( $uriArr );
+		$uri = $uriArr['path'];
+		//$queryStringArr = [];
+		//parse_str( $uriArr['query'] , $queryStringArr);
+		//print_r( $_GET );
 		
-		$route = '';
+		$route = [];
 		$params = array();
-		if( $uri == '/'){
-			$route = $routeArray['default'];
-		}
-		else{
-			// echo $uri;
-			//print_r( $routeArray );
-			foreach ( $routeArray as $routeExpr => $item ){
-				$expr = $this->parseRoute($routeExpr);
-				if( preg_match( $expr , $uri)){
-					//echo $expr;
-					preg_match_all( $expr, $uri,$m);
-					//print_r( $m );
-					//$params = @$m[1];
-					for( $i=1;$i<count($m);$i++ ){
-						$params[] = $m[$i][0];
-					}
-					$route = $item;
+	
+		foreach ( $routeArray as $routeItem ){
+			$routeExpr = $routeItem['uri'];
+			$item = $routeItem['closure'];
+			$expr = $this->parseRoute($routeExpr);
+			//echo $expr .'<br />';
+			if( preg_match( $expr , $uri)){
+				//echo $expr;
+				preg_match_all( $expr, $uri,$m);
+				// print_r( $m );
+				//$params = @$m[1];
+				for( $i=1;$i<count($m);$i++ ){
+					$params[] = $m[$i][0];
+				}
+				$route = $routeItem;
+				$verbs = $route['verbs'];
+				if( $verbs== '*' || array_search( Request::method(),  @$verbs) !== false){
 					break;
 				}
 			}
 		}
+	
 		
-		if( $route != ''){
+		if(  !empty($route)  ){
+			  
+			
+				@list( $class,$method) = @explode("@", $route['closure']);
+				 
+				if( $method== null ){
+					$method = "index";
+				}
+				$ctrl = new $class();
+				if( !empty( $params)){
+					call_user_func_array( [$ctrl,$method] , $params );
+				}
+				else{
+					call_user_func( [$ctrl,$method] );
+				}
 			 
-			if( is_array( $route)){
-				$route = $route[Request::method()];
-			}
-			@list( $c,$method) = @explode("@", $route);
-			//echo $c, $m;
-			$class = "\\App\\Controllers\\".$c;
-			if( class_exists( $class) == false ){
-				$class = $c;
-			}
-			if( $method== null ){
-				$method = "index";
-			}
-			$ctrl = new $class();
-			//$ctrl->$m();
-			if( !empty( $params)){
-				call_user_func_array( [$ctrl,$method] , $params );
-			}
-			else{
-				call_user_func( [$ctrl,$method] );
-			}
 		}
 		else{
 			header("HTTP/1.0 404 Not Found");
@@ -103,11 +107,11 @@ class Router{
 		
 		//print_r( $arr );
 		//print_r( $partenArr );
-		$regex = "/";
+		$regex = "/^";
 		for( $i=0;$i< count( $arr);$i++ ){
 			$regex .= $arr[$i] . @$partenArr[$i];
 		}
-		$regex .= "/";
+		$regex .= "$/";
 		$regex .= "i";
 		//echo $regex ;
 		return $regex;
