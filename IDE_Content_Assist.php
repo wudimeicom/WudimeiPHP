@@ -9,6 +9,8 @@ protected $connections ;
 
 protected $configs ; 
 
+protected $config_loaded ; 
+
 public function __construct( );
 /**
 	 * Register a connection with the manager.
@@ -1225,7 +1227,9 @@ public static  function groupAppend( $groupName,$groupName2OrArray,$replace = tr
 namespace { 
 class Router{
 
-public static  function handle( $routeFile);
+public static  function loadConfig( $routeFile);
+
+public static  function handle( );
 
 public static  function parseRoute( $expr);
 }
@@ -1362,6 +1366,34 @@ public static  function setDir( $dir);
 
 public static  function get( $keys);
 
+public static  function load( $sectionName);
+
 public static  function set( $keys,$value);
+}
+}
+namespace { 
+class Route{
+
+public static  function getRoutes( );
+
+public static  function get( $url,$callback);
+
+public static  function post( $url,$callback);
+
+public static  function put( $url,$callback);
+
+public static  function delete( $url,$callback);
+
+public static  function any( $url,$callback);
+
+public static  function match( $verbs,$url,$callback);
+
+public static  function add( $verbs,$url,$callback);
+
+public static  function group( $setting,$closure);
+
+public static  function getPrefix( );
+
+public static  function getNamespace( );
 }
 }
