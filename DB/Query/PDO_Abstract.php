@@ -399,8 +399,11 @@ class PDO_Abstract{
 		if( $page> $pageCount ){
 			$page = $pageCount;
 		}
+		if( $page <= 0 ){
+			$page = 1;
+		}
 		$offset = ($page-1)*$perPage;
-		
+		//echo $this->limit( $perPage, $offset )->toSql();
 		$data = $this->limit( $perPage, $offset )->get();
 		
 		$paginator = new Paginator();

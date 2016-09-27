@@ -108,6 +108,8 @@ function html_select( $attrs ){
 	$options = @$attrs['options'];
 	$value_key = @$attrs['value_key'];
 	$output_key = @$attrs['output_key'];
+	$first_value = @$attrs['first_value'];
+	$first_text = @$attrs['first_text'];
 	
 	if( !is_array( $selected)){
 		$selected = array( $selected );
@@ -122,7 +124,11 @@ function html_select( $attrs ){
 			list($values,$output ) = ArrayHelper::divide( $options);
 		}
 	}
-	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','id_prefix','options','value_key','output_key'] );
+	if( trim( $first_value) != "" ){
+		 array_unshift( $values, $first_value);
+		array_unshift( $output, $first_text);
+	}
+	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','id_prefix','options','value_key','output_key','first_text','first_value'] );
 	$select = new Select();
 	$select->name($name);
 	$select->attr($otherAttrs);

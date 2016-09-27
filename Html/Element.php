@@ -32,7 +32,7 @@ class Element{
 			}
 			return $this;
 		}
-		if( $value == null ){
+		if( $value === null ){
 			return $this->attrs[$name];
 		}
 		$this->attrs[$name] = $value;
