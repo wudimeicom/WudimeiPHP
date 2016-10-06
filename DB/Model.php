@@ -34,12 +34,17 @@ class Model{
 	 
 	public static function __callstatic($method,$args){
 		$model = new static();
-		return call_user_func_array([$model,$method], $args );
+		if( $method == 'find'){
+			return $model->_find( $args[0]);
+		}
+		else{
+			return call_user_func_array([$model,$method], $args );
+		}
 	}
 	
 	
 	
-	public function find( $id ){
+	public function _find( $id ){
 		$data = $this->select->where($this->primaryKey, $id )->limit(1, 0)->get();
 	
 		return @$data[0];

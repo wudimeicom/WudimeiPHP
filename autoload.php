@@ -6,7 +6,7 @@
  * @license The MIT license(MIT)
  */
 spl_autoload_register(function ($class) {
-	
+	//echo $class . '<br />';
 	if( strpos($class,"Wudimei\\") !== false ){
 		
 		$file = __DIR__ . "/" . str_replace("Wudimei\\","", $class) . ".php";
@@ -23,4 +23,5 @@ spl_autoload_register(function ($class) {
 	
 	
 });
-	 
+	
+require_once __DIR__.'/helpers.php';
