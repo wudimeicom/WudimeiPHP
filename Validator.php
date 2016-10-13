@@ -122,6 +122,10 @@ class Validator {
 		}
 		$this->errors [$fieldName] .= $msg;
 	}
+	
+	public function setError( $fieldName, $errorMessage ){
+		$this->errors[ $fieldName ] =$errorMessage;
+	}
 	/**
 	 * get error array
 	 * @return array errors

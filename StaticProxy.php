@@ -32,7 +32,7 @@ trait StaticProxy {
 	public static function callInitMethod(){
 		$classArr = explode("\\",  __CLASS__ );
 		$className = $classArr[ count( $classArr) -1 ];
-		$classInfo = StaticProxyLoader::$alias[ $className ];
+		$classInfo = @StaticProxyLoader::$alias[ $className ];
 			
 		if( isset($classInfo['init_method']) && trim( $classInfo['init_method']) != ""){
 		
