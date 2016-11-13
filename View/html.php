@@ -9,8 +9,7 @@
 use Wudimei\ArrayHelper;
 use Wudimei\Html\CheckBox;
 use Wudimei\Html\Radio;
-use Wudimei\Html\Select;
-use Wudimei\Html\Option;
+
 
 function html_checkboxes( $attrs ){
 	$html = "";
@@ -129,14 +128,14 @@ function html_select( $attrs ){
 		array_unshift( $output, $first_text);
 	}
 	$otherAttrs = ArrayHelper::except( $attrs, ['values','name','selected','output','id_prefix','options','value_key','output_key','first_text','first_value'] );
-	$select = new Select();
+	$select = new Wudimei\Html\Select();
 	$select->name($name);
 	$select->attr($otherAttrs);
 	
 	for( $i=0; $i< count( $values ); $i++ ){
 		$val = $values[$i];
-		$text = $output[$i];
-		$option = new Option();
+		$text = trans( $output[$i] );
+		$option = new Wudimei\Html\Option();
 		$option->addChild( $text );
 		$option->value($val);
 		if( in_array( $val, $selected) ){

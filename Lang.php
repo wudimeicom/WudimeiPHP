@@ -99,6 +99,28 @@ class Lang{
 		$this->langs[ $group][ $name] = $value;
 	}
 	
+	public function transAll( $var ){
+	     if( is_null($var)){
+	         return null;
+	     }
+	     elseif( is_numeric( $var )){
+	         return $var;
+	     }
+         elseif( is_string( $var )){
+             $var = $this->get( $var );
+         }
+         elseif( is_array( $var )){
+             foreach ( $var as $k => $v ){
+                 $var[$k] = $this->transAll( $v );
+             }
+         }
+         elseif( is_object( $var )){
+             foreach ( $var as $property => $value ){
+                   $var->{$property} = $this->transAll( $value );
+             }
+         }
+	    return $var;
+	}
 	/**
 	 * 
 	 * @param string $groupName

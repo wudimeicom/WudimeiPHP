@@ -11,7 +11,7 @@ spl_autoload_register(function ($class) {
 		
 		$file = __DIR__ . "/" . str_replace("Wudimei\\","", $class) . ".php";
 		if( file_exists( $file ) ){
-			 // echo $file . "<br />";
+			 //echo $file . "<br />";
 			require_once $file;
 		}
 	}

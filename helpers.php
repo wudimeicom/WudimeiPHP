@@ -34,3 +34,21 @@ if( function_exists( 'getFloat') == false ){
 		return Wudimei\StaticProxies\Request::getFloat( $name, $default );
 	}
 }
+
+if( function_exists( 'isPost') == false ){
+    function isPost(  ){
+        return Wudimei\StaticProxies\Request::isPost();
+    }
+}
+
+if( function_exists( 'trans') == false ){
+    function trans( $text ,$params = [] ){
+        return Wudimei\StaticProxies\Lang::get( $text, $params );
+    }
+}
+
+if( function_exists( 'backend_url') == false ){
+    function backend_url( $url  ,$params = [] ){
+        return  config("app.backend_url") . $url;
+    }
+}

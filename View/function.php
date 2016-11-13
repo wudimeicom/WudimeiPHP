@@ -15,6 +15,3 @@ function writeln( $string ){
 	return $string . "\n";
 }
 
-function trans( $text ,$params = [] ){
-	return Lang::get( $text, $params );
-}

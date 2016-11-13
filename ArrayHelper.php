@@ -20,6 +20,21 @@ class  ArrayHelper{
 		return $arr;
 	}
 	
+	public static function only($array,$keys){
+	    if( is_string( $keys ) ){
+	        $keys = explode(",", $keys );
+	    }
+	    $arr = array();
+	    if( !empty( $array )){
+	        foreach ( $array as $k => $v ){
+	            if( in_array( $k , $keys) == true ){
+	                $arr[$k] = $v;
+	            }
+	        }
+	    }
+	    return $arr;
+	}
+	
 	public static function divide( $arr ){
 		$keys = array();
 		$values = array();
