@@ -128,6 +128,7 @@ class Lang{
 	 */
 	public function groupUpdate( $groupName , $value){
 		$this->langs[ $groupName ] = $value;
+		 $this->loadedFiles[] = $this->path . "/" . $this->locale . "/" . $groupName . ".php"; //the file may not real exists
 	}
 	
 	/**

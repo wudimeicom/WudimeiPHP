@@ -23,6 +23,11 @@ function html_checkboxes( $attrs ){
 	$value_key = @$attrs['value_key'];
 	$output_key = @$attrs['output_key'];
 	
+	if( empty( $selected )){
+	    $selected = array();
+	    
+	}
+	
 	if( !empty( $options)){
 		if( trim( $value_key )!= "" && trim( $output_key) != "" ){
 			$values = ArrayHelper::getColumn( $options, $value_key);

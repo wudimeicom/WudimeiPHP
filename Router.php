@@ -12,6 +12,8 @@ use Request;
 class Router{
 	
 	public $routeArray;
+	public $controller;
+	public $action;
 	
 	public function loadConfig($routeFile){
 		$this->routeArray = include $routeFile;
@@ -57,9 +59,13 @@ class Router{
 			
 				@list( $class,$method) = @explode("@", $route['closure']);
 				 
+				 
 				if( $method== null ){
 					$method = "index";
 				}
+				
+				$this->controller = $class;
+				$this->action = $method;
 				$ctrl = new $class();
 				if( !empty( $params)){
 					call_user_func_array( [$ctrl,$method] , $params );
@@ -115,6 +121,13 @@ class Router{
 		$regex .= "i";
 		//echo $regex ;
 		return $regex;
+	}
+	
+	public function controller(){
+	    return $this->controller;
+	}
+	public function action(){
+	    return $this->action;
 	}
 }
 ?>

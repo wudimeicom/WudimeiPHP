@@ -29,6 +29,7 @@ class PDO_Abstract{
 		$this->sqlArray["orderBy"] = [];
 		$this->sqlArray["groupBy"] = "";
 		$this->sqlArray["having"] = [];
+		$this->sqlArray['join'] = [];
 	}
 	/**
 	 * 
@@ -219,6 +220,31 @@ class PDO_Abstract{
 		}
 		return $item;
 	}
+	public function appendBindings($moreParams){
+	    if( !empty( $moreParams)){
+	        if( is_array( $moreParams) ){
+	           $this->sqlArray["bindings"] = array_merge( $this->sqlArray["bindings"] , $moreParams );
+	        }
+	        else{
+	            $this->sqlArray["bindings"][] = $moreParams;
+	        }
+	    }
+	}
+	public function buildJoin(){
+	    $joins = $this->sqlArray['join']; //[] = [$table,$condition,$params];
+	    $sub_sql = "";
+	    for( $i=0;$i<count($joins);$i++ ){
+	        $l = $joins[$i];
+	        $join = $l[0];
+	        $tbl =  $this->config['prefix'].$l[1];
+	        $cdt = $l[2];
+	        $params = $l[3];
+	        $sub_sql .= " ".  $join . "  " . $tbl . " on " . $cdt ;
+	        $this->appendBindings( $params );
+	    }
+	    
+	    return $sub_sql;
+	}
 	/**
 	 * $where = [
 	 *   [ where , id , =, ?, and ]
@@ -251,7 +277,7 @@ class PDO_Abstract{
 					$params[] = "?";
 				}
 				$sql .= " " . $boolean . " " . $field . " in(" . implode(',',$params) . " ) ";
-				$this->sqlArray["bindings"] = array_merge( $this->sqlArray["bindings"] , $values );
+				$this->appendBindings( $values );
 			}
 			elseif( $type == "whereRaw" ){
 				$sqlParam = $item[1];
@@ -322,6 +348,9 @@ class PDO_Abstract{
 		$sql = "select " . $select;
 		$table = $this->getSqlArrayItem("table","");
 		$sql .= " from " . $this->config['prefix'].$table;
+		$sql .= $this->buildJoin();
+		
+		
 		$sql .= $this->buildWhere();
 		
 
@@ -351,6 +380,15 @@ class PDO_Abstract{
 		return $sql;
 	}
 	
+	public function sql(){
+	    $o = clone $this;
+	    return $o->toSql();
+	}
+	/*
+	public function sqlParams(){
+ 
+	    return $this->sqlArray["bindings"];
+	}*/
 	/**
 	 * @return array
 	 */
@@ -499,13 +537,7 @@ class PDO_Abstract{
 	 * @return array
 	 */
 	public function executeQuery( $sql ,$params = null ){
-		$pdo = $this->getPDO();
-		
-		$sth = $pdo->prepare( $sql );
-		$ret = $sth->execute( $params );
-		$this->errorInfo($sth);
-		
-		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
+		$sth = $this->executeUpdate($sql, $params );
 		$data = $sth->fetchAll(static::$fetchStyle);
 		//echo $sql;
 		return $data;
@@ -521,9 +553,9 @@ class PDO_Abstract{
 		//echo $sql;
 		$sth = $pdo->prepare( $sql );
 		$ret = $sth->execute( $params );
-		$this->errorInfo($sth);
+		$this->errorInfo($sth,$sql,$params);
 		
-		self::$sqlHistory[] = [$sql,$params, $sth->errorInfo()];
+		self::$sqlHistory[] = [$sql,$params];
 		
 		return $sth;
 	}
@@ -531,9 +563,11 @@ class PDO_Abstract{
 	 * 
 	 * @param \PDOStatement $sth
 	 */
-	public function errorInfo($sth){
+	public function errorInfo($sth,$sql,$params){
 		$e = $sth->errorInfo();
-		$msg = "SQLSTATE error code: " . $e[0] . " \r\n";
+		$msg = "SQL: " .$sql . "\r\n";
+		$msg .= "Params: " . var_export( $params,true ) . "\r\n";
+		$msg .= "SQLSTATE error code: " . $e[0] . " \r\n";
 		$msg .= "Driver-specific error code: " . $e[1] . " \r\n";
 		$msg .= "Driver-specific error message: " . $e[2] . " \r\n";
 		
@@ -616,6 +650,30 @@ class PDO_Abstract{
 		
 	}
 	
-
+	protected  function _join( $join_type,$table,$condition,$params = array()){
+	    $this->sqlArray['join'][] = [$join_type,$table,$condition,$params];
+	}
+	
+	public function leftJoin($table,$condition,$params = array()){
+	   $this->_join('left join', $table, $condition,$params);
+	   return $this;
+	}
+	public function rightJoin($table,$condition,$params = array()){
+	    $this->_join('right join', $table, $condition,$params);
+	    return $this;
+	}
+	public function innerJoin($table,$condition,$params = array()){
+	    $this->_join('INNER JOIN', $table, $condition,$params);
+	    return $this;
+	}
+	public function outerJoin($table,$condition,$params = array()){
+	    $this->_join('OUTER JOIN', $table, $condition,$params);
+	    return $this;
+	}
+	public function naturalJoin($table,$condition,$params = array()){
+	    $this->_join('NATURAL JOIN', $table, $condition,$params);
+	    return $this;
+	}
+	
 	
 }

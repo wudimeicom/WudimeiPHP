@@ -22,8 +22,12 @@ class Validator {
 	 * @param array $rules
 	 * @param array $messages
 	 */
-	public function validate($array, $rules, $messages = []) {
-		\Lang::load('validation');
+	public function validate($array, $rules, $messages = [], $attributes=[] ) {
+		//\Lang::load('validation');
+		if( !empty( $attributes )){
+		    \Lang::groupUpdate( 'fieldlabels' ,$attributes);
+		}
+		
 		$success = true;
 		foreach ( $rules as $fieldName => $ruleItems ) {
 			
