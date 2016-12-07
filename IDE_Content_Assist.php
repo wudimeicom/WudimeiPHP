@@ -162,6 +162,10 @@ public function orHavingRaw( $sql,$bindings = array (
 	 * @return string
 	 */
 public function getSqlArrayItem( $name,$default = NULL);
+
+public function appendBindings( $moreParams);
+
+public function buildJoin( );
 /**
 	 * $where = [
 	 *   [ where , id , =, ?, and ]
@@ -178,6 +182,8 @@ public function buildHaving( );
 	 * @return string
 	 */
 public function toSql( );
+
+public function sql( );
 /**
 	 * @return array
 	 */
@@ -257,7 +263,7 @@ public function executeUpdate( $sql,$params = NULL);
 	 * 
 	 * @param \PDOStatement $sth
 	 */
-public function errorInfo( $sth);
+public function errorInfo( $sth,$sql,$params);
 /**
 	 * 
 	 * @param array|\stdClass $data
@@ -274,6 +280,24 @@ public function update( $data);
 	 * @return int affected rows
 	 */
 public function delete( );
+
+protected function _join( $join_type,$table,$condition,$params = array (
+));
+
+public function leftJoin( $table,$condition,$params = array (
+));
+
+public function rightJoin( $table,$condition,$params = array (
+));
+
+public function innerJoin( $table,$condition,$params = array (
+));
+
+public function outerJoin( $table,$condition,$params = array (
+));
+
+public function naturalJoin( $table,$condition,$params = array (
+));
 }
 }
 namespace { 
@@ -428,6 +452,10 @@ public static  function orHavingRaw( $sql,$bindings = array (
 	 * @return string
 	 */
 public static  function getSqlArrayItem( $name,$default = NULL);
+
+public static  function appendBindings( $moreParams);
+
+public static  function buildJoin( );
 /**
 	 * $where = [
 	 *   [ where , id , =, ?, and ]
@@ -444,6 +472,8 @@ public static  function buildHaving( );
 	 * @return string
 	 */
 public static  function toSql( );
+
+public static  function sql( );
 /**
 	 * @return array
 	 */
@@ -523,7 +553,7 @@ public static  function executeUpdate( $sql,$params = NULL);
 	 * 
 	 * @param \PDOStatement $sth
 	 */
-public static  function errorInfo( $sth);
+public static  function errorInfo( $sth,$sql,$params);
 /**
 	 * 
 	 * @param array|\stdClass $data
@@ -540,6 +570,24 @@ public static  function update( $data);
 	 * @return int affected rows
 	 */
 public static  function delete( );
+
+protected static  function _join( $join_type,$table,$condition,$params = array (
+));
+
+public static  function leftJoin( $table,$condition,$params = array (
+));
+
+public static  function rightJoin( $table,$condition,$params = array (
+));
+
+public static  function innerJoin( $table,$condition,$params = array (
+));
+
+public static  function outerJoin( $table,$condition,$params = array (
+));
+
+public static  function naturalJoin( $table,$condition,$params = array (
+));
 }
 }
 namespace { 
@@ -549,7 +597,7 @@ public static  function __call( $name,$args);
 
 public static static  function __callstatic( $method,$args);
 
-public static  function find( $id);
+public static  function _find( $id);
 
 public static  function clearSqlArray( );
 /**
@@ -682,6 +730,10 @@ public static  function orHavingRaw( $sql,$bindings = array (
 	 * @return string
 	 */
 public static  function getSqlArrayItem( $name,$default = NULL);
+
+public static  function appendBindings( $moreParams);
+
+public static  function buildJoin( );
 /**
 	 * $where = [
 	 *   [ where , id , =, ?, and ]
@@ -698,6 +750,8 @@ public static  function buildHaving( );
 	 * @return string
 	 */
 public static  function toSql( );
+
+public static  function sql( );
 /**
 	 * @return array
 	 */
@@ -777,7 +831,7 @@ public static  function executeUpdate( $sql,$params = NULL);
 	 * 
 	 * @param \PDOStatement $sth
 	 */
-public static  function errorInfo( $sth);
+public static  function errorInfo( $sth,$sql,$params);
 /**
 	 * 
 	 * @param array|\stdClass $data
@@ -794,6 +848,24 @@ public static  function update( $data);
 	 * @return int affected rows
 	 */
 public static  function delete( );
+
+protected static  function _join( $join_type,$table,$condition,$params = array (
+));
+
+public static  function leftJoin( $table,$condition,$params = array (
+));
+
+public static  function rightJoin( $table,$condition,$params = array (
+));
+
+public static  function innerJoin( $table,$condition,$params = array (
+));
+
+public static  function outerJoin( $table,$condition,$params = array (
+));
+
+public static  function naturalJoin( $table,$condition,$params = array (
+));
 }
 }
 namespace Wudimei\DB{ 
@@ -814,7 +886,7 @@ public function __call( $name,$args);
 
 public static function __callstatic( $method,$args);
 
-public function find( $id);
+public function _find( $id);
 
 public function clearSqlArray( );
 /**
@@ -947,6 +1019,10 @@ public function orHavingRaw( $sql,$bindings = array (
 	 * @return string
 	 */
 public function getSqlArrayItem( $name,$default = NULL);
+
+public function appendBindings( $moreParams);
+
+public function buildJoin( );
 /**
 	 * $where = [
 	 *   [ where , id , =, ?, and ]
@@ -963,6 +1039,8 @@ public function buildHaving( );
 	 * @return string
 	 */
 public function toSql( );
+
+public function sql( );
 /**
 	 * @return array
 	 */
@@ -1042,7 +1120,7 @@ public function executeUpdate( $sql,$params = NULL);
 	 * 
 	 * @param \PDOStatement $sth
 	 */
-public function errorInfo( $sth);
+public function errorInfo( $sth,$sql,$params);
 /**
 	 * 
 	 * @param array|\stdClass $data
@@ -1059,6 +1137,24 @@ public function update( $data);
 	 * @return int affected rows
 	 */
 public function delete( );
+
+protected function _join( $join_type,$table,$condition,$params = array (
+));
+
+public function leftJoin( $table,$condition,$params = array (
+));
+
+public function rightJoin( $table,$condition,$params = array (
+));
+
+public function innerJoin( $table,$condition,$params = array (
+));
+
+public function outerJoin( $table,$condition,$params = array (
+));
+
+public function naturalJoin( $table,$condition,$params = array (
+));
 }
 }
 namespace { 
@@ -1209,6 +1305,8 @@ public static  function get( $name,$args = array (
 	 * @param string $value
 	 */
 public static  function set( $name,$value);
+
+public static  function transAll( $var);
 /**
 	 * 
 	 * @param string $groupName
@@ -1232,6 +1330,10 @@ public static  function loadConfig( $routeFile);
 public static  function handle( );
 
 public static  function parseRoute( $expr);
+
+public static  function controller( );
+
+public static  function action( );
 }
 }
 namespace { 
@@ -1275,6 +1377,7 @@ class Validator{
 	 * @param array $messages
 	 */
 public static  function validate( $array,$rules,$messages = array (
+),$attributes = array (
 ));
 /**
 	 * 
@@ -1289,6 +1392,8 @@ public static  function parseRule( $rules);
 	 * @param RuleValidator $ruleValidator
 	 */
 public static  function addError( $fieldName,$ruleName,$messages,$ruleValidator);
+
+public static  function setError( $fieldName,$errorMessage);
 /**
 	 * get error array
 	 * @return array errors
@@ -1302,6 +1407,21 @@ namespace {
 class Redirect{
 
 public static  function to( $url);
+
+public static  function back( );
+
+public static  function with( $key,$value);
+
+public static  function withErrors( $errors = array (
+));
+
+public static  function withSuccess( $message);
+
+public static  function withWarning( $message);
+
+public static  function withInfo( $message);
+
+public static  function withDanger( $message);
 }
 }
 namespace { 
