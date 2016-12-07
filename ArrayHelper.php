@@ -77,7 +77,14 @@ class  ArrayHelper{
 		}
 		return $result;
 	}
-	
+	/**
+	 * eg: set($arr, "student.name" , "jim");
+	 * 
+	 * @param unknown $array
+	 * @param unknown $keys
+	 * @param unknown $value
+	 * @return unknown
+	 */
 	public static function set( &$array, $keys , $value ){
 		$kArr = explode(".", $keys);
 		$cursor = &$array;
