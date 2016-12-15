@@ -87,6 +87,11 @@ class BasicSession
 			return null;
 		}
 	}
+	
+	public function getError( $key  = "default" ){
+	    $errors = $this->get("errors");
+	    return @$errors[$key];
+	}
 	public function all(  ){
 	
 		return $this->session_data;

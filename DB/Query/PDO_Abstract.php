@@ -575,6 +575,9 @@ class PDO_Abstract{
 			if( $e[1]>0)
 			echo $msg;
 		}
+	   if( isset( $GLOBALS['db_debug'])){
+		    echo $msg;
+		}
 	}
 	
 	/**

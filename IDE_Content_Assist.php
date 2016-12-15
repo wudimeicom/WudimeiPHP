@@ -1,35 +1,6 @@
 <?php 
-namespace Wudimei{ 
-class DB{
-/**
-	 * 
-	 * @var array
-	 */
-protected $connections ; 
-
-protected $configs ; 
-
-protected $config_loaded ; 
-
-public function __construct( );
-/**
-	 * Register a connection with the manager.
-	 *
-	 * @param  array   $config
-	 * @param  string  $name
-	 * @return void
-	 */
-public function addConnection( $config,$name = 'default');
-
-public function loadConfig( $configFile);
-/**
-	 * 
-	 * @param string $name
-	 * @return  \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function connection( $name = 'default');
-
-public function __call( $method,$args);
+namespace { 
+trait not_static_db{
 
 public function clearSqlArray( );
 /**
@@ -301,7 +272,292 @@ public function naturalJoin( $table,$condition,$params = array (
 }
 }
 namespace { 
+trait static_db{
+
+public static  function clearSqlArray( );
+/**
+	 * 
+	 * @param string $select
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function select( $select = '*');
+/**
+	 * 
+	 * @param string $tableName
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function from( $tableName);
+/**
+	 * 
+	 * @param string $tableName
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function table( $tableName);
+/**
+	 * 
+	 * @param int $limit
+	 * @param int $offset
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function limit( $limit,$offset);
+/**
+	 * 
+	 * @param string $field
+	 * @param string $direction
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orderBy( $field,$direction = 'asc');
+/**
+	 * 
+	 * @param string $field
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function groupBy( $field);
+/**
+	 * 
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function where( $field,$param2,$param3 = NULL,$boolean = 'and');
+/**
+	 * 
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orWhere( $field,$param2,$param3 = NULL);
+/**
+	 * 
+	 * @param string $sql
+	 * @param array $bindings
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function whereRaw( $sql,$bindings = array (
+),$boolean = 'and');
+/**
+	 * 
+	 * @param string $sql
+	 * @param array $bindings
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orWhereRaw( $sql,$bindings = array (
+));
+/**
+	 * 
+	 * @param string $field
+	 * @param array $values
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function whereIn( $field,$values = array (
+),$boolean = 'and');
+/**
+	 * 
+	 * @param string $field
+	 * @param array $values
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orWhereIn( $field,$values = array (
+));
+/**
+	 * 
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function having( $field,$param2,$param3 = NULL,$boolean = 'and');
+/**
+	 * 
+	 * @param string $field
+	 * @param string $param2
+	 * @param string $param3
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orHaving( $field,$param2,$param3 = NULL);
+/**
+	 * 
+	 * @param string $sql
+	 * @param array $bindings
+	 * @param string $boolean
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function havingRaw( $sql,$bindings = array (
+),$boolean = 'and');
+/**
+	 * 
+	 * @param string $sql
+	 * @param array $bindings
+	 * @return \Wudimei\DB\Query\PDO_Abstract
+	 */
+public static  function orHavingRaw( $sql,$bindings = array (
+));
+/**
+	 * 
+	 * @param string $name
+	 * @param string $default
+	 * @return string
+	 */
+public static  function getSqlArrayItem( $name,$default = NULL);
+
+public static  function appendBindings( $moreParams);
+
+public static  function buildJoin( );
+/**
+	 * $where = [
+	 *   [ where , id , =, ?, and ]
+	 *   [ whereIn , id, [1,2,3],and ]
+	 * ]
+	 * @return string
+	 */
+public static  function buildWhere( );
+/**
+	 * @return string
+	 */
+public static  function buildHaving( );
+/**
+	 * @return string
+	 */
+public static  function toSql( );
+
+public static  function sql( );
+/**
+	 * @return array
+	 */
+public static  function get( );
+/**
+	 * @return array
+	 */
+public static  function all( );
+/**
+	 * @return array|stdClass
+	 */
+public static  function first( );
+/**
+	 * 
+	 * @param number $perPage
+	 * @param int $page
+	 * @return Paginator
+	 */
+public static  function paginate( $perPage = 15,$page = NULL);
+/**
+	 * 
+	 * @param string $field
+	 * @return int
+	 */
+public static  function count( $field = '*');
+/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
+public static  function max( $field = '*');
+/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
+public static  function min( $field = '*');
+/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
+public static  function sum( $field = '*');
+/**
+	 *
+	 * @param string $field
+	 * @return int|float|double
+	 */
+public static  function avg( $field = '*');
+/**
+	 * @param string $function sql function name,eg. max,count
+	 * @param string $field
+	 * @return int|float|double
+	 */
+public static  function _function( $function,$field = '*');
+/**
+	 * @return \PDO
+	 */
+public static  function getPDO( );
+
+public static  function getDSN( );
+/**
+	 * 
+	 * @param unknown $sql
+	 * @param unknown $params
+	 * @return array
+	 */
+public static  function executeQuery( $sql,$params = NULL);
+/**
+	 * 
+	 * @param unknown $sql
+	 * @param unknown $params
+	 * @return PDOStatement
+	 */
+public static  function executeUpdate( $sql,$params = NULL);
+/**
+	 * 
+	 * @param \PDOStatement $sth
+	 */
+public static  function errorInfo( $sth,$sql,$params);
+/**
+	 * 
+	 * @param array|\stdClass $data
+	 * @return int last insert id
+	 */
+public static  function insert( $data);
+/**
+	 * 
+	 * @param array|\stdClass $data
+	 * @return int affected rows
+	 */
+public static  function update( $data);
+/**
+	 * @return int affected rows
+	 */
+public static  function delete( );
+
+protected static  function _join( $join_type,$table,$condition,$params = array (
+));
+
+public static  function leftJoin( $table,$condition,$params = array (
+));
+
+public static  function rightJoin( $table,$condition,$params = array (
+));
+
+public static  function innerJoin( $table,$condition,$params = array (
+));
+
+public static  function outerJoin( $table,$condition,$params = array (
+));
+
+public static  function naturalJoin( $table,$condition,$params = array (
+));
+}
+}
+namespace Wudimei\DB\Query{ 
+class PDO_Abstract{
+use not_static_db;}
+}
+namespace Wudimei{ 
 class DB{
+use not_static_db;/**
+	 * 
+	 * @var array
+	 */
+protected $connections ; 
+
+protected $configs ; 
+
+protected $config_loaded ; 
 /**
 	 * Register a connection with the manager.
 	 *
@@ -320,557 +576,43 @@ public static  function loadConfig( $configFile);
 public static  function connection( $name = 'default');
 
 public static  function __call( $method,$args);
+}
+}
+namespace { 
+class DB{
+use static_db;/**
+	 * Register a connection with the manager.
+	 *
+	 * @param  array   $config
+	 * @param  string  $name
+	 * @return void
+	 */
+public static  function addConnection( $config,$name = 'default');
 
-public static  function clearSqlArray( );
-/**
-	 * 
-	 * @param string $select
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function select( $select = '*');
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function from( $tableName);
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function table( $tableName);
-/**
-	 * 
-	 * @param int $limit
-	 * @param int $offset
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function limit( $limit,$offset);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $direction
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orderBy( $field,$direction = 'asc');
-/**
-	 * 
-	 * @param string $field
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function groupBy( $field);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function where( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhere( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function whereRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhereRaw( $sql,$bindings = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function whereIn( $field,$values = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhereIn( $field,$values = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function having( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orHaving( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function havingRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orHavingRaw( $sql,$bindings = array (
-));
+public static  function loadConfig( $configFile);
 /**
 	 * 
 	 * @param string $name
-	 * @param string $default
-	 * @return string
+	 * @return  \Wudimei\DB\Query\PDO_Abstract
 	 */
-public static  function getSqlArrayItem( $name,$default = NULL);
+public static  function connection( $name = 'default');
 
-public static  function appendBindings( $moreParams);
-
-public static  function buildJoin( );
-/**
-	 * $where = [
-	 *   [ where , id , =, ?, and ]
-	 *   [ whereIn , id, [1,2,3],and ]
-	 * ]
-	 * @return string
-	 */
-public static  function buildWhere( );
-/**
-	 * @return string
-	 */
-public static  function buildHaving( );
-/**
-	 * @return string
-	 */
-public static  function toSql( );
-
-public static  function sql( );
-/**
-	 * @return array
-	 */
-public static  function get( );
-/**
-	 * @return array
-	 */
-public static  function all( );
-/**
-	 * @return array|stdClass
-	 */
-public static  function first( );
-/**
-	 * 
-	 * @param number $perPage
-	 * @param int $page
-	 * @return Paginator
-	 */
-public static  function paginate( $perPage = 15,$page = NULL);
-/**
-	 * 
-	 * @param string $field
-	 * @return int
-	 */
-public static  function count( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function max( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function min( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function sum( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function avg( $field = '*');
-/**
-	 * @param string $function sql function name,eg. max,count
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function _function( $function,$field = '*');
-/**
-	 * @return \PDO
-	 */
-public static  function getPDO( );
-
-public static  function getDSN( );
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return array
-	 */
-public static  function executeQuery( $sql,$params = NULL);
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return PDOStatement
-	 */
-public static  function executeUpdate( $sql,$params = NULL);
-/**
-	 * 
-	 * @param \PDOStatement $sth
-	 */
-public static  function errorInfo( $sth,$sql,$params);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int last insert id
-	 */
-public static  function insert( $data);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int affected rows
-	 */
-public static  function update( $data);
-/**
-	 * @return int affected rows
-	 */
-public static  function delete( );
-
-protected static  function _join( $join_type,$table,$condition,$params = array (
-));
-
-public static  function leftJoin( $table,$condition,$params = array (
-));
-
-public static  function rightJoin( $table,$condition,$params = array (
-));
-
-public static  function innerJoin( $table,$condition,$params = array (
-));
-
-public static  function outerJoin( $table,$condition,$params = array (
-));
-
-public static  function naturalJoin( $table,$condition,$params = array (
-));
+public static  function __call( $method,$args);
 }
 }
 namespace { 
 class Model{
-
+use static_db;
 public static  function __call( $name,$args);
 
 public static static  function __callstatic( $method,$args);
 
 public static  function _find( $id);
-
-public static  function clearSqlArray( );
-/**
-	 * 
-	 * @param string $select
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function select( $select = '*');
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function from( $tableName);
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function table( $tableName);
-/**
-	 * 
-	 * @param int $limit
-	 * @param int $offset
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function limit( $limit,$offset);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $direction
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orderBy( $field,$direction = 'asc');
-/**
-	 * 
-	 * @param string $field
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function groupBy( $field);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function where( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhere( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function whereRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhereRaw( $sql,$bindings = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function whereIn( $field,$values = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orWhereIn( $field,$values = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function having( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orHaving( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function havingRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public static  function orHavingRaw( $sql,$bindings = array (
-));
-/**
-	 * 
-	 * @param string $name
-	 * @param string $default
-	 * @return string
-	 */
-public static  function getSqlArrayItem( $name,$default = NULL);
-
-public static  function appendBindings( $moreParams);
-
-public static  function buildJoin( );
-/**
-	 * $where = [
-	 *   [ where , id , =, ?, and ]
-	 *   [ whereIn , id, [1,2,3],and ]
-	 * ]
-	 * @return string
-	 */
-public static  function buildWhere( );
-/**
-	 * @return string
-	 */
-public static  function buildHaving( );
-/**
-	 * @return string
-	 */
-public static  function toSql( );
-
-public static  function sql( );
-/**
-	 * @return array
-	 */
-public static  function get( );
-/**
-	 * @return array
-	 */
-public static  function all( );
-/**
-	 * @return array|stdClass
-	 */
-public static  function first( );
-/**
-	 * 
-	 * @param number $perPage
-	 * @param int $page
-	 * @return Paginator
-	 */
-public static  function paginate( $perPage = 15,$page = NULL);
-/**
-	 * 
-	 * @param string $field
-	 * @return int
-	 */
-public static  function count( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function max( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function min( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function sum( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function avg( $field = '*');
-/**
-	 * @param string $function sql function name,eg. max,count
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public static  function _function( $function,$field = '*');
-/**
-	 * @return \PDO
-	 */
-public static  function getPDO( );
-
-public static  function getDSN( );
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return array
-	 */
-public static  function executeQuery( $sql,$params = NULL);
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return PDOStatement
-	 */
-public static  function executeUpdate( $sql,$params = NULL);
-/**
-	 * 
-	 * @param \PDOStatement $sth
-	 */
-public static  function errorInfo( $sth,$sql,$params);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int last insert id
-	 */
-public static  function insert( $data);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int affected rows
-	 */
-public static  function update( $data);
-/**
-	 * @return int affected rows
-	 */
-public static  function delete( );
-
-protected static  function _join( $join_type,$table,$condition,$params = array (
-));
-
-public static  function leftJoin( $table,$condition,$params = array (
-));
-
-public static  function rightJoin( $table,$condition,$params = array (
-));
-
-public static  function innerJoin( $table,$condition,$params = array (
-));
-
-public static  function outerJoin( $table,$condition,$params = array (
-));
-
-public static  function naturalJoin( $table,$condition,$params = array (
-));
 }
 }
 namespace Wudimei\DB{ 
 class Model{
-
+use not_static_db,static_db;
 public $table ; 
 
 public $primaryKey ; 
@@ -882,279 +624,17 @@ public $connection ;
 	 */
 public $select ; 
 
-public function __call( $name,$args);
+public static  function __call( $name,$args);
 
-public static function __callstatic( $method,$args);
+public static static  function __callstatic( $method,$args);
 
-public function _find( $id);
+public static  function _find( $id);
 
-public function clearSqlArray( );
-/**
-	 * 
-	 * @param string $select
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function select( $select = '*');
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function from( $tableName);
-/**
-	 * 
-	 * @param string $tableName
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function table( $tableName);
-/**
-	 * 
-	 * @param int $limit
-	 * @param int $offset
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function limit( $limit,$offset);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $direction
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orderBy( $field,$direction = 'asc');
-/**
-	 * 
-	 * @param string $field
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function groupBy( $field);
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function where( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orWhere( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function whereRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orWhereRaw( $sql,$bindings = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function whereIn( $field,$values = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param array $values
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orWhereIn( $field,$values = array (
-));
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function having( $field,$param2,$param3 = NULL,$boolean = 'and');
-/**
-	 * 
-	 * @param string $field
-	 * @param string $param2
-	 * @param string $param3
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orHaving( $field,$param2,$param3 = NULL);
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @param string $boolean
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function havingRaw( $sql,$bindings = array (
-),$boolean = 'and');
-/**
-	 * 
-	 * @param string $sql
-	 * @param array $bindings
-	 * @return \Wudimei\DB\Query\PDO_Abstract
-	 */
-public function orHavingRaw( $sql,$bindings = array (
-));
-/**
-	 * 
-	 * @param string $name
-	 * @param string $default
-	 * @return string
-	 */
-public function getSqlArrayItem( $name,$default = NULL);
+public static  function __call( $name,$args);
 
-public function appendBindings( $moreParams);
+public static static  function __callstatic( $method,$args);
 
-public function buildJoin( );
-/**
-	 * $where = [
-	 *   [ where , id , =, ?, and ]
-	 *   [ whereIn , id, [1,2,3],and ]
-	 * ]
-	 * @return string
-	 */
-public function buildWhere( );
-/**
-	 * @return string
-	 */
-public function buildHaving( );
-/**
-	 * @return string
-	 */
-public function toSql( );
-
-public function sql( );
-/**
-	 * @return array
-	 */
-public function get( );
-/**
-	 * @return array
-	 */
-public function all( );
-/**
-	 * @return array|stdClass
-	 */
-public function first( );
-/**
-	 * 
-	 * @param number $perPage
-	 * @param int $page
-	 * @return Paginator
-	 */
-public function paginate( $perPage = 15,$page = NULL);
-/**
-	 * 
-	 * @param string $field
-	 * @return int
-	 */
-public function count( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public function max( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public function min( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public function sum( $field = '*');
-/**
-	 *
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public function avg( $field = '*');
-/**
-	 * @param string $function sql function name,eg. max,count
-	 * @param string $field
-	 * @return int|float|double
-	 */
-public function _function( $function,$field = '*');
-/**
-	 * @return \PDO
-	 */
-public function getPDO( );
-
-public function getDSN( );
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return array
-	 */
-public function executeQuery( $sql,$params = NULL);
-/**
-	 * 
-	 * @param unknown $sql
-	 * @param unknown $params
-	 * @return PDOStatement
-	 */
-public function executeUpdate( $sql,$params = NULL);
-/**
-	 * 
-	 * @param \PDOStatement $sth
-	 */
-public function errorInfo( $sth,$sql,$params);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int last insert id
-	 */
-public function insert( $data);
-/**
-	 * 
-	 * @param array|\stdClass $data
-	 * @return int affected rows
-	 */
-public function update( $data);
-/**
-	 * @return int affected rows
-	 */
-public function delete( );
-
-protected function _join( $join_type,$table,$condition,$params = array (
-));
-
-public function leftJoin( $table,$condition,$params = array (
-));
-
-public function rightJoin( $table,$condition,$params = array (
-));
-
-public function innerJoin( $table,$condition,$params = array (
-));
-
-public function outerJoin( $table,$condition,$params = array (
-));
-
-public function naturalJoin( $table,$condition,$params = array (
-));
+public static  function _find( $id);
 }
 }
 namespace { 
@@ -1435,39 +915,6 @@ public static  function cleanDeep( $arr);
 }
 }
 namespace { 
-class Mail{
-
-public static  function loadConfig( $configFile);
-
-public static  function __call( $method,$args);
-
-public static  function send( );
-
-public static  function to( $to);
-
-public static  function cc( $cc);
-
-public static  function bcc( $bcc);
-
-public static  function subject( $subject);
-
-public static  function content( $content);
-
-public static  function contentType( $contentType);
-
-public static  function debug( $debug);
-
-public static  function setProperties( $cfg);
-
-public static  function getEmailAddressArray( $address);
-/**
-	 * pending array("name"=>"","email"=>"")
-	 * @var type string
-	 */
-public static  function formatEmailAddresses( $address);
-}
-}
-namespace { 
 class Setting{
 
 public static  function loadConfig( $file);
@@ -1515,5 +962,38 @@ public static  function group( $setting,$closure);
 public static  function getPrefix( );
 
 public static  function getNamespace( );
+}
+}
+namespace { 
+class Mail{
+
+public static  function loadConfig( $configFile);
+
+public static  function __call( $method,$args);
+
+public static  function send( );
+
+public static  function to( $to);
+
+public static  function cc( $cc);
+
+public static  function bcc( $bcc);
+
+public static  function subject( $subject);
+
+public static  function content( $content);
+
+public static  function contentType( $contentType);
+
+public static  function debug( $debug);
+
+public static  function setProperties( $cfg);
+
+public static  function getEmailAddressArray( $address);
+/**
+	 * pending array("name"=>"","email"=>"")
+	 * @var type string
+	 */
+public static  function formatEmailAddresses( $address);
 }
 }

@@ -23,11 +23,13 @@ class Redirect{
 	     return $this;
 	}
 	
-	public function withErrors(  $errors = [] ){
+	public function withErrors(  $errors = [] , $key = "default" ){
 	    if( empty( $errors )){
 	        $errors = \Validator::getErrors() ;
 	    }
-	    \Session::flash( "errors", $errors );
+	    $sess_errors = \Session::get("errors");
+	    $sess_errors[$key] = $errors;
+	    \Session::flash( "errors",$sess_errors );
 	     
 	    return $this;
 	}
