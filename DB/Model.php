@@ -8,7 +8,7 @@
 namespace Wudimei\DB;
 use DB;
 use Wudimei\DB\Query\PDO_MYSQL;
- 
+use Event;
 
 class Model{
 	public $table; //without prefix
@@ -23,10 +23,11 @@ class Model{
 	
 	
 	public function __construct(){
-		$select = DB::connection($this->connection);
+		$select = clone DB::connection($this->connection);
+		//$select->setModel( $this);
 		$select->table( $this->table );
-		$this->select = $select;
-		
+		$this->select =  $select;
+		$this->bindEvents();
 	}
 	public function __call($name,$args){
 		return call_user_func_array([$this->select,$name], $args );
@@ -48,5 +49,64 @@ class Model{
 		$data = $this->select->where($this->primaryKey, $id )->limit(1, 0)->get();
 	
 		return @$data[0];
+	}
+	
+	public function bindEvents(){
+	    $tableName = $this->select->getTableName() ;
+	    Event::listen( $tableName  . ".beforeUpdate", [$this,'beforeUpdate'] );
+	    Event::listen( $tableName  . ".afterUpdate", [$this,'afterUpdate'] );
+	    Event::listen( $tableName  . ".beforeInsert", [$this,'beforeInsert'] );
+	    Event::listen( $tableName  . ".afterInsert", [$this,'afterInsert'] );
+	    Event::listen( $tableName  . ".beforeDelete", [$this,'beforeDelete'] );
+	    Event::listen( $tableName  . ".afterDelete", [$this,'afterDelete'] );
+	}
+	/**
+	 * 
+	 * @param unknown $db
+	 * @param unknown $data
+	 */
+	public function beforeUpdate( $db , $data){
+	}
+	/**
+	 * 
+	 * @param \Wudimei\DB\Query\PDO_MYSQL $db
+	 * @param array $data
+	 * @param int $affectedRows
+	 */
+	public function afterUpdate( $db , $data,$affectedRows){
+	}
+	/**
+	 *
+	 * @param unknown $db
+	 * @param unknown $data
+	 */
+	public function beforeInsert( $db , $data){
+	}
+	/**
+	 *
+	 * @param \Wudimei\DB\Query\PDO_MYSQL $db
+	 * @param array $data
+	 * @param int $affectedRows
+	 */
+	public function afterInsert( $db , $data,$lastInsertId){
+	    
+	}
+	
+	/**
+	 *
+	 * @param unknown $db
+	 * @param unknown $data
+	 */
+	public function beforeDelete( $db  ){
+	   
+	}
+	/**
+	 *
+	 * @param \Wudimei\DB\Query\PDO_MYSQL $db
+	 * @param array $data
+	 * @param int $affectedRows
+	 */
+	public function afterDelete( $db , $affectedRows ){
+	    
 	}
 }

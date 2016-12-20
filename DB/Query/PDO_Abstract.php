@@ -8,28 +8,31 @@
 namespace Wudimei\DB\Query;
 
 use Wudimei\DB\Query\Pagination\Paginator;
+use Event;
 
 class PDO_Abstract{
 	public $config;
-	public $sqlArray;
-	public $pdo;
+	public $clauses;
+	protected $pdo;
+	protected  $model;
+	
 	public static $sqlHistory = [];
 	public static $fetchStyle = \PDO::FETCH_OBJ;
 	public function __construct($config){
 		$this->config = $config;
 		
-		$this->clearSqlArray();
+		$this->clearClauses();
 	}
 	
-	public function clearSqlArray(){
-		$this->sqlArray["select"] = "*";
-		$this->sqlArray["where"] = [];
-		$this->sqlArray["bindings"] = [ ];
-		$this->sqlArray["limit"] = [];
-		$this->sqlArray["orderBy"] = [];
-		$this->sqlArray["groupBy"] = "";
-		$this->sqlArray["having"] = [];
-		$this->sqlArray['join'] = [];
+	public function clearClauses(){
+		$this->clauses["select"] = "*";
+		$this->clauses["where"] = [];
+		$this->clauses["bindings"] = [ ];
+		$this->clauses["limit"] = [];
+		$this->clauses["orderBy"] = [];
+		$this->clauses["groupBy"] = "";
+		$this->clauses["having"] = [];
+		$this->clauses['join'] = [];
 	}
 	/**
 	 * 
@@ -37,7 +40,7 @@ class PDO_Abstract{
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function select($select="*"){
-		$this->sqlArray["select"] = $select;
+		$this->clauses["select"] = $select;
 		return $this;
 	}
 	/**
@@ -46,7 +49,7 @@ class PDO_Abstract{
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function from($tableName){
-		$this->sqlArray["table"] = $tableName;
+		$this->clauses["table"] = $tableName;
 		return $this;
 	}
 	/**
@@ -64,7 +67,7 @@ class PDO_Abstract{
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function limit($limit,$offset){
-		$this->sqlArray["limit"] = [$limit,$offset];
+		$this->clauses["limit"] = [$limit,$offset];
 		return $this;
 	}
 	/**
@@ -74,7 +77,7 @@ class PDO_Abstract{
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function orderBy($field,$direction="asc"){
-		$this->sqlArray["orderBy"][$field] = $direction;
+		$this->clauses["orderBy"][$field] = $direction;
 		return $this;
 	}
 	/**
@@ -83,7 +86,7 @@ class PDO_Abstract{
 	 * @return \Wudimei\DB\Query\PDO_Abstract
 	 */
 	public function groupBy( $field ){
-		$this->sqlArray["groupBy"] = $field ;
+		$this->clauses["groupBy"] = $field ;
 		return $this;
 	}
 	/**
@@ -99,7 +102,7 @@ class PDO_Abstract{
 			$param3 = $param2;
 			$param2 = "=";
 		}
-		$this->sqlArray["where"][] = ['where',$field,$param2,$param3,$boolean];
+		$this->clauses["where"][] = ['where',$field,$param2,$param3,$boolean];
 		return $this;
 	}
 	/**
@@ -121,7 +124,7 @@ class PDO_Abstract{
 	 */
 	public function whereRaw($sql, array $bindings = array(), $boolean = 'and')
 	{
-		$this->sqlArray["where"][] = ['whereRaw',$sql,$bindings,$boolean];
+		$this->clauses["where"][] = ['whereRaw',$sql,$bindings,$boolean];
 		return $this;
 	}
 	/**
@@ -144,7 +147,7 @@ class PDO_Abstract{
 	 */
 	public function whereIn($field, array $values = array(), $boolean = 'and')
 	{
-		$this->sqlArray["where"][] = ['whereIn',$field,$values,$boolean];
+		$this->clauses["where"][] = ['whereIn',$field,$values,$boolean];
 		return $this;
 	}
 	/**
@@ -170,7 +173,7 @@ class PDO_Abstract{
 			$param3 = $param2;
 			$param2 = "=";
 		}
-		$this->sqlArray["having"][] = ['having',$field,$param2,$param3,$boolean];
+		$this->clauses["having"][] = ['having',$field,$param2,$param3,$boolean];
 		return $this;
 	}
 	/**
@@ -192,7 +195,7 @@ class PDO_Abstract{
 	 */
 	public function havingRaw($sql, array $bindings = array(), $boolean = 'and')
 	{
-		$this->sqlArray["having"][] = ['havingRaw',$sql,$bindings,$boolean];
+		$this->clauses["having"][] = ['havingRaw',$sql,$bindings,$boolean];
 		return $this;
 	}
 	/**
@@ -213,8 +216,8 @@ class PDO_Abstract{
 	 * @param string $default
 	 * @return string
 	 */
-	public function getSqlArrayItem( $name , $default = null){
-		$item = @$this->sqlArray[$name];
+	public function getClausesItem( $name , $default = null){
+		$item = @$this->clauses[$name];
 		if( $item == null ){
 			return $default;
 		}
@@ -223,15 +226,15 @@ class PDO_Abstract{
 	public function appendBindings($moreParams){
 	    if( !empty( $moreParams)){
 	        if( is_array( $moreParams) ){
-	           $this->sqlArray["bindings"] = array_merge( $this->sqlArray["bindings"] , $moreParams );
+	           $this->clauses["bindings"] = array_merge( $this->clauses["bindings"] , $moreParams );
 	        }
 	        else{
-	            $this->sqlArray["bindings"][] = $moreParams;
+	            $this->clauses["bindings"][] = $moreParams;
 	        }
 	    }
 	}
 	public function buildJoin(){
-	    $joins = $this->sqlArray['join']; //[] = [$table,$condition,$params];
+	    $joins = $this->clauses['join']; //[] = [$table,$condition,$params];
 	    $sub_sql = "";
 	    for( $i=0;$i<count($joins);$i++ ){
 	        $l = $joins[$i];
@@ -254,7 +257,7 @@ class PDO_Abstract{
 	 */
 	
 	public function buildWhere(){
-		$where = $this->getSqlArrayItem('where','' );
+		$where = $this->getClausesItem('where','' );
 		 //print_r($where);
 		$sql = " where 1 ";
 		for( $i=0; $i< count( $where); $i++ ){
@@ -266,7 +269,7 @@ class PDO_Abstract{
 				$p2 = $item[3];
 				$boolean = $item[4];
 				$sql .= " " . $boolean . " " . $field . " " . $p1 . " ? ";// . $p2;
-				$this->sqlArray["bindings"][] = $p2;
+				$this->clauses["bindings"][] = $p2;
 			}
 			elseif( $type == 'whereIn'){
 				$field = $item[1];
@@ -287,10 +290,10 @@ class PDO_Abstract{
 				if( !empty( $bindings)){
 					foreach ( $bindings as $k => $v ){
 						if( is_numeric( $k ) ){
-							$this->sqlArray["bindings"][] = $v;
+							$this->clauses["bindings"][] = $v;
 						}
 						else{
-							$this->sqlArray["bindings"][$k] = $v;
+							$this->clauses["bindings"][$k] = $v;
 						}
 						
 					}
@@ -304,7 +307,7 @@ class PDO_Abstract{
 	 * @return string
 	 */
 	public function buildHaving(){
-		$where = $this->getSqlArrayItem('having','' );
+		$where = $this->getClausesItem('having','' );
 		
 		$sql = "  having 1 ";
 		for( $i=0; $i< count( $where); $i++ ){
@@ -316,7 +319,7 @@ class PDO_Abstract{
 				$p2 = $item[3];
 				$boolean = $item[4];
 				$sql .= " " . $boolean . " " . $field . " " . $p1 . " ? ";// . $p2;
-				$this->sqlArray["bindings"][] = $p2;
+				$this->clauses["bindings"][] = $p2;
 			}
 			elseif( $type == "havingRaw" ){
 				$sqlParam = $item[1];
@@ -326,10 +329,10 @@ class PDO_Abstract{
 				if( !empty( $bindings)){
 					foreach ( $bindings as $k => $v ){
 						if( is_numeric( $k ) ){
-							$this->sqlArray["bindings"][] = $v;
+							$this->clauses["bindings"][] = $v;
 						}
 						else{
-							$this->sqlArray["bindings"][$k] = $v;
+							$this->clauses["bindings"][$k] = $v;
 						}
 	
 					}
@@ -343,10 +346,10 @@ class PDO_Abstract{
 	 * @return string
 	 */
 	public function toSql(){
-		$select =$this->getSqlArrayItem("select","*");
+		$select =$this->getClausesItem("select","*");
 		
 		$sql = "select " . $select;
-		$table = $this->getSqlArrayItem("table","");
+		$table = $this->getClausesItem("table","");
 		$sql .= " from " . $this->config['prefix'].$table;
 		$sql .= $this->buildJoin();
 		
@@ -354,13 +357,13 @@ class PDO_Abstract{
 		$sql .= $this->buildWhere();
 		
 
-		$groupBy =  $this->getSqlArrayItem("groupBy", "");
+		$groupBy =  $this->getClausesItem("groupBy", "");
 		if( $groupBy != "" ){
 			$sql .= " group by " . $groupBy;
 			$sql .= $this->buildHaving();
 		}
 		
-		$orderBy = $this->getSqlArrayItem("orderBy",[]);
+		$orderBy = $this->getClausesItem("orderBy",[]);
 		if( !empty( $orderBy) ){
 			$orderArr = [];
 			foreach ( $orderBy as $field => $direction ){
@@ -370,7 +373,7 @@ class PDO_Abstract{
 		}
 		
 		
-		$limit = $this->getSqlArrayItem("limit",[]);
+		$limit = $this->getClausesItem("limit",[]);
 		if( !empty( $limit)){
 			$l = $limit[0];
 			$offset = $limit[1];
@@ -387,15 +390,15 @@ class PDO_Abstract{
 	/*
 	public function sqlParams(){
  
-	    return $this->sqlArray["bindings"];
+	    return $this->clauses["bindings"];
 	}*/
 	/**
 	 * @return array
 	 */
 	public function get(){
 		$sql = $this->toSql();
-		$data = $this->executeQuery( $sql , $this->sqlArray["bindings"] );
-		$this->clearSqlArray();
+		$data = $this->executeQuery( $sql , $this->clauses["bindings"] );
+		$this->clearClauses();
 		return $data;
 		
 	}
@@ -586,10 +589,13 @@ class PDO_Abstract{
 	 * @return int last insert id
 	 */
 	public function insert( $data ){
-		
+	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeInsert", $this , $data );
+	    
 		$fields = [];
 		$values = [];
 		$params = [];
+		
 		if( !empty( $data )){
 			foreach ( $data as $field => $value ){
 				$fields[] = $field;
@@ -597,14 +603,15 @@ class PDO_Abstract{
 				$params[] = '?';
 			}
 		}
-		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
 		$sql = "insert into " . $tableName . " (" .implode(",", $fields) . ") values(" .implode(",", $params) . ") ";
 		$ret = $this->executeUpdate($sql , $values);
 		
 		$pdo = $this->getPDO();
-		$this->clearSqlArray();
-		return $pdo->lastInsertId();
 		
+		$lastInsertId = $pdo->lastInsertId();
+		Event::fire($tableName.".afterInsert", $this,$data,$lastInsertId);
+		$this->clearClauses();
+		return $lastInsertId;
 	}
 	/**
 	 * 
@@ -612,7 +619,9 @@ class PDO_Abstract{
 	 * @return int affected rows
 	 */
 	public function update( $data ){
-		
+	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeUpdate", $this, $data);
+	    
 		$setArr = array();
 		$values = [];
 		if( !empty( $data )){
@@ -622,17 +631,22 @@ class PDO_Abstract{
 			}
 		}
 		$where = $this->buildWhere();
-		$bindings = $this->sqlArray["bindings"];
+		$bindings = $this->clauses["bindings"];
 		
 		$values = array_merge( $values, $bindings );
 		
-		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
+		$tableName =$this->config['prefix']. $this->clauses["table"] ;
 		$sql = "update " . $tableName . " set " .implode(',', $setArr) . $where  ;
 		
-		$sth = $this->executeUpdate($sql , $values);
-		$this->clearSqlArray();
-		return $sth->rowCount();
 		
+		
+		$sth = $this->executeUpdate($sql , $values);
+		
+		
+		$affectedRows = $sth->rowCount();
+		Event::fire($tableName.".afterUpdate", $this, $data, $affectedRows);
+		$this->clearClauses();
+		return $affectedRows;
 	
 	}
 	
@@ -640,43 +654,81 @@ class PDO_Abstract{
 	 * @return int affected rows
 	 */
 	public function delete(  ){
-		  
+	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeDelete", $this );
+	    
 		$where = $this->buildWhere();
-		$bindings = $this->sqlArray["bindings"];
+		$bindings = $this->clauses["bindings"];
 		 
-		$tableName =$this->config['prefix']. $this->sqlArray["table"] ;
+		$tableName =$this->config['prefix']. $this->clauses["table"] ;
 		$sql = "delete from " . $tableName . "  "  . $where  ;
 	
 		$sth = $this->executeUpdate($sql ,$bindings);
-		$this->clearSqlArray();
-		return $sth->rowCount();
 		
+		$affectedRows = $sth->rowCount();
+		Event::fire($tableName.".afterDelete", $this , $affectedRows);
+		$this->clearClauses();
+		return $affectedRows;
 	}
 	
 	protected  function _join( $join_type,$table,$condition,$params = array()){
-	    $this->sqlArray['join'][] = [$join_type,$table,$condition,$params];
+	    $this->clauses['join'][] = [$join_type,$table,$condition,$params];
 	}
-	
+	/**
+	 * 
+	 * @param unknown $table
+	 * @param unknown $condition
+	 * @param array $params
+	 */
 	public function leftJoin($table,$condition,$params = array()){
 	   $this->_join('left join', $table, $condition,$params);
 	   return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $table
+	 * @param unknown $condition
+	 * @param array $params
+	 */
 	public function rightJoin($table,$condition,$params = array()){
 	    $this->_join('right join', $table, $condition,$params);
 	    return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $table
+	 * @param unknown $condition
+	 * @param array $params
+	 */
 	public function innerJoin($table,$condition,$params = array()){
 	    $this->_join('INNER JOIN', $table, $condition,$params);
 	    return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $table
+	 * @param unknown $condition
+	 * @param array $params
+	 */
 	public function outerJoin($table,$condition,$params = array()){
 	    $this->_join('OUTER JOIN', $table, $condition,$params);
 	    return $this;
 	}
+	/**
+	 * 
+	 * @param unknown $table
+	 * @param unknown $condition
+	 * @param array $params
+	 */
 	public function naturalJoin($table,$condition,$params = array()){
 	    $this->_join('NATURAL JOIN', $table, $condition,$params);
 	    return $this;
 	}
 	
-	
+	/**
+	 * @return string table name
+	 */
+	public function getTableName(){
+	    return $this->config['prefix']. $this->clauses["table"] ;
+	}
 }

@@ -893,7 +893,7 @@ public static  function back( );
 public static  function with( $key,$value);
 
 public static  function withErrors( $errors = array (
-));
+),$key = 'default');
 
 public static  function withSuccess( $message);
 
@@ -962,6 +962,12 @@ public static  function group( $setting,$closure);
 public static  function getPrefix( );
 
 public static  function getNamespace( );
+}
+}
+namespace { 
+class Security{
+
+public static  function check( $perm);
 }
 }
 namespace { 

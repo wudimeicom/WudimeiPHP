@@ -54,8 +54,8 @@ class Paginator{
 		$this->next = ( $this->page+1<= $this->last)? $this->page+1 : $this->last;
 		
 		$html = "<ul class=\"pagination\">";
-		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, 1 , $this->size )  . "\">头页</a></li>";
-		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, $this->prev , $this->size ) . "\">上页</a></li>";
+		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, 1 , $this->size )  . "\">".trans('global.Page_First')."</a></li>";
+		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, $this->prev , $this->size ) . "\">".trans('global.Page_Prev')."</a></li>";
 		for( $i= $this->page - $buttonCount ; $i< $this->page + $buttonCount ; $i++ )
 		{
 			if( $i>0 && $i <= $this->last )
@@ -70,8 +70,8 @@ class Paginator{
 				}
 			}
 		}
-		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, $this->next , $this->size )  . "\">下页</a></li>";
-		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url,  $this->last  , $this->size )   . "\">尾页</a></li>";
+		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url, $this->next , $this->size )  . "\">".trans('global.Page_Next')."</a></li>";
+		$html .= "<li><a href=\"" . $this->getUrlByPageAndSize($url,  $this->last  , $this->size )   . "\">".trans('global.Page_Last')."</a></li>";
 	
 		$html .= "</ul>";
 		return $html;

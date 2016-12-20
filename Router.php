@@ -67,13 +67,15 @@ class Router{
 				$this->controller = $class;
 				$this->action = $method;
 				$ctrl = new $class();
+				
+				$response = null;
 				if( !empty( $params)){
-					call_user_func_array( [$ctrl,$method] , $params );
+					$response = call_user_func_array( [$ctrl,$method] , $params );
 				}
 				else{
-					call_user_func( [$ctrl,$method] );
+					$response = call_user_func( [$ctrl,$method] );
 				}
-			 
+			    $this->sendResponse( $response );
 		}
 		else{
 			header("HTTP/1.0 404 Not Found");
@@ -84,6 +86,15 @@ class Router{
 		}
 		//$c = new  \App\Controllers\IndexController();
 		//$c->index();
+	}
+	
+	public function sendResponse( $res ){
+	    if(is_string( $res)){
+	        echo $res;
+	    }
+	    elseif( is_object($res) && method_exists( $res ,'sendResponse')){
+	        $res->sendResponse();
+	    }
 	}
 	
 	public  function parseRoute($expr){

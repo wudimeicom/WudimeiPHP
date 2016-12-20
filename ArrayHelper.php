@@ -131,6 +131,30 @@ class  ArrayHelper{
 		return $arr;
 	}
 	
+	public static function where( $array_2d , $fieldName, $param1 ){
+	    $arr = [];
+	    if( !empty( $array_2d )){
+	        foreach ( $array_2d as $item ){
+	            $value = "";
+	            if( is_array( $item ) && isset( $item[$fieldName])){
+	                $value = $item[$fieldName];
+	            }
+	            elseif( isset( $item->{$fieldName} ) ){
+	                $value = $item->{$fieldName};
+	            }
+	            if( $value  == $param1 ){
+	                $arr[] = $item;
+	            }
+	            
+	        }
+	    }
+	    return $arr;
+	}
+	
+	public static function find( $array_2d , $val  ,$keyFiledName = "id"){
+	    $arr = ArrayHelper::where($array_2d, $keyFiledName, $val);
+	    return @$arr[0];
+	}
 	public static function groupBy( $array_2d , $fieldName ){
 		$arr = [];
 		if( !empty( $array_2d )){

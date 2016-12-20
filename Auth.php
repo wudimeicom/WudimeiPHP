@@ -48,7 +48,9 @@ class Auth{
 		 
 		return ! is_null($this->user());
 	}
-	
+	/**
+	 * @return \Wudimei\Auth\User
+	 */
 	public function user(){
 		$user =  \Session::get($this->name);
 		if( is_null( $user ) ){
