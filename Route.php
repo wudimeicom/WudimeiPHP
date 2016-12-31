@@ -13,6 +13,7 @@ class Route{
 	public  $group_namespace_stack = [];
 	public $group_domain = "";
 	public $routes;
+	public $middlewares_stack = [];
 	
 	public function getRoutes(){
 		return $this->routes;
@@ -53,7 +54,8 @@ class Route{
 			'uri' => $this->getPrefix() . $url ,
 			'closure' => $closure,
 			'verbs' => $verbs,
-			'domain' => $this->group_domain
+			'domain' => $this->group_domain,
+		    'middlewares' => $this->getMiddlewares()
 		];
 	}
 	
@@ -67,6 +69,9 @@ class Route{
 			array_push($this->group_namespace_stack , @$setting['namespace']);
 		}
 		$this->group_domain = @$setting['domain'];
+		if( isset( $setting['middlewares'])){
+		      array_push( $this->middlewares_stack, @$setting['middlewares'] );
+		}
 		
 		if( is_callable( $closure )){
 			call_user_func( $closure);
@@ -74,9 +79,12 @@ class Route{
 		
 		array_pop($this->group_prefix_stack );
 		if( isset( $setting['namespace'])){
-			array_pop($this->group_namespace_stack  );
+			 array_pop($this->group_namespace_stack  );
 		}
 		$this->group_domain = '';
+		if( isset( $setting['middlewares'])){
+		      array_pop($this->middlewares_stack );
+		}
 	}
 	
 	public function getPrefix(){
@@ -89,5 +97,11 @@ class Route{
 		$cnt = count( $this->group_namespace_stack);
 		$n = @$this->group_namespace_stack[$cnt-1];
 		return $n;
+	}
+	
+	public function getMiddlewares(){
+	    $cnt = count( $this->middlewares_stack);
+	    $n = @$this->middlewares_stack[$cnt-1];
+	    return $n;
 	}
 }

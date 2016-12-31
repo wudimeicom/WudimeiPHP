@@ -15,6 +15,7 @@ class Router{
 	public $controller;
 	public $action;
 	
+	
 	public function loadConfig($routeFile){
 		$this->routeArray = include $routeFile;
 	}
@@ -28,10 +29,11 @@ class Router{
 		//$queryStringArr = [];
 		//parse_str( $uriArr['query'] , $queryStringArr);
 		//print_r( $_GET );
+		//print_r( $this->routeArray );
 		
 		$route = [];
 		$params = array();
-	
+//	$s = microtime(true);
 		foreach ( $routeArray as $routeItem ){
 			$routeExpr = $routeItem['uri'];
 			$item = $routeItem['closure'];
@@ -52,11 +54,13 @@ class Router{
 				}
 			}
 		}
-	
+	//echo microtime(true) - $s;
 		
 		if(  !empty($route)  ){
 			  
-			
+			   $middlewares = @$route['middlewares'];
+			 //  print_r( $middlewares );
+			   
 				@list( $class,$method) = @explode("@", $route['closure']);
 				 
 				 
@@ -68,14 +72,29 @@ class Router{
 				$this->action = $method;
 				$ctrl = new $class();
 				
-				$response = null;
-				if( !empty( $params)){
-					$response = call_user_func_array( [$ctrl,$method] , $params );
+				$middlewareResult = null;
+				if( count( $middlewares)>0 ){
+				    $middlewareResult = \Wudimei\Middleware::runMiddlewares($middlewares,"startUp", $ctrl );
+				}
+				
+				if( method_exists($middlewareResult, "sendResponse")){ //redirect
+				    $this->sendResponse( $middlewareResult);
 				}
 				else{
-					$response = call_user_func( [$ctrl,$method] );
+    				$response = null;
+    				if( !empty( $params)){
+    					$response = call_user_func_array( [$ctrl,$method] , $params );
+    				}
+    				else{
+    					$response = call_user_func( [$ctrl,$method] );
+    				}
+    			    $this->sendResponse( $response );
 				}
-			    $this->sendResponse( $response );
+				
+			    if( count( $middlewares)>0 ){
+			        \Wudimei\Middleware::runMiddlewares($middlewares,"terminate");
+			    }
+			    
 		}
 		else{
 			header("HTTP/1.0 404 Not Found");
