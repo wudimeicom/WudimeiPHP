@@ -29,14 +29,16 @@ class Security{
                 $p->name = $perm;
                 $this->permissionModelClass::insert( $p);
             }
-            \Redirect::to($url)->withWarning(trans("global.permission_required", ['permission_name' => $p->name]))->done();
+           return  \Redirect::to($url)->withWarning(trans("global.permission_required", ['permission_name' => trans($p->name)]));
            // Router::sendResponse( $res );
-            exit();
+           // exit();
         }
+        return false;
     }
     
     public function getMyPermissions(){
         $myPermissionsLoaded =\Session::get("myPermissionsLoaded");
+        $myPermissionsLoaded = false;
         $myPermissions = array();
         if( $myPermissionsLoaded != true ){
             $user = \Auth::user();

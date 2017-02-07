@@ -53,13 +53,33 @@ class Model{
 	
 	public function bindEvents(){
 	    $tableName = $this->select->getTableName() ;
+	    Event::listen( $tableName  . ".beforeChange", [$this,'beforeChange'] );
 	    Event::listen( $tableName  . ".beforeUpdate", [$this,'beforeUpdate'] );
 	    Event::listen( $tableName  . ".afterUpdate", [$this,'afterUpdate'] );
 	    Event::listen( $tableName  . ".beforeInsert", [$this,'beforeInsert'] );
 	    Event::listen( $tableName  . ".afterInsert", [$this,'afterInsert'] );
 	    Event::listen( $tableName  . ".beforeDelete", [$this,'beforeDelete'] );
 	    Event::listen( $tableName  . ".afterDelete", [$this,'afterDelete'] );
+	    Event::listen( $tableName  . ".afterChange", [$this,'afterChange'] );
 	}
+	/**
+	 *
+	 * @param unknown $db
+	 * @param unknown $data
+	 */
+	public function beforeChange( $db , $args){
+	    //print_r( $args );
+	}
+	/**
+	 *
+	 * @param \Wudimei\DB\Query\PDO_MYSQL $db
+	 * @param array $data
+	 * @param int $affectedRows
+	 */
+	public function afterChange( $db , $args){
+	   // print_r( $args );
+	}
+	
 	/**
 	 * 
 	 * @param unknown $db

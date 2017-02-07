@@ -17,11 +17,8 @@ class File  extends BasicSession
 	{
 		$id = $this->session_id;
 		
-		
-		//if( rand(0, $this->config['gc_max_random_num']) == 0  ){
-			 //echo 'gc';
+
 		$this->gc(  );
-		//}
 		$file = $this->getSessionFileName();
 		
 		$content = '';
@@ -58,6 +55,8 @@ class File  extends BasicSession
 		$last_gc_time_filename = $this->config["files"] . "/last_gc_time.txt";
 		$last_gc_time = @file_get_contents( $last_gc_time_filename );
 		$last_gc_time = intval( $last_gc_time );
+		// !-----------uncoment the line below to debug
+		//$last_gc_time = 0;
 		if( $last_gc_time + $this->config["gc_maxlifetime"] < time() ){
 			$this->gcDir(  $this->config["files"] );
 			file_put_contents( $last_gc_time_filename, time() );
@@ -69,20 +68,27 @@ class File  extends BasicSession
 	function gcDir(  $dir ){
 		
 		$dir = realpath( $dir );
-		if( $dir == "" || $dir = "/" || strlen( $dir )<3){ //protect file system
+		
+		if(  strlen( $dir )<3){ //protect file system
 			return false;
 		}
-		$files = glob($dir."/*");
-		 
-		foreach ($files as $file) {
-			$path = $dir . "/" . basename($file);
-			if( is_dir( $path )){
-				$this->gcDir($maxlifetime, $path );
-			}
-			else{
-				$this->gcFile($file);
-			}
+		
+		$dirObj = dir( $dir);
+		while( ($file= $dirObj->read()) !== false ){
+		   
+		    if( $file != "." && $file != ".."){
+		        $path = $dir . "/" . $file;
+		        if( is_dir( $path )){
+		            $this->gcDir( $path );
+		        }
+		        else{
+		            $this->gcFile($path);
+		        }
+		    }
 		}
+		$dirObj->close();
+		
+		 
 		
 	}
 	

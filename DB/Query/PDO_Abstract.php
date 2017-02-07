@@ -590,6 +590,7 @@ class PDO_Abstract{
 	 */
 	public function insert( $data ){
 	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeChange", $this , ['type'=>'insert'] );
 	    Event::fire($tableName.".beforeInsert", $this , $data );
 	    
 		$fields = [];
@@ -610,6 +611,7 @@ class PDO_Abstract{
 		
 		$lastInsertId = $pdo->lastInsertId();
 		Event::fire($tableName.".afterInsert", $this,$data,$lastInsertId);
+		Event::fire($tableName.".afterChange", $this, ['type'=>'insert','lastInsrtId'=>$lastInsertId]);
 		$this->clearClauses();
 		return $lastInsertId;
 	}
@@ -620,6 +622,7 @@ class PDO_Abstract{
 	 */
 	public function update( $data ){
 	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeChange", $this ,['type'=>'update'] );
 	    Event::fire($tableName.".beforeUpdate", $this, $data);
 	    
 		$setArr = array();
@@ -645,6 +648,7 @@ class PDO_Abstract{
 		
 		$affectedRows = $sth->rowCount();
 		Event::fire($tableName.".afterUpdate", $this, $data, $affectedRows);
+		Event::fire($tableName.".afterChange", $this,['type'=>'update','affectedRows'=> $affectedRows]);
 		$this->clearClauses();
 		return $affectedRows;
 	
@@ -655,6 +659,7 @@ class PDO_Abstract{
 	 */
 	public function delete(  ){
 	    $tableName = $this->getTableName();
+	    Event::fire($tableName.".beforeChange", $this , ['type'=>'delete'] );
 	    Event::fire($tableName.".beforeDelete", $this );
 	    
 		$where = $this->buildWhere();
@@ -667,6 +672,7 @@ class PDO_Abstract{
 		
 		$affectedRows = $sth->rowCount();
 		Event::fire($tableName.".afterDelete", $this , $affectedRows);
+		Event::fire($tableName.".afterChange", $this,['type'=>'delete','affectedRows'=> $affectedRows]);
 		$this->clearClauses();
 		return $affectedRows;
 	}

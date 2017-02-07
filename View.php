@@ -22,7 +22,8 @@ class View{
 	public  $vars;
 	public  $forceCompile = false;
 	public  $skipCommentTags = false;
-	public  $filename_extension = ".view.htm";
+	public  $source_filename_extension = ".view.htm";
+	public  $dest_filename_extension = ".view.php";
 	/**
 	 * load config array into View from file 
 	 * @param string $file config file name
@@ -34,8 +35,8 @@ class View{
 		$this->compiled = $config['compiled'];
 		$this->forceCompile = $config['forceCompile'];
 		$this->skipCommentTags = $config['skipCommentTags'];
-		$this->filename_extension = $config['filename_extension'];
-		
+		$this->source_filename_extension = $config['source_filename_extension'];
+		$this->dest_filename_extension = $config['dest_filename_extension'];
 		if( !is_dir( $this->path )){
 			mkdir( $this->path ,0777,true );
 		}
@@ -70,13 +71,13 @@ class View{
 	 */
 	public  function compile( $viewName ){
 		$viewName2 =  str_replace(".", "/", $viewName );
-		$viewFile = $this->path . "/" . $viewName2 .  $this->filename_extension;
-		$destFile = $this->compiled . "/" . $viewName2 . $this->filename_extension;
+		$viewFile = $this->path . "/" . $viewName2 .  $this->source_filename_extension;
+		$destFile = $this->compiled . "/" . $viewName2 . $this->dest_filename_extension;
 		
 		if( $this->forceCompile ==  false ){
 			if( file_exists( $destFile) && @filemtime( $viewFile) < filemtime( $destFile)){
 				//echo "no compile! " . $viewName . ' ! ';
-				return "/" . $viewName2 . $this->filename_extension;
+				return "/" . $viewName2 . $this->dest_filename_extension;
 			}
 			else{
 				//echo 'compile agiain !' . $viewName . ' . ';
@@ -104,7 +105,7 @@ class View{
 		file_put_contents( $destFile, $result );
 		//unset( $tokenizer );
 		//unset( $parser );
-		return   "/" . $viewName2 .$this->filename_extension;
+		return   "/" . $viewName2 .$this->dest_filename_extension;
 	}
 	
 	/**

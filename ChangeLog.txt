@@ -1,0 +1,2 @@
+2017-01-17 change view's configuration file,'file_extension' to 'source_file_extension' and 'dest_file_extension'.
+					fixed sessin file gc issue.  
