@@ -5,8 +5,9 @@
  * @link http://www.wudimei.com
  * @license The MIT license(MIT)
  */
-namespace Wudimei;
-class XSS
+namespace Wudimei\XSS;
+ 
+class XSS1 extends XSS
 {
 	public $charset = "UTF-8";
 	public $tags_to_be_remove = ['script','style','meta','xml','iframe','head','frame','object','embed','link','frameset', 'ilayer', 'layer', 'bgsound','body','html', 'base','javascript', 'vbscript','title', 'expression', 'applet', 'blink'];
@@ -14,20 +15,17 @@ class XSS
 	
 	public  function clean( $htmlStr ){
 		$htmlStr = preg_replace('/[[:^print:]]/', "", $htmlStr ); 
+		
+		$hasTag = preg_match('/<[a-zA-Z0-9]+\s*[^>]*>/i', $htmlStr );
 		$html = "";
-		/*
-		$html = '<!DOCTYPE HTML>
-				<html>
-				<head>
-				<meta http-equiv="content-type" content="text/html;charset='.$this->charset.'" />
-				</head>
-				<body>'; */
+	 
 		$html .= $htmlStr; 
 		//$html .= '</body></html>';
 		//echo $html;
 		$doc = new \DOMDocument();
 		@$doc->loadHTML($html);
 		//echo $doc->saveHTML();
+		
 		
 		$nodes = $doc->getElementsByTagName("*");
 		$tagsToRemove = [];
@@ -78,13 +76,17 @@ class XSS
 			$tagsToRemove[$i]->parentNode->removeChild($tagsToRemove[$i] );
 		}
 		
-		$doc->normalize();
+		 $doc->normalize();
+		
 		if( $this->returnBodyInnerHtml == true ){
 			$innerHtml = '';
 			$bodys = $doc->getElementsByTagName("body");
 			$childNodes = $bodys[0]->childNodes;
 			foreach ($childNodes as $childNode){
 				$innerHtml .= $childNode->ownerDocument->saveHTML($childNode);
+			}
+			if( $hasTag == false ){
+			    $innerHtml = strip_tags( $innerHtml);
 			}
 			return $innerHtml;
 		}
@@ -104,21 +106,5 @@ class XSS
 		return false;
 	}
 	
-	public function cleanDeep( $arr ){
-		if( is_array( $arr )){
-			foreach ( $arr as $k=> $v ){
-				if( is_array( $v )){
-					$arr[$k] = $this->cleanDeep( $v );
-				}
-				else{
-					$arr[$k] = $this->clean( $v );
-				}
-				
-			}
-			return $arr;
-		}
-		else{
-			return $arr;
-		}
-	}
-}
+	
+} 

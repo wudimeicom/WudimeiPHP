@@ -14,7 +14,7 @@ $text = ' sf <br />hello,world<div name="bd" style="color:green" onclick="alert(
 		}
 		
 		</script>ddd
-		<img name="abc" onmouseover="" onmouseout="" src="javaScript:alert(\'hello\');" onerror="this.src=\'http://a.com/a.jpg\';"/>
+		<img name="abc" onmouseover="" onmouseout="" src="javaScript:alert(\'hello\');"  onerror="this.src=\'http://a.com/a.jpg\';"/>
 		a<script type="text/javascript"> alert(\'hello\');
 		for(var i=0;i<10;i++){
 		  document.writel( i +"");
@@ -45,7 +45,7 @@ $text = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://w
 		<script type="text/javascript"> alert(\'hello\');
 		for(var i=0;i<10;i++){  document.writel( i +"");}
 		</script>ddd
-		<img name="abc" onmouseover="" onmouseout="" src="javaScript:alert(\'hello\');" onerror="this.src=\'http://a.com/a.jpg\';">
+		<img name="abc" onmouseover="javaScript:alert(\'hello\');" onmouseout="javaScript:alert(\'hello\');" src="javaScript:alert(\'hello\');" src2="javaScript:alert(\'hello\');" onerror="this.src=\'http://a.com/a.jpg\';">
 		a
 		<script type="text/javascript"> alert(\'hello\');
 		for(var i=0;i<10;i++){  
@@ -95,11 +95,12 @@ script:location.href=\'http://www.wudimei.com/\'">XSS</A>
 		
 		<IMG SRC=&#x6A&#x61&#x76&#x61..省略..&#x58&#x53&#x53&#x27&#x29>
 		
-		<SCR%00IPT>alert("XSS")</SCRIPT>aa
+		<SCR%00IPT>alert("XSS")</SCR%00IPT>aa onerror
 		</body>
 		</html>
 		';
 //$text = '\'><SCRIPT>alert("XSS")</SCRIPT><xss a=\'';
+//$text = 'yaqy@qq.com < 3';
 echo $xss->clean($text);
 
 $dt = [
@@ -111,5 +112,5 @@ $dt = [
 				]
 		]
 ];
-$dt2 = $xss->cleanDeep( $dt );
-print_r( $dt2 );
+//$dt2 = $xss->cleanDeep( $dt );
+//print_r( $dt2 );

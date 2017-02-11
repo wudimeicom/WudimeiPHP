@@ -1,2 +1,3 @@
+2017-02-11 xss 分为两种，一种是文本方式的，另一种是节点方式的
 2017-01-17 change view's configuration file,'file_extension' to 'source_file_extension' and 'dest_file_extension'.
 					fixed sessin file gc issue.  

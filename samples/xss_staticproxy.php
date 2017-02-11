@@ -96,7 +96,7 @@ script:location.href=\'http://www.wudimei.com/\'">XSS</A>
 		
 		<IMG SRC=&#x6A&#x61&#x76&#x61..省略..&#x58&#x53&#x53&#x27&#x29>
 		
-		<SCR%00IPT>alert("XSS")</SCRIPT>aa
+		<SCR%00IPT>alert("XSS")</SCR%00IPT>aa  onerror
 		</body>
 		</html>
 		';

@@ -10,10 +10,10 @@ namespace Wudimei\StaticProxies;
 use Wudimei\StaticProxy;
 
 
-class XSS {
+class XSS1 {
 	use StaticProxy;
 
 	public static function createObject(){
-		return new \Wudimei\XSS();
+		return new \Wudimei\XSS\XSS1();
 	}
 }
