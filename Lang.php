@@ -8,6 +8,8 @@
 namespace Wudimei;
 class Lang{
 	public  $locale;
+	public  $autoDetectLanguage;
+	public  $language_mapping;
 	public  $path;
 	public  $langs = array();
 	public  $loadedFiles = [];
@@ -19,9 +21,56 @@ class Lang{
 	public  function loadConfig( $configFile ){
 		$config = include $configFile;
 		$this->locale = $config['locale'];
+		$this->autoDetectLanguage = $config['autoDetectLanguage'];
+		$this->language_mapping  = $config['language_mapping'];
 		$this->path = $config['path'];
-		
+		if( $this->autoDetectLanguage == true ){
+		   $this->autoDetectLanguage();
+		}
 	}
+	public  function autoDetectLanguage(){
+	    /**
+	     * 
+	     * @var string language folder name,eg:cn,en
+	     */
+	    $lang = \Session::get("__language");
+	    if( is_null( $lang)){
+	        $lang = @$_COOKIE['__language'];
+	    }
+	    if( is_null( $lang)){
+	        $al = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+	        //echo $al;
+	        $larr = preg_split('/[,;]/', $al);
+	        //print_r( $larr );
+	        for( $i=0;$i<count( $larr);$i++){
+	            $l = $larr[$i];
+	            if( strpos($l, 'q=') === false ){
+	                //echo $l;
+	                $lang2 = $this->findLanguageFromLanguageMapping($l);
+	                if( $lang2 != null ){
+	                    $lang = $lang2;
+	                    //echo $lang;
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	    if( is_null( $lang)){
+	        $lang = $this->locale;
+	    }
+	   
+	    $this->locale = $lang;
+	}
+	
+	public function findLanguageFromLanguageMapping($l){
+	    foreach ($this->language_mapping as $lang => $arr ){
+	        if( array_search( $l, $arr) !== false ){
+	            return $lang;
+	        }
+	    }
+	    return null;
+	}
+	        
 	/**
 	 * 
 	 * @param string $path2
