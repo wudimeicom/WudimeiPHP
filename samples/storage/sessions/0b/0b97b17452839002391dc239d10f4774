@@ -1,1 +1,0 @@
-a:1:{s:9:"auth.user";O:8:"stdClass":7:{s:2:"id";s:1:"2";s:8:"username";s:3:"yqr";s:5:"email";s:17:"admin@wudimei.com";s:8:"password";s:32:"e10adc3949ba59abbe56e057f20f883e";s:4:"type";s:1:"1";s:10:"created_at";s:19:"2016-08-10 00:00:00";s:14:"remember_token";s:32:"8b387269d5c15ea93315248d93fbf77e";}}

@@ -15,7 +15,9 @@ class Middleware{
     public static $middlewares = array();
     
     public static function runMiddlewares( $middlewares , $method = "startUp" , $controller = null ){
+      
         for( $i=0; $i <count( $middlewares ); $i++ ){
+           
             $class = $middlewares[$i];
             if( !isset( static::$middlewares[$class])){
                 $class2 = "App\\Middlewares\\" . $class;
@@ -33,13 +35,12 @@ class Middleware{
                 $ccName2 = $ccNameArr[ count( $ccNameArr)-1];
                 $ccName2 = strtolower(str_replace("Controller", "", $ccName2));
                 static::$middlewares[$class]->controllerName = $ccName2;
-            }
-            
+            } 
            $ret =  static::$middlewares[$class]->$method();
            if( method_exists( $ret, "sendResponse")){
                return $ret;
            }
         }
-        
+       
     }
 }

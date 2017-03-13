@@ -126,6 +126,8 @@ class BasicSession
 					}
 				}
 			}
+			
+			
 			$this->saveSession(   );
 		}
 	}

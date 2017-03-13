@@ -83,7 +83,7 @@ class View{
 				//echo 'compile agiain !' . $viewName . ' . ';
 			}
 		}
-		//echo 'test';
+		 //echo 'test';
 		 
 		$content = file_get_contents($viewFile);
 		

@@ -31,7 +31,7 @@ class Lang{
 	public  function autoDetectLanguage(){
 	    /**
 	     * 
-	     * @var string language folder name,eg:cn,en
+	     * @var string language folder name,eg:zh-cn,en
 	     */
 	    $lang = \Session::get("__language");
 	    if( is_null( $lang)){

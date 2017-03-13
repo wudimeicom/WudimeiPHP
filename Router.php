@@ -33,6 +33,7 @@ class Router{
 		
 		$route = [];
 		$params = array();
+		
 //	$s = microtime(true);
 		foreach ( $routeArray as $routeItem ){
 			$routeExpr = $routeItem['uri'];
@@ -54,6 +55,7 @@ class Router{
 				}
 			}
 		}
+		
 	//echo microtime(true) - $s;
 		
 		if(  !empty($route)  ){
@@ -74,7 +76,9 @@ class Router{
 				
 				$middlewareResult = null;
 				if( count( $middlewares)>0 ){
+				   
 				    $middlewareResult = \Wudimei\Middleware::runMiddlewares($middlewares,"startUp", $ctrl );
+				    
 				}
 				
 				if( method_exists($middlewareResult, "sendResponse")){ //redirect
@@ -103,6 +107,7 @@ class Router{
 			];
 			echo \View::make("404", $vars);
 		}
+		
 		//$c = new  \App\Controllers\IndexController();
 		//$c->index();
 	}
