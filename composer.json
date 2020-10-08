@@ -1,5 +1,5 @@
 {
-    "name": "wudimeicom/WudimeiPHP",
+    "name": "wudimeicom/wudimeiphp",
     "description": "wudimei php framework for web mvc development",
     "require": {
         "php": ">=7.0"
