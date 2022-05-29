@@ -37,7 +37,7 @@ class Middleware{
                 static::$middlewares[$class]->controllerName = $ccName2;
             } 
            $ret =  static::$middlewares[$class]->$method();
-           if( method_exists( $ret, "sendResponse")){
+           if(!is_null($ret) && method_exists( $ret, "sendResponse")){
                return $ret;
            }
         }
