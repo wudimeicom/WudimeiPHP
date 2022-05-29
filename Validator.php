@@ -7,7 +7,7 @@
  * @license The MIT license(MIT)
  */
 namespace Wudimei;
-use Validator;
+//use Validator;
 use Wudimei\Validator\RuleValidator;
 
 class Validator {
