@@ -15,7 +15,7 @@ class XSS{
                     $arr[$k] = $this->cleanDeep( $v );
                 }
                 else{
-                    $arr[$k] = $this->clean( $v );
+                    $arr[$k] = self::clean( $v );
                 }
     
             }
@@ -24,5 +24,9 @@ class XSS{
         else{
             return $arr;
         }
+    }
+    
+    public static function  clean($v){
+        
     }
 }

@@ -10,10 +10,10 @@ namespace Wudimei\XSS;
 class XSS2 extends XSS
 {
 
-    public $evil_tags = ['script','style','meta','xml','iframe','head','frame','object','embed','link','frameset', 'ilayer', 'layer', 'bgsound','body','html', 'base','javascript', 'vbscript','title', 'expression', 'applet', 'blink'];
-    public $evil_attributes = ['ondblclick','onclick','onmousedown','onmouseup','onmouseover','onmousemove','onmouseout','onkeypress','onkeydown','onkeyup','onbeforeunload','onerror','onload','onmove','onresize','onscroll','onstop','onunload','onchange','onfocus','onreset','onsubmit','onfinish','onstart','onbeforecut','onbeforeeditfocus','onbeforepaste','onbeforeupdate','oncontextmenu','oncopy','oncut','ondrag','ondragdrop','ondragend','ondragenter','ondragleave','ondragover','ondragstart','ondrop','onlosecapture','onpaste','onselect','onselectstart','oncellchange','ondataavailable','ondatasetchanged','ondatasetcomplete','onerrorupdate','onrowenter','onrowexit','onrowsdelete','onrowsinserted','onbeforeprint','onfilterchange','onhelp','onpropertychange','onreadystatechange'];
-    public $evil_value_keywords = ['/javascript/i' ,'/vbscript/i','/expression/i','/behaviour/i','/^refresh$/i','/0;url=data:/i','/(\/[0-9a-zA-Z]{1,3}){5,}/i','/%00/i'];
-    public  function clean( $text ){
+    public static $evil_tags = ['script','style','meta','xml','iframe','head','frame','object','embed','link','frameset', 'ilayer', 'layer', 'bgsound','body','html', 'base','javascript', 'vbscript','title', 'expression', 'applet', 'blink'];
+    public static $evil_attributes = ['ondblclick','onclick','onmousedown','onmouseup','onmouseover','onmousemove','onmouseout','onkeypress','onkeydown','onkeyup','onbeforeunload','onerror','onload','onmove','onresize','onscroll','onstop','onunload','onchange','onfocus','onreset','onsubmit','onfinish','onstart','onbeforecut','onbeforeeditfocus','onbeforepaste','onbeforeupdate','oncontextmenu','oncopy','oncut','ondrag','ondragdrop','ondragend','ondragenter','ondragleave','ondragover','ondragstart','ondrop','onlosecapture','onpaste','onselect','onselectstart','oncellchange','ondataavailable','ondatasetchanged','ondatasetcomplete','onerrorupdate','onrowenter','onrowexit','onrowsdelete','onrowsinserted','onbeforeprint','onfilterchange','onhelp','onpropertychange','onreadystatechange'];
+    public static $evil_value_keywords = ['/javascript/i' ,'/vbscript/i','/expression/i','/behaviour/i','/^refresh$/i','/0;url=data:/i','/(\/[0-9a-zA-Z]{1,3}){5,}/i','/%00/i'];
+    public static  function clean( $text ){
         // $text = preg_replace('/[^[:print:]]/i', '', $text );
         
        $text = preg_replace('/([\x00-\x08|\x0b-\x0c|\x0e-\x19]{1})/', '', $text);
@@ -32,11 +32,11 @@ class XSS2 extends XSS
             $tag = $matches[2]; // tagName
             $attrs = $matches[3];
             $tag2 = strtolower(  $tag );
-            $tag2 = $this->cleanInjection( $tag2 );
+            $tag2 = self::cleanInjection( $tag2 );
             $tag2 = preg_replace('/[^a-zA-Z0-9\-]+/i', '', $tag2 );
             
-            $attrs2 = $this->cleanAttr( $attrs );
-            $isEvilTag = in_array( $tag2 , $this->evil_tags );
+            $attrs2 = self::cleanAttr( $attrs );
+            $isEvilTag = in_array( $tag2 , self::evil_tags );
            // $noAttr = trim($attrs2) == "";
           // echo $tag2 . "\r\n";
             if( $isEvilTag == false   ){
@@ -49,7 +49,7 @@ class XSS2 extends XSS
         return $text;
              
     }
-    function cleanAttr($attrs){
+    static function cleanAttr($attrs){
        // echo $attrs;
         preg_match_all("/([a-zA-Z0-9\-\_\$]+)\s*=(\"([^\"]*)\")/i", $attrs,$m );
         // print_r( $m );
@@ -60,11 +60,11 @@ class XSS2 extends XSS
             $n = $attrNames[$i];
             $v = $attrValues[$i];
             $n2 = strtolower( $n);
-            $isEvilAttr = in_array( $n2, $this->evil_attributes);
-            $v2 = $this->cleanInjection( $v );
+            $isEvilAttr = in_array( $n2, self::evil_attributes);
+            $v2 = self::cleanInjection( $v );
             $hasEvilAttrValue = false;
-            for( $j=0; $j<count( $this->evil_value_keywords); $j++ ){
-                $k = $this->evil_value_keywords[$j];
+            for( $j=0; $j<count( self::evil_value_keywords); $j++ ){
+                $k = self::evil_value_keywords[$j];
                 if( preg_match( $k, $v2)){
                     $hasEvilAttrValue = true;
                 }
@@ -76,7 +76,7 @@ class XSS2 extends XSS
        // $attrs_new = '';
         return $attrs_new;
     }
-    function cleanInjection( $text ){
+     static function cleanInjection( $text ){
         
         $txt = "";
          
