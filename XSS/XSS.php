@@ -8,25 +8,20 @@
 namespace Wudimei\XSS;
 
 class XSS{
-    public static function cleanDeep( $arr ){
+   public static function cleanDeep( $arr ){
         if( is_array( $arr )){
             foreach ( $arr as $k=> $v ){
                 if( is_array( $v )){
-                    $arr[$k] = $this->cleanDeep( $v );
+                    $arr[$k] = self::cleanDeep( $v );
                 }
                 else{
-                    $arr[$k] = self::clean( $v );
+                    $arr[$k] = static::clean( $v );
                 }
     
             }
-            return $arr;
+             
         }
-        else{
-            return $arr;
-        }
-    }
-    
-    public static function  clean($v){
         
+         return $arr;
     }
 }
