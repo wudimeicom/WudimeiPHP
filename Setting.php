@@ -41,7 +41,7 @@ class Setting{
 		$name = "data[" . $settingItem->id . "]";
 		$value = $settingItem->value;
 		$type = $settingItem->type;
-		$properties = json_decode( $settingItem->properties , true ,null, JSON_UNESCAPED_UNICODE );
+		$properties = json_decode( $settingItem->properties , true   );
 		//print_r( $properties);
 		
 		//print_r( $settingItem->properties );
