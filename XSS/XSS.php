@@ -8,7 +8,7 @@
 namespace Wudimei\XSS;
 
 class XSS{
-    public function cleanDeep( $arr ){
+    public static function cleanDeep( $arr ){
         if( is_array( $arr )){
             foreach ( $arr as $k=> $v ){
                 if( is_array( $v )){
