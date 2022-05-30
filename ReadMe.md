@@ -10,8 +10,10 @@ Note: the `test` folder is deprecated ,please view the new things from WudimeiMV
 
 ## Installation:
 
-1. please download wudimeiPHP https://github.com/wudimeicom/WudimeiPHP/archive/master.zip
-2. unzip it and move to a directory you want, rename the folder to "WudimeiPHP"
+1. use composer
+```bash
+composer require wudimeicom/wudimeiphp:dev-main
+```
 3. require the autoload.php
 3. use namespance of the specified class you need
 for example:
@@ -32,7 +34,7 @@ return [
 
 <?php
 // test.php
-require_once __DIR__ .'/WudimeiPHP/autoload2.php';
+require_once __DIR__ .'/vendor/autoload.php';
 
 DB::loadConfig(__DIR__ . "/db_config.php" );
 
@@ -50,6 +52,16 @@ echo $pg->render("db_paginate.php?page={page}");
 
 ## Documentation
 http://php.wudimei.com/doc/cn/201609/index.md.html
+
+## WudimeiMVC
+
+a demo project that use WudimeiPHP Framework
+
+https://github.com/wudimeicom/WudimeiMVC
+
+## DE Content Assist for WudimeiPHP
+https://github.com/yangqingrong/WudimeiPHP_IDE_Content_Assist
+
 
 ## Licence:
 
