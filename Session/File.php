@@ -27,8 +27,10 @@ class File extends BasicSession {
             $content = (string) @file_get_contents($file);
         }
         $dt = unserialize($content);
-        $this->session_data = $dt['session_data'];
-        $this->flash_flags = $dt['flash_flags'];
+        if( !empty($dt)){
+            $this->session_data = $dt['session_data'];
+            $this->flash_flags = $dt['flash_flags'];
+        }
     }
 
     function saveSession() {

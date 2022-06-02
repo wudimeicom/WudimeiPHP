@@ -42,7 +42,7 @@ class BasicSession {
                 $expire = time() + $cookie_lifetime * 60;
             }
 
-            setcookie($session_name, $sessionId, $expire, $cfg["path"], $cfg["domain"],
+            setcookie($session_name, $sessionId, $expire, $cfg["path"], @$cfg["domain"].'',
                     @$cfg['secure'], @$cfg['httponly']);
         }
         $this->session_id = $sessionId;
